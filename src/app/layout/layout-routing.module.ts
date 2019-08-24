@@ -12,9 +12,8 @@ const routes: Routes = [
             { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
             { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
             { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },
-            { path: 'bs-element', loadChildren: () => import('./bs-element/bs-element.module').then(m => m.BsElementModule) },
-            { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },
-            { path: 'components', loadChildren: () => import('./bs-component/bs-component.module').then(m => m.BsComponentModule) },
+            { path: 'comments', loadChildren: () => import('./comments/comments.module').then(m => m.CommentsModule) },
+            { path: 'supplier', loadChildren: () => import('./supplier/supplier.module').then(m => m.SupplierModule) },           
             { path: 'blank-page', loadChildren: () => import('./blank-page/blank-page.module').then(m => m.BlankPageModule) }
         ]
     }

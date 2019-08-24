@@ -1,0 +1,67 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'Supplier'" [icon]="'fa-bar-chart-o'"></app-page-header>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div id="table">
+
+            <mat-toolbar>
+              <mat-toolbar-row>
+                <span>Supplier List</span>
+                <span class="example-spacer"></span>
+                <button mat-icon-button color="primary" aria-label="Add new User">
+                  <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="add()">add_box</mat-icon>
+                </button>
+
+
+              </mat-toolbar-row>
+            </mat-toolbar>
+            <table class="table table-bordered table-responsive-md table-striped text-center con">
+              <thead style="background-color: blueviolet;">
+                <th class="text-center">Person Name</th>
+                <th class="text-center">Age</th>
+                <th class="text-center">Company Name</th>
+                <th class="text-center">Country</th>
+                <th class="text-center">City</th>
+
+                <th class="text-center">Action</th>
+              </thead>
+              <tbody *ngFor="let person of personList; let id = index" style="background-color:rgb(165, 188, 231); height:450px;
+                      overflow:auto;">
+                <td>
+                  <span contenteditable="false">{{person.name}}</span>
+                </td>
+                <td>
+                  <span contenteditable="false">{{person.age}}</span>
+                </td>
+                <td>
+                  <span contenteditable="false">{{person.companyName}}</span>
+                </td>
+                <td>
+                  <span contenteditable="false">{{person.country}}</span>
+                </td>
+                <td>
+                  <span contenteditable="false">{{person.city}}</span>
+                </td>
+
+                <td>
+
+                  <button mat-icon-button aria-label="Remove User">
+                    <mat-icon color="primary" aria-hidden="false" aria-label="edit" (click)="edit(id)">edit</mat-icon>
+                  </button>
+
+                  <button mat-icon-button aria-label="Remove User">
+                    <mat-icon color="warn" aria-hidden="false" aria-label="delete icon" (click)="remove(id)">delete
+                    </mat-icon>
+                  </button>
+
+                </td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
