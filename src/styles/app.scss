@@ -11,3 +11,22 @@
         display: none !important;
     }
 }
+
+mat-dialog-container{
+  border: 10px solid rgb(121, 219, 223);
+  border-radius: 25px;
+}
+
+.mat-toolbar-multiple-rows {
+    min-height: 25px !important;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+    height: 22px !important;
+}
+
+.mat-icon {
+    
+    height: 44px !important;
+    
+}

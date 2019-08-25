@@ -1,40 +1,55 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Comments'" [icon]="'fa-bar-chart-o'"></app-page-header>
-    <!-- <div class="row"> -->
-        <div class="col-md-12">
-            <div class="example-container mat-elevation-z8">
-                    <table mat-table [dataSource]="dataSource" matSort>
-                  
-                      <!-- Position Column -->
-                      <ng-container matColumnDef="name">
-                        <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> NAME </th>
-                        <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.name}} </td>
-                      </ng-container>
-                  
-                      <!-- Name Column -->
-                      <ng-container matColumnDef="email">
-                        <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
-                        <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.email}} </td>
-                      </ng-container>
-                  
-                      <!-- Weight Column -->
-                      <ng-container matColumnDef="ph">
-                        <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
-                        <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.ph}} </td>
-                      </ng-container>
-                  
-                      <!-- Symbol Column -->
-                      <ng-container matColumnDef="comment">
-                        <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> COMMENTS </th>
-                        <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.comment}} </td>
-                      </ng-container>
-                  
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-                  
-                    <mat-paginator [pageSizeOptions]="[7, 10, 15]" showFirstLastButtons ></mat-paginator>
-                  </div>
-                  
-        <!-- </div> -->
+  <app-page-header [heading]="'Comments'" [icon]="'fa-bar-chart-o'"></app-page-header>
+  <!-- <div class="row"> -->
+  <div class="col-md-12">
+    <mat-toolbar>
+      <mat-toolbar-row>
+
+        <span class="example-spacer"></span>
+        <div class="main">
+          <div class="form-group has-search">
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="Search" (keyup)="applyFilter($event.target.value)">
+          </div>
+        </div>
+
+
+
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div class="example-container mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="name">
+          <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> NAME </th>
+          <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="email">
+          <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
+          <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="ph">
+          <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
+          <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.ph}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="comment">
+          <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> COMMENTS </th>
+          <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.comment}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[7, 10, 15]" showFirstLastButtons></mat-paginator>
     </div>
+
+    <!-- </div> -->
+  </div>

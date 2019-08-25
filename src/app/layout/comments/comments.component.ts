@@ -24,6 +24,15 @@ export class CommentsComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+
 }
 export interface PeriodicElement {
   name: string;
