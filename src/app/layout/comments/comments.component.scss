@@ -3,6 +3,7 @@ table {
   }
 
   .example-container {
+    // height: calc( 100vh - 200px );
     height: 450px;
     overflow: auto;
   }
@@ -45,3 +46,11 @@ table {
   pointer-events: none;
   color: #aaa;
 }
+
+// windowheight
+
+// $(window).resize(function() {
+
+//   $(‘#my-div’).css(‘height’, window.innerHeight+’px’);
+  
+//   });

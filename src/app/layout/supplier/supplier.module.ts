@@ -6,14 +6,17 @@ import { SupplierComponent } from './supplier.component';
 import { PageHeaderModule } from './../../shared';
 import {MatIconModule,MatButtonModule,MatToolbarModule,MatDialogModule,
     MatCheckboxModule,MatTableModule,MatPaginatorModule,MatSortModule,
-    MatFormFieldModule,MatInputModule,MatTooltipModule} from '@angular/material';
+    MatFormFieldModule,MatInputModule,MatTooltipModule,MatDatepickerModule,
+    MatNativeDateModule} from '@angular/material';
+    import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {AddUser} from './supplier.component';
 
 
 @NgModule({
     imports: [CommonModule, SupplierRoutingModule, PageHeaderModule,MatIconModule,MatSortModule,
         MatButtonModule,MatToolbarModule,MatDialogModule,MatCheckboxModule,MatTableModule,MatPaginatorModule,
-        MatFormFieldModule,MatInputModule,MatTooltipModule
+        MatFormFieldModule,MatInputModule,MatTooltipModule,MatDatepickerModule,MatNativeDateModule,ReactiveFormsModule,
+        FormsModule
     ],
     declarations: [SupplierComponent,AddUser],
     entryComponents:[AddUser]
