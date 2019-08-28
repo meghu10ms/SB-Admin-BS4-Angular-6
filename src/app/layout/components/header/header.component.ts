@@ -9,7 +9,7 @@ import { Router, NavigationEnd } from '@angular/router';
 export class HeaderComponent implements OnInit {
     public pushRightClass: string;
 
-    constructor( public router: Router) {
+    constructor(public router: Router) {
 
         this.router.events.subscribe(val => {
             if (

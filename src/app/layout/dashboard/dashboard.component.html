@@ -4,7 +4,8 @@
         <div class="col-md-12">
             <ngb-carousel>
                 <ng-template ngbSlide *ngFor="let slider of sliders">
-                    <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide" width="100%">
+                    <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide"
+                        width="100%">
                     <div class="carousel-caption">
                         <h3>{{slider.label}}</h3>
                         <p>{{slider.text}}</p>
@@ -16,20 +17,24 @@
     <hr>
     <div class="row">
         <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'info'" [icon]="'fa-commenting'" [count]="26" [label]="'New Comments!'" (Viewevent)="ViewComment($event)"></app-stat>
+            <app-stat [bgClass]="'info'" [icon]="'fa-commenting'" [count]="26" [label]="'New Comments!'"
+                (Viewevent)="ViewComment($event)"></app-stat>
         </div>
         <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'warning'" [icon]="'fa-user-o'" [count]="12" [label]="'New Supplier!'" (Viewevent)="ViewComment($event)"></app-stat>
+            <app-stat [bgClass]="'warning'" [icon]="'fa-user-o'" [count]="12" [label]="'New Supplier!'"
+                (Viewevent)="ViewComment($event)"></app-stat>
         </div>
         <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'" (Viewevent)="ViewComment($event)"></app-stat>
+            <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'"
+                (Viewevent)="ViewComment($event)"></app-stat>
         </div>
         <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'danger'" [icon]="'fa-user'" [count]="13" [label]="'New Vendors!'" (Viewevent)="ViewComment($event)"></app-stat>
+            <app-stat [bgClass]="'danger'" [icon]="'fa-user'" [count]="13" [label]="'New Vendors!'"
+                (Viewevent)="ViewComment($event)"></app-stat>
         </div>
     </div>
     <!-- <hr /> -->
-    
+
     <!-- <div class="row">
         <div class="col-md-12">
             <div class="card card-default">

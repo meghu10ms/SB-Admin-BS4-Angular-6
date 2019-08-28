@@ -12,7 +12,7 @@ export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
 
-    constructor(private route:Router) {
+    constructor(private route: Router) {
         this.sliders.push(
             {
                 imagePath: 'assets/images/w2.jpg',
@@ -33,21 +33,21 @@ export class DashboardComponent implements OnInit {
             }
         );
 
-        
+
     }
 
-    ngOnInit() {}
+    ngOnInit() { }
 
-    ViewComment(value){
-        if(value == "New Comments!"){
+    ViewComment(value) {
+        if (value == "New Comments!") {
             this.route.navigate(['/comments']);
-        }else if( value == "New Supplier!"){
+        } else if (value == "New Supplier!") {
             this.route.navigate(['/supplier']);
-        }else if(value == "New Orders!"){
-           
-        }else if( value == "New Vendors!" ){
+        } else if (value == "New Orders!") {
+
+        } else if (value == "New Vendors!") {
             this.route.navigate(['/charts']);
         }
     }
-    
+
 }

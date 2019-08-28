@@ -14,7 +14,7 @@ export class SidebarComponent implements OnInit {
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
-    constructor( public router: Router) {
+    constructor(public router: Router) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&

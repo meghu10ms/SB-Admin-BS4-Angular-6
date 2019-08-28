@@ -18,4 +18,4 @@ import { StatModule } from '../../shared';
         DashboardComponent
     ]
 })
-export class DashboardModule {}
+export class DashboardModule { }
