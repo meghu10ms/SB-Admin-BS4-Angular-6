@@ -7,7 +7,7 @@ import { PageHeaderModule } from './../../shared';
 import {MatIconModule,MatButtonModule,MatToolbarModule,MatDialogModule,
     MatCheckboxModule,MatTableModule,MatPaginatorModule,MatSortModule,
     MatFormFieldModule,MatInputModule,MatTooltipModule,MatDatepickerModule,
-    MatNativeDateModule} from '@angular/material';
+    MatNativeDateModule,MatSnackBarModule} from '@angular/material';
     import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {AddUser} from './supplier.component';
 
@@ -16,7 +16,7 @@ import {AddUser} from './supplier.component';
     imports: [CommonModule, SupplierRoutingModule, PageHeaderModule,MatIconModule,MatSortModule,
         MatButtonModule,MatToolbarModule,MatDialogModule,MatCheckboxModule,MatTableModule,MatPaginatorModule,
         MatFormFieldModule,MatInputModule,MatTooltipModule,MatDatepickerModule,MatNativeDateModule,ReactiveFormsModule,
-        FormsModule
+        FormsModule,MatSnackBarModule
     ],
     declarations: [SupplierComponent,AddUser],
     entryComponents:[AddUser]
