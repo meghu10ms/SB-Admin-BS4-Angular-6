@@ -38,6 +38,11 @@ export class HeaderComponent implements OnInit {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+        //this.router.navigate(['']);
+    }
+
+    onProfile() {
+        debugger;
     }
 
 }

@@ -1,9 +1,10 @@
 <nav class="navbar navbar-expand-lg fixed-top">
     <a class="navbar-brand" href="javascript:void(0)">Healthy Water </a>
     <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
-        <!-- <span class="navbar-toggler-icon"></span> -->
-        <i class="fa fa-bars text-muted" aria-hidden="true"></i>
+        <span class="navbar-toggler-icon"></span>
+        <i class="fa fa-bars text-muted" aria-hidden="false"></i>
     </button>
+    
     <div class="collapse navbar-collapse">
 
         <ul class="navbar-nav ml-auto">
@@ -12,7 +13,7 @@
                     <i class="fa fa-user"></i> Pavan Kumar M G <b class="caret"></b>
                 </a>
                 <div class="dropdown-menu-right" ngbDropdownMenu>
-                    <a class="dropdown-item" href="javascript:void(0)">
+                    <a class="dropdown-item" href="javascript:void(0)" (click)="onProfile()">
                         <i class="fa fa-fw fa-user"></i> Profile
                     </a>
 

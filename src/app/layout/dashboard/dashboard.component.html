@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <!-- <h2 class="text-muted">Application <small>Statistics Overview</small></h2> -->
     <div class="row">
-        <div class="col-md-12">
+        <!-- <div class="col-md-12">
             <ngb-carousel>
                 <ng-template ngbSlide *ngFor="let slider of sliders">
                     <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide"
@@ -12,7 +12,26 @@
                     </div>
                 </ng-template>
             </ngb-carousel>
+        </div> -->
+        <!-- <div id="chartdiv" [style.width.%]="100" [style.height.px]="400"></div> -->
+        <div class="col-md-6">
+                <div id="chartdiv" [style.width.%]="100" [style.height.px]="380"></div>
         </div>
+        <div class="col-md-6">
+                <div id="chartdiv1" [style.width.%]="100" [style.height.px]="380"></div>
+        </div>
+       <!--  <div class="col-xl-3 col-lg-6">
+                <div id="chartdiv" [style.width.%]="100" [style.height.px]="500"></div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                
+            </div> -->
     </div>
     <hr>
     <div class="row">
@@ -33,16 +52,3 @@
                 (Viewevent)="ViewComment($event)"></app-stat>
         </div>
     </div>
-    <!-- <hr /> -->
-
-    <!-- <div class="row">
-        <div class="col-md-12">
-            <div class="card card-default">
-                <div class="card-header">
-                    <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
-                </div>
-                <app-timeline></app-timeline>
-            </div>
-        </div>
-    </div>
-</div> -->

@@ -60,4 +60,14 @@ export class SidebarComponent implements OnInit {
         const dom: any = document.querySelector('body');
         dom.classList.toggle(this.pushRightClass);
     }
+
+    onLoggedout() {
+        localStorage.removeItem('isLoggedin');
+        //this.router.navigate(['']);
+    }
+
+    onProfile() {
+        debugger;
+    }
+
 }

@@ -6,13 +6,15 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
 import { StatModule } from '../../shared';
+import { AmChartsModule } from "@amcharts/amcharts3-angular";
 
 @NgModule({
     imports: [
         CommonModule,
         NgbCarouselModule,
         DashboardRoutingModule,
-        StatModule
+        StatModule,
+        AmChartsModule
     ],
     declarations: [
         DashboardComponent
