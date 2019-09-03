@@ -20,7 +20,36 @@
             <i class="fa fa-fw fa-user-o"></i>&nbsp;
             <span>Orders</span>
         </a>
-
+        <div class="nested-menu">
+            <a class="list-group-item" (click)="addExpandClass('pages')">
+                <i class="fa fa-plus"></i>&nbsp;
+                <span>Admin Controls</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'pages'">
+                <ul class="submenu">
+                    <li>
+                        <a [routerLink]="['/admin']" [routerLinkActive]="['router-link-active']">
+                            <i class="fa fa-monument"></i>&nbsp;
+                            <span>Admin</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/area']" [routerLinkActive]="['router-link-active']">
+                            <i class="fa fa-monument"></i>&nbsp;
+                            <span>Region Details</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/ads']" [routerLinkActive]="['router-link-active']">
+                            <i class="fa fa-monument"></i>&nbsp;
+                            <span>Ads</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </li>
+        </div>
+       
         <div class="header-fields">
                
                 

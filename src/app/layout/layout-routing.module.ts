@@ -14,6 +14,9 @@ const routes: Routes = [
             { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },
             { path: 'comments', loadChildren: () => import('./comments/comments.module').then(m => m.CommentsModule) },
             { path: 'supplier', loadChildren: () => import('./supplier/supplier.module').then(m => m.SupplierModule) },           
+            { path: 'area', loadChildren: () => import('./area/area.module').then(m => m.AreaModule) },           
+            { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },           
+            { path: 'ads', loadChildren: () => import('./ads/ads.module').then(m => m.AdsModule) },           
             { path: 'blank-page', loadChildren: () => import('./blank-page/blank-page.module').then(m => m.BlankPageModule) }
         ]
     }

@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+export interface DialogData {
+    data1: any;
+}
 
 @Component({
     selector: 'app-header',
@@ -9,7 +13,7 @@ import { Router, NavigationEnd } from '@angular/router';
 export class HeaderComponent implements OnInit {
     public pushRightClass: string;
 
-    constructor(public router: Router) {
+    constructor(public router: Router,public dialog: MatDialog) {
 
         this.router.events.subscribe(val => {
             if (
@@ -43,6 +47,34 @@ export class HeaderComponent implements OnInit {
 
     onProfile() {
         debugger;
+         const dialogRef = this.dialog.open(ViewProfile, {
+            width: '60%',
+            height: '60%',
+            position:{right:"0px",top:"70px"},
+            data: {data1: "value" }
+          })
+          dialogRef.afterClosed().subscribe(result => {
+          }); 
     }
 
 }
+
+
+@Component({
+    templateUrl: 'view-profile.html',
+})
+export class ViewProfile implements OnInit {
+    val: any;
+    constructor(
+        public dialogRef: MatDialogRef<ViewProfile>,
+        @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+
+    ngOnInit() {
+       
+    }
+    onOkClick(): void {
+        this.dialogRef.close();
+      }
+    
+}
+

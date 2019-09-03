@@ -7,14 +7,21 @@ import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
+import {MatDialogModule,MatMenuModule,MatCardModule} from '@angular/material';
+import { ViewProfile } from './components/header/header.component';
+
 
 @NgModule({
     imports: [
         CommonModule,
         LayoutRoutingModule,
         TranslateModule,
-        NgbDropdownModule
+        NgbDropdownModule,
+        MatDialogModule,
+        MatMenuModule,
+        MatCardModule
     ],
-    declarations: [LayoutComponent, SidebarComponent, HeaderComponent]
+    declarations: [LayoutComponent, SidebarComponent, HeaderComponent,ViewProfile],
+    entryComponents: [ViewProfile]
 })
 export class LayoutModule {}
