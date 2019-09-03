@@ -1,9 +1,88 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Admin/Admin'" [icon]="'fa-bar-chart-o'"></app-page-header>
-    <div class="row">
-  
-  
-  
-      
+  <app-page-header [heading]="'Admin/Admin'" [icon]="'fa-bar-chart-o'"></app-page-header>
+  <div class="row">
+    <div class="col-md-12">
+      <mat-toolbar>
+        <mat-toolbar-row>
+
+          <span class="example-spacer"></span>
+          <div class="main">
+            <div class="form-group has-search">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control" placeholder="Search" (keyup)="applyFilter($event.target.value)"
+                matTooltip="Search">
+            </div>
+          </div>
+          <button mat-icon-button color="primary" aria-label="Add new User" matTooltip="Add new User">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="add()">add_box</mat-icon>
+          </button>
+
+
+        </mat-toolbar-row>
+      </mat-toolbar>
+
+      <div class="example-container mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="firstname">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.firstname}} </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="lastname">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> LAST NAME </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.lastname}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="email">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.email}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="ph">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.ph}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="region">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.region}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="actions">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef> ACTION </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element">
+              <div class="row">
+                <button mat-icon-button aria-label="Edit User" matTooltip="Edit" style="width: 30px">
+                  <mat-icon color="primary" aria-hidden="false" aria-label="edit" (click)="edit(element)">edit
+                  </mat-icon>
+                </button>
+
+                <button mat-icon-button aria-label="Remove User" matTooltip="Remove" style="width: 30px">
+                  <mat-icon color="warn" aria-hidden="false" aria-label="delete icon" (click)="remove(element)">delete
+                  </mat-icon>
+                </button>
+
+                <button mat-icon-button aria-label="Display User" matTooltip="Display" style="width: 30px">
+                  <mat-icon color="primary" aria-hidden="false" aria-label="display" (click)="display(element)">
+                    keyboard_arrow_right</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[7, 10, 15]" showFirstLastButtons></mat-paginator>
       </div>
     </div>
+  </div>
+</div>

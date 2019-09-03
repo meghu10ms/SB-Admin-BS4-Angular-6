@@ -1,0 +1,53 @@
+
+table {
+    width: 100%;
+  }
+  
+  .example-container {
+    height: 450px;
+    overflow: auto;
+  }
+  
+  th {
+    background-color: rgb(105, 191, 231);
+    font-size: 2.5vh;
+  }
+  
+  td {
+    background-color: rgb(210, 229, 238);
+    
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+  
+    mat-dialog-container{
+    background: yellow !important;
+      }
+  
+      /* Styles for wrapping the search box */
+  
+  .main {
+    width: 30%;
+    margin: 50px auto;
+  }
+  
+  /* Bootstrap 4 text input with search icon */
+  
+  .has-search .form-control {
+    padding-left: 2.375rem;
+  }
+  
+  .has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 1.50rem;
+    line-height: 2rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+  }
+  
