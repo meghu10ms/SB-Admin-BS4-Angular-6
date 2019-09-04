@@ -13,7 +13,7 @@
                 matTooltip="Search">
             </div>
           </div>
-          <button mat-icon-button color="primary" aria-label="Add new User" matTooltip="Add new User">
+          <button mat-icon-button color="primary" aria-label="Add new Area" matTooltip="Add new Area">
             <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="add()">add_box</mat-icon>
           </button>
 
@@ -25,51 +25,46 @@
         <table mat-table [dataSource]="dataSource" matSort>
 
           <!-- Position Column -->
-          <ng-container matColumnDef="firstname">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.firstname}} </td>
+          <ng-container matColumnDef="code">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> AREA CODE </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.code}} </td>
           </ng-container>
 
           <!-- Position Column -->
-          <ng-container matColumnDef="lastname">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> LAST NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.lastname}} </td>
+          <ng-container matColumnDef="area">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> AREA NAME </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.area}} </td>
           </ng-container>
 
           <!-- Name Column -->
-          <ng-container matColumnDef="email">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.email}} </td>
+          <ng-container matColumnDef="lt">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> LATITUDE </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.lt}} </td>
           </ng-container>
 
           <!-- Weight Column -->
-          <ng-container matColumnDef="ph">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.ph}} </td>
+          <ng-container matColumnDef="lg">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> LONGITUDE </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.lg}} </td>
           </ng-container>
 
-          <!-- Weight Column -->
-          <ng-container matColumnDef="region">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.region}} </td>
-          </ng-container>
-
+          
           <!-- Symbol Column -->
           <ng-container matColumnDef="actions">
             <th style="width: 20%" mat-header-cell *matHeaderCellDef> ACTION </th>
             <td style="width: 20%" mat-cell *matCellDef="let element">
               <div class="row">
-                <button mat-icon-button aria-label="Edit User" matTooltip="Edit" style="width: 30px">
+                <button mat-icon-button aria-label="Edit Area" matTooltip="Edit" style="width: 30px">
                   <mat-icon color="primary" aria-hidden="false" aria-label="edit" (click)="edit(element)">edit
                   </mat-icon>
                 </button>
 
-                <button mat-icon-button aria-label="Remove User" matTooltip="Remove" style="width: 30px">
+                <button mat-icon-button aria-label="Remove Area" matTooltip="Remove" style="width: 30px">
                   <mat-icon color="warn" aria-hidden="false" aria-label="delete icon" (click)="remove(element)">delete
                   </mat-icon>
                 </button>
 
-                <button mat-icon-button aria-label="Display User" matTooltip="Display" style="width: 30px">
+                <button mat-icon-button aria-label="Display Area" matTooltip="Display" style="width: 30px">
                   <mat-icon color="primary" aria-hidden="false" aria-label="display" (click)="display(element)">
                     keyboard_arrow_right</mat-icon>
                 </button>

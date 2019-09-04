@@ -1,0 +1,48 @@
+<div mat-dialog-content>
+
+    <div class="row">
+  
+      <form class="form-inline" [formGroup]="newUserForm">
+        <div class="col-sm-6">
+  
+          <mat-form-field appearance="outline">
+            <mat-label style="font-weight: bold">Area Code</mat-label>
+            <input matInput placeholder=" Enter Area Code" formControlName="code" maxlength="20"
+              style="font-weight: bold">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label style="font-weight: bold">Area Name</mat-label>
+            <input matInput placeholder="Enter Area Name" formControlName="area" maxlength="20" style="font-weight: bold">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label style="font-weight: bold">Langitude</mat-label>
+            <input matInput placeholder="Enter Langitude" formControlName="lt" maxlength="10" style="font-weight: bold">
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label style="font-weight: bold">Latitude</mat-label>
+            <input matInput placeholder="Enter Latitude" formControlName="lg" maxlength="20" style="font-weight: bold">
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+  
+        </div>
+      </form>
+    </div>
+  </div>
+  <mat-dialog-actions>
+  
+    <div class="navbar-nav ml-auto">
+      <span>
+        <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createNewUser($event)"
+          *ngIf="displayInd">
+          Save</button> &nbsp; &nbsp;
+        <button class="btn" type="reset" matTooltip="Reset" (click)="clearScreen($event)" *ngIf="displayInd">
+          Reset</button>
+      </span>
+    </div>
+  </mat-dialog-actions>

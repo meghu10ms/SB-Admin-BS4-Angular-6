@@ -11,7 +11,7 @@ import {
     MatNativeDateModule, MatSnackBarModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-//import { AddUser } from './area.component';
+import { ViewAd } from './ads.component';
 
 
 @NgModule({
@@ -20,7 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
         FormsModule, MatSnackBarModule
     ],
-    declarations: [AdsComponent],
-    entryComponents: []
+    declarations: [AdsComponent,ViewAd],
+    entryComponents: [ViewAd]
 })
 export class AdsModule { }
