@@ -1,5 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { CommonServiceService } from '../../../common-service.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-sidebar',
@@ -11,10 +13,11 @@ export class SidebarComponent implements OnInit {
     collapsed: boolean;
     showMenu: string;
     pushRightClass: string;
+    isAdmin: boolean;
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
-    constructor(public router: Router) {
+    constructor(public router: Router, private cds: CommonServiceService, private snackBar: MatSnackBar) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -27,10 +30,31 @@ export class SidebarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.isActive = false;
-        this.collapsed = false;
-        this.showMenu = '';
-        this.pushRightClass = 'push-right';
+        if (this.cds.tokenLogin === undefined) {
+            localStorage.removeItem('isLoggedin');
+            this.router.navigate(['/login']);
+        } else {
+            this.isActive = false;
+            this.collapsed = false;
+            this.showMenu = '';
+
+            var selectedAdmin = this.cds.currentAdminDetail;
+            this.isAdmin = selectedAdmin.isSuperAdmin;
+            //this.isAdmin = this.cds.currentAdminDetail.isSuperAdmin;
+            // this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
+            //     var val = JSON.stringify(response);
+            //     this.cds.currentAdminDetail = JSON.parse(val);
+            //     var selectedAdmin = this.cds.currentAdminDetail;
+            //     this.isAdmin = selectedAdmin.isSuperAdmin;
+            //     this.pushRightClass = 'push-right';
+            // }, error => {
+            //     this.snackBar.open(error.error.message, "", {
+            //         duration: 2000,
+            //     });
+            // })
+            this.pushRightClass = 'push-right';
+        }
+
     }
 
 

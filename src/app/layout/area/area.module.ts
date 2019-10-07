@@ -8,7 +8,7 @@ import {
     MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
-    MatNativeDateModule, MatSnackBarModule
+    MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddArea } from './area.component';
@@ -18,7 +18,7 @@ import { AddArea } from './area.component';
     imports: [CommonModule, AreaRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
-        FormsModule, MatSnackBarModule
+        FormsModule, MatSnackBarModule,MatProgressSpinnerModule
     ],
     declarations: [AreaComponent,AddArea],
     entryComponents: [AddArea]

@@ -1,3 +1,9 @@
+<div class="overlay1" *ngIf="visible">
+  <span class="spinner">
+    <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+  </span>
+</div>
+
 <div [@routerTransition]>
   <app-page-header [heading]="'Admin/Area'" [icon]="'fa-bar-chart-o'"></app-page-header>
   <div class="row">

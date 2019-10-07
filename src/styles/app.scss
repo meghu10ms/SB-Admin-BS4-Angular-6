@@ -15,6 +15,7 @@
 mat-dialog-container{
   border: 10px solid rgb(121, 219, 223);
   border-radius: 25px;
+  overflow: hidden !important;
 }
 
 .mat-toolbar-multiple-rows {
@@ -30,3 +31,31 @@ mat-dialog-container{
     height: 44px !important;
     
 }
+
+.overlay1 {
+    position: fixed;
+    width: 3000px;
+    height: 100%;
+    background: burlywood;
+    opacity: .5;
+    z-index: 100;
+    margin-left: -750px;
+    }
+
+    .spinner{
+    width: 100px;
+       height: 100px;
+       position: absolute;
+       top:0;
+       bottom: 0;
+       left: 0;
+       right: 0;
+       margin: auto;
+       z-index: 90;
+      opacity: 10;
+       
+      }
+      
+      .mat-progress-spinner circle, .mat-spinner circle {
+       stroke: #69bcec;
+       }

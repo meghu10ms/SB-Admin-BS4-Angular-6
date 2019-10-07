@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonServiceService } from '../common-service.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-layout',
@@ -9,10 +12,14 @@ export class LayoutComponent implements OnInit {
 
     collapedSideBar: boolean;
 
-    constructor() {}
+    constructor(private cds: CommonServiceService,
+        private snackBar: MatSnackBar,
+        public router: Router) { }
 
-    ngOnInit() {}
-
+    ngOnInit() {
+        
+    }
+  
     receiveCollapsed($event) {
         this.collapedSideBar = $event;
     }

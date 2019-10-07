@@ -7,8 +7,13 @@ import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
-import {MatDialogModule,MatMenuModule,MatCardModule} from '@angular/material';
+import {MatDialogModule,
+    MatMenuModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,MatFormFieldModule, MatInputModule,MatSnackBarModule} from '@angular/material';
 import { ViewProfile } from './components/header/header.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -19,7 +24,11 @@ import { ViewProfile } from './components/header/header.component';
         NgbDropdownModule,
         MatDialogModule,
         MatMenuModule,
-        MatCardModule
+        ReactiveFormsModule,
+        FormsModule,
+        MatCardModule,
+        MatIconModule,
+        MatButtonModule,MatFormFieldModule, MatInputModule,MatSnackBarModule
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent,ViewProfile],
     entryComponents: [ViewProfile]

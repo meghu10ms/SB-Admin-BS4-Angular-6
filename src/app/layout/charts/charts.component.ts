@@ -132,7 +132,6 @@ export class AddUser implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder, private _snackBar: MatSnackBar) { }
 
     ngOnInit() {
-        debugger;
         this.displayInd = true;
         this.createForm();
         this.fileForm();
@@ -204,7 +203,6 @@ export class AddUser implements OnInit {
         }
     }
     numberOnly(event): boolean {
-        debugger;
         const charCode = (event.which) ? event.which : event.keyCode;
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
             return false;
@@ -213,7 +211,6 @@ export class AddUser implements OnInit {
     }
 
     preview(files) {
-        debugger;
         if (files.length === 0)
             return;
 
@@ -231,7 +228,6 @@ export class AddUser implements OnInit {
         }
     }
     bindDisplayValues(val) {
-        debugger;
         this.newUserForm.patchValue({
             firstname: val.firstname,
             lastname: val.lastname,
