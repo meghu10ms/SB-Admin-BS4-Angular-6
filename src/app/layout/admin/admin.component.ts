@@ -41,6 +41,16 @@ export class AdminComponent implements OnInit {
       this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
+
+        this.cds.areaData = this.getAreaData(response["areas"]);
+
+      }, error => {
+        this.visible = false;
+        this.snackBar.open(error.error.message, "", {
+          duration: 2000,
+        });
+      })
     }, error => {
       this.visible = false;
       this.snackBar.open(error.error.message, "", {
@@ -54,22 +64,41 @@ export class AdminComponent implements OnInit {
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
       formatJson = {
+        "title":val[i].name.title,
         "firstname": val[i].name.firstName,
         "lastname": val[i].name.lastName,
         "email": val[i].email,
         "ph": val[i].phoneNumber,
         "region": val[i].areaId.areaCode,
         "city": val[i].areaId.formattedAddress,
+        "areaId":val[i].areaId._id,
 
-        "accountNumber":val[i].bankDetails.accountNumber,
-        "accountType":val[i].bankDetails.accountType,
-        "bankName":val[i].bankDetails.bankName,
-        "branchName":val[i].bankDetails.branchName,
-        "holderName":val[i].bankDetails.holderName,
-        "ifscCode":val[i].bankDetails.ifscCode,
-        "taxNumber":val[i].bankDetails.taxNumber,
+        "accountNumber": val[i].bankDetails.accountNumber,
+        "accountType": val[i].bankDetails.accountType,
+        "bankName": val[i].bankDetails.bankName,
+        "branchName": val[i].bankDetails.branchName,
+        "holderName": val[i].bankDetails.holderName,
+        "ifscCode": val[i].bankDetails.ifscCode,
+        "taxNumber": val[i].bankDetails.taxNumber,
 
         "media": val[i].medias
+      }
+      finalData.push(formatJson);
+      formatJson = {};
+    }
+    return finalData;
+  }
+  getAreaData(val) {
+    var formatJson = {};
+    var finalData = [];
+    for (let i = 0; i < val.length; i++) {
+      formatJson = {
+        "code": val[i].areaCode,
+        "area": val[i].formattedAddress,
+        "lt": val[i].latitude,
+        "lg": val[i].longitude,
+        "id": val[i]._id
+
       }
       finalData.push(formatJson);
       formatJson = {};
@@ -166,12 +195,13 @@ export class AddUser implements OnInit {
   filevalid: any;
   filevalid1: any;
   displayInd: any;
-  //
+  
   public imagePath;
   imgURL: any;
   imgURL1: any;
   public message: string;
-  //
+  region: any[];
+  titleCollection:any[];
 
   constructor(
     public dialogRef: MatDialogRef<AddUser>,
@@ -181,8 +211,10 @@ export class AddUser implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
+    this.region = this.cds2.areaData;
     var data = this.dialogRef.componentInstance.data.data1;
     debugger;
+    this.titleCollection = [{"title":"Mr."},{"title":"Mrs."},{"title":"Miss."}];
     this.nextProcess();
 
     this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
@@ -221,9 +253,10 @@ export class AddUser implements OnInit {
 
   createForm() {
     this.newUserForm = this.fb.group({
+      title: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(this.pftelpat)]],
+      phone: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
       city: ['', Validators.required],
       region: ['', Validators.required],
@@ -234,7 +267,8 @@ export class AddUser implements OnInit {
       branchName: ['', Validators.required],
       holderName: ['', Validators.required],
       ifscCode: ['', Validators.required],
-      taxNumber: ['', Validators.required]
+      taxNumber: ['', Validators.required],
+      areaId:['']
 
     })
   }
@@ -253,8 +287,26 @@ export class AddUser implements OnInit {
   }
   createNewUser(oEvent) {
     debugger;
-    if (this.newUserForm.valid && this.fileFor.valid) {
+    if (this.newUserForm.valid ) {
       debugger;
+      var filledData = this.newUserForm.value;
+      var createData = {
+        "name":{"title":filledData.title,
+                "firstName":filledData.firstname,
+                "lastName":filledData.lastname},
+        "phoneNumber":filledData.phone,
+        "email":filledData.email,
+        "password":filledData.email,
+        "areaId":filledData.areaId,
+        "medias":[],
+        "bankDeatils":{"accountNumber":filledData.accountNumber,
+                        "accountType":filledData.accountType,
+                        "holderName":filledData.holderName,
+                        "ifscCode":filledData.ifscCode,
+                        "bankName":filledData.bankName,
+                        "branchName":filledData.branchName,
+                        "taxNumber":filledData.taxNumber}
+      };
     } else {
       for (let name in this.newUserForm.controls) {
         if (this.newUserForm.controls[name].value == '' || this.newUserForm.controls[name].value == null) {
@@ -281,9 +333,11 @@ export class AddUser implements OnInit {
   numberOnly(event): boolean {
     debugger;
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    if(charCode == 43)
+    return true;
+    else if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
-    }
+    }else
     return true;
   }
 
@@ -304,23 +358,29 @@ export class AddUser implements OnInit {
     reader.onload = (_event) => {
       this.imgURL = reader.result;
     }
+    var postData = {
+      "file":this.imgURL,
+      "name":files[0].name.split(".")[0],
+      "type":mimeType
+    }
   }
   bindDisplayValues(val) {
-    debugger;
     this.newUserForm.patchValue({
+      title: val.title,
       firstname: val.firstname,
       lastname: val.lastname,
       email: val.email,
       phone: val.ph,
       city: val.city,
       region: val.region,
-      accountNumber:val.accountNumber,
-      accountType:val.accountType,
-      bankName:val.bankName,
-      branchName:val.branchName,
-      holderName:val.holderName,
-      ifscCode:val.ifscCode,
-      taxNumber:val.taxNumber
+      areaId:val.areaId,
+      accountNumber: val.accountNumber,
+      accountType: val.accountType,
+      bankName: val.bankName,
+      branchName: val.branchName,
+      holderName: val.holderName,
+      ifscCode: val.ifscCode,
+      taxNumber: val.taxNumber
     })
   }
 }

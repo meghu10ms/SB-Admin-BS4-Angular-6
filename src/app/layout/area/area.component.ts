@@ -37,10 +37,9 @@ export class AreaComponent implements OnInit {
     this.visible = true;
     this.getDeatails();
   }
-  getDeatails(){
+  getDeatails() {
     this.visible = true;
     this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
-      debugger;
       this.visible = false;
       var data = this.getTableData(response["areas"]);
       const ELEMENT_DATA = data;
@@ -99,6 +98,7 @@ export class AreaComponent implements OnInit {
       data: { ind: "edit", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {
+      this.getDeatails();
     });
   }
   display(val) {
@@ -111,9 +111,19 @@ export class AreaComponent implements OnInit {
     });
   }
   remove(val) {
-    this.snackBar.open("Not Yet Implemented", "", {
-      duration: 2000,
-    });
+    debugger;
+    this.cds.deleteAreaDetails(val.id, this.cds.tokenLogin).subscribe(response => {
+      this.snackBar.open(response["message"], "", {
+        duration: 2000,
+      });
+      this.getDeatails();
+    }, error => {
+
+      this.snackBar.open(error.error.message, "", {
+        duration: 2000,
+      });
+    })
+
   }
 
 
@@ -160,7 +170,6 @@ export class AddArea implements OnInit {
     private cds1: CommonServiceService) { }
 
   ngOnInit() {
-    debugger;
     this.displayInd = true;
     this.createForm();
 
@@ -181,7 +190,8 @@ export class AddArea implements OnInit {
       code: ['', Validators.required],
       area: ['', Validators.required],
       lt: ['', Validators.required],
-      lg: ['', Validators.required]
+      lg: ['', Validators.required],
+      id: ['']
     })
   }
 
@@ -191,28 +201,47 @@ export class AddArea implements OnInit {
     // this.filevalid1 = false;
   }
   createNewUser(oEvent) {
-    debugger;
     if (this.newUserForm.valid) {
-      debugger;
       var selectedValue = this.newUserForm.value;
       var bodyData = {
         "areaCode": selectedValue.code,
         "formattedAddress": selectedValue.area,
         "latitude": selectedValue.lt,
-        "longitude": selectedValue.lg,
+        "longitude": selectedValue.lg
       }
-      this.cds1.postAreaDetails(bodyData).subscribe(response => {
-        debugger;
-        this._snackBar.open(response["message"], "", {
-          duration: 2000,
-        });
-        this.dialogRef.close();
-      }, error => {
 
-        this._snackBar.open(error.error.message, "", {
-          duration: 2000,
-        });
-      })
+      if (this.dialogRef.componentInstance.data.ind == 'create') {
+        this.cds1.postAreaDetails(bodyData).subscribe(response => {
+          this._snackBar.open(response["message"], "", {
+            duration: 2000,
+          });
+          this.dialogRef.close();
+        }, error => {
+
+          this._snackBar.open(error.error.message, "", {
+            duration: 2000,
+          });
+        })
+      } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
+        // var bodyData1 = {
+
+        //   "formattedAddress": selectedValue.area,
+        //   "latitude": selectedValue.lt,
+        //   "longitude": selectedValue.lg
+        // }
+        this.cds1.updateAreaDetails(this.newUserForm.value.id, bodyData, this.cds1.tokenLogin).subscribe(response => {
+          this._snackBar.open(response["message"], "", {
+            duration: 2000,
+          });
+          this.dialogRef.close();
+        }, error => {
+
+          this._snackBar.open(error.error.message, "", {
+            duration: 2000,
+          });
+        })
+      }
+
 
     } else {
       for (let name in this.newUserForm.controls) {
@@ -223,8 +252,7 @@ export class AddArea implements OnInit {
           });
         }
         else
-          debugger;
-        this.newUserForm.controls[name].setErrors(null);
+          this.newUserForm.controls[name].setErrors(null);
       }
     }
   }
@@ -236,7 +264,7 @@ export class AddArea implements OnInit {
       area: val.area,
       lt: val.lt,
       lg: val.lg,
-
+      id: val.id
     })
   }
 }

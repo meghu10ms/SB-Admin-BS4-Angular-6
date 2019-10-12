@@ -10,10 +10,36 @@ export class CommonServiceService implements OnInit {
   constructor(private http: HttpClient) { }
   tokenLogin: any;
   currentAdminDetail: any;
+  areaData: any;
   url = "http://localhost:3000/";
 
   ngOnInit() { }
 
+  /*######################################### EDIA DETAILS STARTS ##################################### */
+  //post media files
+  postMedia(body) {
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //     'Authorization': "Bearer" + " " + token
+    //   })
+    // };
+    return this.http.get(this.url + "media/",body);
+  }
+
+  //get media location
+  getMedia(token, mediaId) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+    return this.http.get(this.url + "media/" + mediaId, httpOptions);
+  }
+
+  /*######################################### MEDIA DETAILS ENDS ##################################### */
+  /*######################################### ADMIN DETAILS STARTS ##################################### */
   //Login details
   getLogin(data) {
     return this.http.post(this.url + "admin/login/", data);
@@ -41,17 +67,8 @@ export class CommonServiceService implements OnInit {
     return this.http.get(this.url + "admin", httpOptions);
   }
 
-  //get media location
-  getMedia(token,mediaId) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
-    return this.http.get(this.url + "media/"+mediaId, httpOptions);
-  }
-
+  /*######################################### ADMIN DETAILS ENDS ##################################### */
+  /*######################################### AREA DETAILS STARTS ##################################### */
   //get area detail
   getAllAraeDetails(token) {
     const httpOptions = {
@@ -65,14 +82,32 @@ export class CommonServiceService implements OnInit {
 
   //get area detail
   postAreaDetails(body) {
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'Authorization': "Bearer" + " " + token
-    //   })
-    // };
     return this.http.post(this.url + "area/", body);
   }
+
+  //delete area details
+  deleteAreaDetails(areaCode, token) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+    return this.http.delete(this.url + "area/" + areaCode);
+  }
+
+  //update area detail
+  updateAreaDetails(areaCode, body, token) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+    return this.http.patch(this.url + "area/" + areaCode, body);
+  }
+
+  /*######################################### AREA DETAILS ENDS ##################################### */
 
 }
 
