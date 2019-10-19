@@ -2,13 +2,13 @@
 
   <div class="row">
     <div class="col-sm-3">
-      <form [formGroup]="fileFor">
+      <form>
         <div class="text-left">
           <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL">
           <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL">
           <h6 *ngIf="!imgURL">Upload photo...</h6>
-          <input *ngIf="!imgURL" type="file" #file class="text-left left-block file-upload" formControlName="profile"
-            accept='image/*' (change)="preview(file.files)">
+          <input *ngIf="this.displayInd" type="file" #file class="text-left left-block file-upload" accept='image/*'
+            (change)="preview(file.files)" style="width:95%">
           <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
         </div>
 
@@ -18,7 +18,8 @@
           <img [src]="imgURL1" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL1">
 
           <h6 *ngIf="!imgURL1">Upload Documents</h6>
-          <input *ngIf="!imgURL1" type="file" class="text-left left-block file-upload" formControlName="document">
+          <input *ngIf="this.displayInd" type="file" #file1 class="text-left left-block file-upload" accept='image/*'
+            (change)="previewDocument(file1.files)">
           <span style="color:red" *ngIf="filevalid1"> Please Choose File</span>
         </div>
       </form>
@@ -28,15 +29,15 @@
       <form class="form-inline" [formGroup]="newUserForm">
         <div class="col-sm-6">
 
-            <mat-form-field appearance="outline">
-                <mat-label style="font-weight: bold">Title</mat-label>
-                <mat-select formControlName="title" placeholder="Choose Title" style="font-weight: bold">
-                  <mat-option *ngFor="let val of titleCollection" [value]="val.title">
-                    {{val.title}} 
-                  </mat-option>
-                </mat-select>
-                <mat-icon matSuffix>location_city</mat-icon>
-              </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label style="font-weight: bold">Title</mat-label>
+            <mat-select formControlName="title" placeholder="Choose Title" style="font-weight: bold">
+              <mat-option *ngFor="let val of titleCollection" [value]="val.title">
+                {{val.title}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>location_city</mat-icon>
+          </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">First Name</mat-label>
@@ -61,7 +62,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">Email</mat-label>
-            <input matInput placeholder="Enter Email" formControlName="email" maxlength="20" style="font-weight: bold">
+            <input matInput placeholder="Enter Email" formControlName="email" maxlength="25" style="font-weight: bold">
             <mat-icon matSuffix>email</mat-icon>
           </mat-form-field>
 

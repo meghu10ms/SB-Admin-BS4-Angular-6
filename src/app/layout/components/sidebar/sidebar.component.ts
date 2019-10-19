@@ -14,6 +14,7 @@ export class SidebarComponent implements OnInit {
     showMenu: string;
     pushRightClass: string;
     isAdmin: boolean;
+    profileName:any;
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
@@ -35,23 +36,15 @@ export class SidebarComponent implements OnInit {
             this.router.navigate(['/login']);
         } else {
             this.isActive = false;
-            this.collapsed = false;
+            this.collapsed = true;
+            this.collapsedEvent.emit(this.collapsed);
             this.showMenu = '';
 
             var selectedAdmin = this.cds.currentAdminDetail;
             this.isAdmin = selectedAdmin.isSuperAdmin;
-            //this.isAdmin = this.cds.currentAdminDetail.isSuperAdmin;
-            // this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
-            //     var val = JSON.stringify(response);
-            //     this.cds.currentAdminDetail = JSON.parse(val);
-            //     var selectedAdmin = this.cds.currentAdminDetail;
-            //     this.isAdmin = selectedAdmin.isSuperAdmin;
-            //     this.pushRightClass = 'push-right';
-            // }, error => {
-            //     this.snackBar.open(error.error.message, "", {
-            //         duration: 2000,
-            //     });
-            // })
+
+            var selectedAd = this.cds.currentAdminDetail.name;
+            this.profileName = selectedAd.title + " " + selectedAd.firstName + " " + selectedAd.lastName;
             this.pushRightClass = 'push-right';
         }
 
@@ -71,6 +64,7 @@ export class SidebarComponent implements OnInit {
     }
 
     toggleCollapsed() {
+        debugger;
         this.collapsed = !this.collapsed;
         this.collapsedEvent.emit(this.collapsed);
     }
@@ -87,7 +81,9 @@ export class SidebarComponent implements OnInit {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
-        //this.router.navigate(['']);
+        this.cds.currentAdminDetail = undefined;
+        this.cds.tokenLogin = undefined;
+        this.router.navigate(['/login']);
     }
 
     onProfile() {

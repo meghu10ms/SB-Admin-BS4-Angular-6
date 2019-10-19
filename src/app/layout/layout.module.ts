@@ -11,8 +11,10 @@ import {MatDialogModule,
     MatMenuModule,
     MatCardModule,
     MatIconModule,
-    MatButtonModule,MatFormFieldModule, MatInputModule,MatSnackBarModule} from '@angular/material';
+    MatButtonModule,MatFormFieldModule, MatInputModule,MatSnackBarModule,
+    MatExpansionModule} from '@angular/material';
 import { ViewProfile } from './components/header/header.component';
+import { ChangePassword } from './components/header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -28,9 +30,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         FormsModule,
         MatCardModule,
         MatIconModule,
-        MatButtonModule,MatFormFieldModule, MatInputModule,MatSnackBarModule
+        MatButtonModule,MatFormFieldModule, MatInputModule,MatSnackBarModule,MatExpansionModule
     ],
-    declarations: [LayoutComponent, SidebarComponent, HeaderComponent,ViewProfile],
-    entryComponents: [ViewProfile]
+    declarations: [LayoutComponent, SidebarComponent, HeaderComponent,ViewProfile,ChangePassword],
+    entryComponents: [ViewProfile,ChangePassword]
 })
 export class LayoutModule {}

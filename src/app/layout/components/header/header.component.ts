@@ -37,19 +37,6 @@ export class HeaderComponent implements OnInit {
             var selectedAdmin = this.cds.currentAdminDetail.name;
             this.profileName = selectedAdmin.title + " " + selectedAdmin.firstName + " " + selectedAdmin.lastName;
             this.pushRightClass = 'push-right';
-            // if (this.cds.tokenLogin !== "") {
-            //     this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
-            //         var val = JSON.stringify(response);
-            //         this.cds.currentAdminDetail = JSON.parse(val);
-            //         var selectedAdmin = this.cds.currentAdminDetail.name;
-            //         this.profileName = selectedAdmin.title + " " + selectedAdmin.firstName + " " + selectedAdmin.lastName;
-            //         this.pushRightClass = 'push-right';
-            //     }, error => {
-            //         this.snackBar.open(error.error.message, "", {
-            //             duration: 2000,
-            //         });
-            //     })
-            // }
         }
     }
 
@@ -73,11 +60,21 @@ export class HeaderComponent implements OnInit {
     onProfile() {
         const dialogRef = this.dialog.open(ViewProfile, {
             width: '60%',
-            height: '45%',
+            height: '85%',
             position: { right: "0px", top: "70px" },
             data: { data1: this.cds.currentAdminDetail }
         })
         dialogRef.afterClosed().subscribe(result => {
+        });
+    }
+    onChangePassword() {
+        const dialogRefChangePass = this.dialog.open(ChangePassword, {
+            width: '25%',
+            height: '60%',
+            position: { right: "0px", top: "70px" },
+            data: { data1: this.cds.currentAdminDetail }
+        })
+        dialogRefChangePass.afterClosed().subscribe(result => {
         });
     }
 
@@ -93,14 +90,24 @@ export class ViewProfile implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<ViewProfile>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
-        private fb: FormBuilder) { }
+        private fb: FormBuilder,
+        private snackBar: MatSnackBar, ) { }
 
     ngOnInit() {
         this.viewProfile = this.fb.group({
-            firstname: ['', Validators.required],
-            lastname: ['', Validators.required],
-            phone: ['', Validators.required],
-            email: ['', Validators.required],
+            firstname: [''],
+            lastname: [''],
+            phone: [''],
+            email: [''],
+            accountNumber: [''],
+            accountType: [''],
+            bankName: [''],
+            branchName: [''],
+            holderName: [''],
+            ifscCode: [''],
+            taxNumber: ['']
+
+
         })
         //this.viewProfile.disable()
         this.bindDisplayValues(this.dialogRef.componentInstance.data.data1);
@@ -114,8 +121,92 @@ export class ViewProfile implements OnInit {
             lastname: val.name.lastName,
             email: val.email,
             phone: val.phoneNumber,
+            // region: val.region,
+
+            accountNumber: val.bankDetails.accountNumber,
+            accountType: val.bankDetails.accountType,
+            bankName: val.bankDetails.bankName,
+            branchName: val.bankDetails.branchName,
+            holderName: val.bankDetails.holderName,
+            ifscCode: val.bankDetails.ifscCode,
+            taxNumber: val.bankDetails.taxNumber
         })
+        debugger;
     }
 
 }
 
+
+
+@Component({
+    templateUrl: 'change-password.html',
+})
+export class ChangePassword implements OnInit {
+    val: any;
+    changePass: FormGroup;
+    constructor(
+        public dialogRefChangePass: MatDialogRef<ChangePassword>,
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,
+        private fb: FormBuilder,
+        private snackBar: MatSnackBar,
+        private cds2: CommonServiceService) { }
+
+    ngOnInit() {
+        debugger;
+        this.changePass = this.fb.group({
+            id: [''],
+            oldPassword: ['', Validators.required],
+            newPassword: ['', Validators.required],
+            confirmPassword: ['', Validators.required]
+        }, {
+            validator: this.MustMatch('newPassword', 'confirmPassword')
+        })
+
+        this.changePass.patchValue({
+            id: this.dialogRefChangePass.componentInstance.data.data1._id
+        })
+    }
+
+    MustMatch(controlName: string, matchingControlName: string) {
+        return (formGroup: FormGroup) => {
+            const control = formGroup.controls[controlName];
+            const matchingControl = formGroup.controls[matchingControlName];
+
+            if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+                // return if another validator has already found an error on the matchingControl
+                return;
+            }
+
+            // set error on matchingControl if validation fails
+            if (control.value !== matchingControl.value) {
+                matchingControl.setErrors({ mustMatch: true });
+            } else {
+                matchingControl.setErrors(null);
+            }
+        }
+    }
+    onCPOkClick() {
+        //this.dialogRefChangePass.close();
+        if (this.changePass.invalid) {
+            this.snackBar.open("Enter Valid Values", "", {
+                duration: 2000,
+            });
+            return;
+        }
+        var data = {
+            "currentPassword": this.changePass.value.oldPassword,
+            "newPassword": this.changePass.value.newPassword
+        }
+        this.cds2.changePassword(this.cds2.tokenLogin, data).subscribe(response => {
+            this.snackBar.open(response["message"], "", {
+                duration: 2000,
+            });
+            this.dialogRefChangePass.close()
+        }, error => {
+            this.snackBar.open(error.error.error.message, "", {
+                duration: 2000,
+            });
+        });
+    }
+
+}

@@ -18,13 +18,7 @@ export class CommonServiceService implements OnInit {
   /*######################################### EDIA DETAILS STARTS ##################################### */
   //post media files
   postMedia(body) {
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'Authorization': "Bearer" + " " + token
-    //   })
-    // };
-    return this.http.get(this.url + "media/",body);
+    return this.http.post(this.url + "media/",body);
   }
 
   //get media location
@@ -45,6 +39,16 @@ export class CommonServiceService implements OnInit {
     return this.http.post(this.url + "admin/login/", data);
   }
 
+  //Change Password
+  changePassword(token,body) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+    return this.http.post(this.url + "admin/change-password/", body);
+  }
   //get current admin details
   getCurentAdminDetails(token) {
     const httpOptions = {
@@ -65,6 +69,42 @@ export class CommonServiceService implements OnInit {
       })
     };
     return this.http.get(this.url + "admin", httpOptions);
+  }
+
+  //create admin details
+  postAreaAdmin(token,body){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+
+    return this.http.post(this.url + "admin/", body,httpOptions);
+  }
+
+  //update admin details
+  updateAreaAdmin(adminid,token,body){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+
+    return this.http.patch(this.url + "admin/"+adminid, body,httpOptions);
+  }
+
+  //delete admin details
+  deleteAreaAdmin(adminid,token){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+
+    return this.http.delete(this.url + "admin/"+adminid, httpOptions);
   }
 
   /*######################################### ADMIN DETAILS ENDS ##################################### */

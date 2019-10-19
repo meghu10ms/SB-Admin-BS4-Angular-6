@@ -32,6 +32,9 @@ export class AdminComponent implements OnInit {
     private cds: CommonServiceService) { }
 
   ngOnInit() {
+    this.getAdminDetails();
+  }
+  getAdminDetails() {
     this.visible = true;
     this.cds.getAllAdminDetails(this.cds.tokenLogin).subscribe(response => {
       this.visible = false;
@@ -64,15 +67,15 @@ export class AdminComponent implements OnInit {
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
       formatJson = {
-        "title":val[i].name.title,
+        "title": val[i].name.title,
         "firstname": val[i].name.firstName,
         "lastname": val[i].name.lastName,
         "email": val[i].email,
         "ph": val[i].phoneNumber,
         "region": val[i].areaId.areaCode,
         "city": val[i].areaId.formattedAddress,
-        "areaId":val[i].areaId._id,
-
+        "areaId": val[i].areaId._id,
+        "adminId": val[i]._id,
         "accountNumber": val[i].bankDetails.accountNumber,
         "accountType": val[i].bankDetails.accountType,
         "bankName": val[i].bankDetails.bankName,
@@ -113,6 +116,7 @@ export class AdminComponent implements OnInit {
       data: { ind: "create", data1: "" }
     })
     dialogRef.afterClosed().subscribe(result => {
+      this.getAdminDetails();
     });
   }
   applyFilter(filterValue: string) {
@@ -129,6 +133,7 @@ export class AdminComponent implements OnInit {
       data: { ind: "edit", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {
+      this.getAdminDetails();
     });
   }
   display(val) {
@@ -142,8 +147,17 @@ export class AdminComponent implements OnInit {
   }
 
   remove(val) {
-    this.snackBar.open("Not Yet Implemented", "", {
-      duration: 2000,
+    debugger;
+
+    this.cds.deleteAreaAdmin(this.cds.tokenLogin, val.adminId).subscribe(response => {
+      this.snackBar.open(response["message"], "", {
+        duration: 2000,
+      });
+      this.getAdminDetails();
+    }, error => {
+      this.snackBar.open(error.error.error.message, "", {
+        duration: 2000,
+      });
     });
   }
 }
@@ -159,30 +173,6 @@ export interface PeriodicElement {
   dob: string;
 
 }
-// const ELEMENT_DATA: PeriodicElement[] = [
-//   { firstname: 'Hydrogen', lastname: 'Hydrogen', email: 'pavankumar@gmail.com', ph: 9899067878, region: 'Bommanahlli', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Helium', lastname: 'Helium', email: 'sureshkumar@gmail.com', ph: 9998767878, region: 'Banaswadi', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Lithium', lastname: 'Lithium', email: 'Ajay@gmail.com', ph: 6698767878, region: 'Yalahanka', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Beryllium', lastname: 'Beryllium', email: 'shashi@gmail.com', ph: 5698767878, region: 'Pinya', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Boron', lastname: 'Boron', email: 'mohan@gmail.com', ph: 9890067878, region: 'Kormangala', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Carbon', lastname: 'Carbon', email: 'guru@gmail.com', ph: 9898767823, region: 'Vijaynagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Nitrogen', lastname: 'Nitrogen', email: 'gouri@gmail.com', ph: 9845267878, region: 'Rajaji Nagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Oxygen', lastname: 'Oxygen', email: 'manu@gmail.com', ph: 9198767878, region: 'Mejestic', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Fluorine', lastname: 'Fluorine', email: 'john@gmail.com', ph: 9098767878, region: 'Madiwala', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Neon', lastname: 'Neon', email: 'aravind@gmail.com', ph: 7798767878, region: 'BTM', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Sodium', lastname: 'Sodium', email: 'pallavi@gmail.com', ph: 6698767878, region: 'Jaya nagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Magnesium', lastname: 'Magnesium', email: 'ali@gmail.com', ph: 5598767878, region: 'J P Nagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Aluminum', lastname: 'Aluminum', email: 'akram@gmail.com', ph: 6598767878, region: 'Kanakpur', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Silicon', lastname: 'Silicon', email: 'shahid@gmail.com', ph: 7898767878, region: 'Arakere', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Phosphorus', lastname: 'Phosphorus', email: 'sonu@gmail.com', ph: 7898767878, region: 'Electronic city', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Sulfur', lastname: 'Sulfur', email: 'gitar@gmail.com', ph: 9098767878, region: 'Singasandra', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Chlorine', lastname: 'Chlorine', email: 'tarun@gmail.com', ph: 1198767878, region: 'Manipal county', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Argon', lastname: 'Argon', email: 'stk@gmail.com', ph: 2298767878, region: 'DLF', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Potassium', lastname: 'Potassium', email: 'c12mnj@gmail.com', ph: 3498767878, region: 'Aksjaynagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-//   { firstname: 'Calcium', lastname: 'Calcium', email: 'aa23aa@gmail.com', ph: 5298767878, region: 'Dommalur', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-// ];
-
-
 
 @Component({
   templateUrl: 'add-user.html',
@@ -195,13 +185,15 @@ export class AddUser implements OnInit {
   filevalid: any;
   filevalid1: any;
   displayInd: any;
-  
+
   public imagePath;
   imgURL: any;
   imgURL1: any;
   public message: string;
   region: any[];
-  titleCollection:any[];
+  titleCollection: any[];
+  profilePicId: any;
+  documentId: any;
 
   constructor(
     public dialogRef: MatDialogRef<AddUser>,
@@ -211,42 +203,45 @@ export class AddUser implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
+    this.profilePicId = "";
+    this.documentId = "";
     this.region = this.cds2.areaData;
     var data = this.dialogRef.componentInstance.data.data1;
     debugger;
-    this.titleCollection = [{"title":"Mr."},{"title":"Mrs."},{"title":"Miss."}];
+    this.titleCollection = [{ "title": "Mr." }, { "title": "Mrs." }, { "title": "Miss." }];
     this.nextProcess();
-
-    this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
-      this.imgURL = response["path"];
-      this.cds2.getMedia(this.cds2.tokenLogin, data.media[1]._id).subscribe(response => {
-        this.imgURL1 = response["path"];
-        //this.nextProcess();
+    if (this.dialogRef.componentInstance.data.ind !== 'create') {
+      this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
+        this.imgURL = response["path"];
+        this.profilePicId = response["_id"];
+        this.cds2.getMedia(this.cds2.tokenLogin, data.media[1]._id).subscribe(response => {
+          this.imgURL1 = response["path"];
+          this.documentId = response["_id"];
+          //this.nextProcess();
+        }, error => {
+          this.snackBar.open(error.error.message, "", {
+            duration: 2000,
+          });
+        });
       }, error => {
         this.snackBar.open(error.error.message, "", {
           duration: 2000,
         });
       });
-    }, error => {
-      this.snackBar.open(error.error.message, "", {
-        duration: 2000,
-      });
-    });
+    }
+
   }
   nextProcess() {
     this.displayInd = true;
     this.createForm();
-    this.fileForm();
     if (this.dialogRef.componentInstance.data.ind == 'display') {
       this.displayInd = false;
-      this.fileFor.disable()
-      this.newUserForm.disable()
+      this.newUserForm.disable();
 
       this.bindDisplayValues(this.dialogRef.componentInstance.data.data1);
     } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
       this.bindDisplayValues(this.dialogRef.componentInstance.data.data1);
     } else if (this.dialogRef.componentInstance.data.ind == 'create') {
-
     }
   }
 
@@ -268,45 +263,100 @@ export class AddUser implements OnInit {
       holderName: ['', Validators.required],
       ifscCode: ['', Validators.required],
       taxNumber: ['', Validators.required],
-      areaId:['']
+      areaId: [''],
+      adminId: ['']
 
     })
   }
-  fileForm() {
-    this.fileFor = this.fb.group({
-      profile: ['', Validators.required],
-      document: ['', Validators.required],
 
-    })
-  }
   clearScreen(oEvent) {
     this.newUserForm.reset();
-    this.fileFor.reset();
     this.filevalid = false;
     this.filevalid1 = false;
+    this.imgURL = "";
+    this.imgURL1 = "";
+    this.documentId = "";
+    this.profilePicId = "";
   }
   createNewUser(oEvent) {
-    debugger;
-    if (this.newUserForm.valid ) {
-      debugger;
+    if (this.newUserForm.valid && this.documentId != "" && this.profilePicId != "") {
+      var medi = [];
+      medi.push(this.profilePicId);
+      medi.push(this.documentId);
       var filledData = this.newUserForm.value;
-      var createData = {
-        "name":{"title":filledData.title,
-                "firstName":filledData.firstname,
-                "lastName":filledData.lastname},
-        "phoneNumber":filledData.phone,
-        "email":filledData.email,
-        "password":filledData.email,
-        "areaId":filledData.areaId,
-        "medias":[],
-        "bankDeatils":{"accountNumber":filledData.accountNumber,
-                        "accountType":filledData.accountType,
-                        "holderName":filledData.holderName,
-                        "ifscCode":filledData.ifscCode,
-                        "bankName":filledData.bankName,
-                        "branchName":filledData.branchName,
-                        "taxNumber":filledData.taxNumber}
-      };
+      var aId = "";
+      for (var i = 0; i < this.cds2.areaData.length; i++) {
+        if (filledData.region == this.cds2.areaData[i].code) {
+          aId = this.cds2.areaData[i].id;
+        }
+      }
+
+      if (this.dialogRef.componentInstance.data.ind == 'create') {
+        var createData = {
+          "name": {
+            "title": filledData.title,
+            "firstName": filledData.firstname,
+            "lastName": filledData.lastname
+          },
+          "phoneNumber": filledData.phone,
+          "email": filledData.email,
+          "password": filledData.email,
+          "areaId": aId,
+          "medias": medi,
+          "bankDetails": {
+            "accountNumber": filledData.accountNumber,
+            "accountType": filledData.accountType,
+            "holderName": filledData.holderName,
+            "ifscCode": filledData.ifscCode,
+            "bankName": filledData.bankName,
+            "branchName": filledData.branchName,
+            "taxNumber": filledData.taxNumber
+          }
+        };
+        this.cds2.postAreaAdmin(this.cds2.tokenLogin, createData).subscribe(response => {
+          this.snackBar.open(response["message"], "", {
+            duration: 2000,
+          });
+          this.dialogRef.close();
+        }, error => {
+          this.snackBar.open(error.error.error.message, "", {
+            duration: 2000,
+          });
+        });
+      } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
+        var createData1 = {
+          "name": {
+            "title": filledData.title,
+            "firstName": filledData.firstname,
+            "lastName": filledData.lastname
+          },
+          "phoneNumber": filledData.phone,
+          "email": filledData.email,
+          "password": filledData.email,
+          "areaId": filledData.areaId,
+          "medias": medi,
+          "bankDetails": {
+            "accountNumber": filledData.accountNumber,
+            "accountType": filledData.accountType,
+            "holderName": filledData.holderName,
+            "ifscCode": filledData.ifscCode,
+            "bankName": filledData.bankName,
+            "branchName": filledData.branchName,
+            "taxNumber": filledData.taxNumber
+          }
+        };
+        this.cds2.updateAreaAdmin(filledData.adminId, this.cds2.tokenLogin, createData1).subscribe(response => {
+          this.snackBar.open(response["message"], "", {
+            duration: 2000,
+          });
+          this.dialogRef.close();
+        }, error => {
+          this.snackBar.open(error.error.error.message, "", {
+            duration: 2000,
+          });
+        });
+      }
+
     } else {
       for (let name in this.newUserForm.controls) {
         if (this.newUserForm.controls[name].value == '' || this.newUserForm.controls[name].value == null) {
@@ -318,12 +368,12 @@ export class AddUser implements OnInit {
         else
           this.newUserForm.controls[name].setErrors(null);
       }
-      if (this.fileFor.controls['profile'].value == '' || this.fileFor.controls['profile'].value == null) {
+      if (this.profilePicId == "") {
         this.filevalid = true;
       } else {
         this.filevalid = false;
       }
-      if (this.fileFor.controls['document'].value == '' || this.fileFor.controls['document'].value == null) {
+      if (this.documentId == "") {
         this.filevalid1 = true;
       } else {
         this.filevalid1 = false;
@@ -331,18 +381,16 @@ export class AddUser implements OnInit {
     }
   }
   numberOnly(event): boolean {
-    debugger;
     const charCode = (event.which) ? event.which : event.keyCode;
-    if(charCode == 43)
-    return true;
+    if (charCode == 43)
+      return true;
     else if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
-    }else
-    return true;
+    } else
+      return true;
   }
 
   preview(files) {
-    debugger;
     if (files.length === 0)
       return;
 
@@ -352,17 +400,42 @@ export class AddUser implements OnInit {
       return;
     }
 
-    var reader = new FileReader();
-    this.imagePath = files;
-    reader.readAsDataURL(files[0]);
-    reader.onload = (_event) => {
-      this.imgURL = reader.result;
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    formData.append('name', 'profile_pictre');
+    this.cds2.postMedia(formData).subscribe(response => {
+      this.imgURL = response["media"].path;
+      this.profilePicId = response["media"]._id;
+      this.filevalid = false;
+    }, error => {
+      this.snackBar.open(error.error.error.message, "", {
+        duration: 2000,
+      });
+    });
+  }
+  previewDocument(files) {
+    if (files.length === 0)
+      return;
+
+    var mimeType = files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.message = "Only images are supported.";
+      return;
     }
-    var postData = {
-      "file":this.imgURL,
-      "name":files[0].name.split(".")[0],
-      "type":mimeType
-    }
+
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    formData.append('name', 'document');
+    this.cds2.postMedia(formData).subscribe(response => {
+      this.imgURL1 = response["media"].path;
+      this.documentId = response["media"]._id;
+      this.filevalid1 = false;
+    }, error => {
+      this.snackBar.open(error.error.error.message, "", {
+        duration: 2000,
+      });
+    });
+
   }
   bindDisplayValues(val) {
     this.newUserForm.patchValue({
@@ -373,7 +446,8 @@ export class AddUser implements OnInit {
       phone: val.ph,
       city: val.city,
       region: val.region,
-      areaId:val.areaId,
+      areaId: val.areaId,
+      adminId: val.adminId,
       accountNumber: val.accountNumber,
       accountType: val.accountType,
       bankName: val.bankName,
