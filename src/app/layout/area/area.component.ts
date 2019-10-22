@@ -49,7 +49,8 @@ export class AreaComponent implements OnInit {
       this.dataSource.sort = this.sort;
     }, error => {
       this.visible = false;
-      this.snackBar.open(error.error.message, "", {
+      var msg = error.error.message ? error.error.message : error.message
+      this.snackBar.open(msg, "", {
         duration: 2000,
       });
     })
@@ -119,7 +120,8 @@ export class AreaComponent implements OnInit {
       this.getDeatails();
     }, error => {
 
-      this.snackBar.open(error.error.message, "", {
+      var msg = error.error.message ? error.error.message : error.message;
+      this.snackBar.open(msg, "", {
         duration: 2000,
       });
     })
@@ -217,8 +219,8 @@ export class AddArea implements OnInit {
           });
           this.dialogRef.close();
         }, error => {
-
-          this._snackBar.open(error.error.message, "", {
+          var msg = error.error.message ? error.error.message : error.message;
+          this._snackBar.open(msg, "", {
             duration: 2000,
           });
         })
@@ -235,8 +237,8 @@ export class AddArea implements OnInit {
           });
           this.dialogRef.close();
         }, error => {
-
-          this._snackBar.open(error.error.message, "", {
+          var msg = error.error.message ? error.error.message : error.message;
+          this._snackBar.open(msg, "", {
             duration: 2000,
           });
         })

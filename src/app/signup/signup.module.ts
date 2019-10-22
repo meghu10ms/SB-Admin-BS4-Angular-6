@@ -4,12 +4,15 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { SignupRoutingModule } from './signup-routing.module';
 import { SignupComponent } from './signup.component';
+import { MatFormFieldModule, MatInputModule, MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     TranslateModule,
-    SignupRoutingModule
+    SignupRoutingModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatInputModule,
+    MatSnackBarModule, MatProgressSpinnerModule
   ],
   declarations: [SignupComponent]
 })

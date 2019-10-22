@@ -1,48 +1,54 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
     <div class="list-group">
-        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item"
+            title="Dashboard">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;
             <span>Dashboard</span>
         </a>
-        <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-user-o"></i>&nbsp;
+        <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item"
+            title="Vendor">
+            <i class="fa fa-fw fa-user"></i>&nbsp;
             <span>Vendor</span>
         </a>
-        <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-user"></i>&nbsp;
+        <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item"
+            title="Customer">
+            <i class="fa fa-fw fa-users"></i>&nbsp; 
             <span>Customer</span>
         </a>
-        <a [routerLink]="['/supplier']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-user-o"></i>&nbsp;
+        <a [routerLink]="['/supplier']" [routerLinkActive]="['router-link-active']" class="list-group-item"
+            title="Supplier">
+            <i class="fa fa-fw fa-motorcycle"></i>&nbsp;
             <span>Supplier</span>
         </a>
-        <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-user-o"></i>&nbsp;
+        <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item" title="Orders">
+            <i class="fa fa-fw fa-shopping-cart"></i>&nbsp;
             <span>Orders</span>
         </a>
         <div class="nested-menu" *ngIf="this.isAdmin">
-            <a class="list-group-item" (click)="addExpandClass('pages')">
-                <i class="fa fa-plus"></i>&nbsp;
+            <a class="list-group-item" (click)="addExpandClass('pages')" title="Admin Controls">
+                <i class="fa fa-th-list"></i>&nbsp;
                 <span>Admin Controls</span>
             </a>
             <li class="nested" [class.expand]="showMenu === 'pages'">
                 <ul class="submenu">
                     <li>
-                        <a class="list-group-item" [routerLink]="['/admin']"
-                            [routerLinkActive]="['router-link-active']">
+                        <a class="list-group-item" [routerLink]="['/admin']" [routerLinkActive]="['router-link-active']"
+                            title="Admin">
                             <i class="fa fa-fw fa-user-o"></i>&nbsp;
                             <span>Admin</span>
                         </a>
                     </li>
                     <li>
-                        <a class="list-group-item" [routerLink]="['/area']" [routerLinkActive]="['router-link-active']">
-                            <i class="fa fa-fw fa-user-o"></i>&nbsp;
+                        <a class="list-group-item" [routerLink]="['/area']" [routerLinkActive]="['router-link-active']"
+                            title="Region Details">
+                            <i class="fa fa-fw fa-book"></i>&nbsp;
                             <span>Region Details</span>
                         </a>
                     </li>
                     <li>
-                        <a class="list-group-item" [routerLink]="['/ads']" [routerLinkActive]="['router-link-active']">
-                            <i class="fa fa-fw fa-user-o"></i>&nbsp;
+                        <a class="list-group-item" [routerLink]="['/ads']" [routerLinkActive]="['router-link-active']"
+                            title="Ads">
+                            <i class="fa fa-fw fa-picture-o"></i>&nbsp;
                             <span>Ads</span>
                         </a>
                     </li>

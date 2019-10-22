@@ -8,7 +8,8 @@ import {
     MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
-    MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule
+    MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
+    MatSlideToggleModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddUser } from './admin.component';
@@ -18,7 +19,7 @@ import { AddUser } from './admin.component';
     imports: [CommonModule, AdminRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
-        FormsModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule
+        FormsModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,MatSlideToggleModule
     ],
     declarations: [AdminComponent,AddUser],
     entryComponents: [AddUser]

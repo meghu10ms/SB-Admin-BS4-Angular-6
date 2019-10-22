@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
 
     visible: any;
     loginForm: FormGroup;
+    forgotPassword:boolean;
 
     constructor(
         public router: Router,
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.forgotPassword = false;
         this.loginForm = this.fb.group({
             email: ['', Validators.required],
             password: ['', Validators.required]
@@ -45,6 +47,7 @@ export class LoginComponent implements OnInit {
                 this.cds.tokenLogin = response["token"];
                 this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
                     this.visible = false;
+                    this.forgotPassword = false;
                     var val = JSON.stringify(response);
                     this.cds.currentAdminDetail = JSON.parse(val);
                     this.router.navigate(['/dashboard']);
@@ -57,6 +60,7 @@ export class LoginComponent implements OnInit {
 
             }, error => {
                 this.visible = false;
+                this.forgotPassword = true;
                 this.snackBar.open(error.error.message, "", {
                     duration: 2000,
                 });
@@ -66,5 +70,8 @@ export class LoginComponent implements OnInit {
                 duration: 2000,
             });
         }
+    }
+    onForgetPassword(){
+        this.router.navigate(['/signup']);
     }
 }

@@ -4,6 +4,19 @@
     <div class="col-sm-3">
       <form>
         <div class="text-left">
+          <mat-slide-toggle color="Primary" [checked]="this.superAdmin" [disabled]="!this.displayInd"
+            (change)="toggeleSuperAdmin($event)" labelPosition="before" matTooltip="Super Admin">
+            Super Admin :
+          </mat-slide-toggle>
+          <hr />
+          <mat-slide-toggle color="Primary" [checked]="this.activeAdmin" [disabled]="!this.displayInd"
+            (change)="toggeleAdminActive($event)" labelPosition="before" matTooltip="Active Admin">
+            Active Admin :
+          </mat-slide-toggle>
+        </div>
+
+        <hr />
+        <div class="text-left">
           <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL">
           <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL">
           <h6 *ngIf="!imgURL">Upload photo...</h6>
@@ -36,7 +49,7 @@
                 {{val.title}}
               </mat-option>
             </mat-select>
-            <mat-icon matSuffix>location_city</mat-icon>
+            <mat-icon matSuffix>subtitles</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -50,11 +63,12 @@
             <mat-label style="font-weight: bold">Last Name</mat-label>
             <input matInput placeholder="Enter Last Name" formControlName="lastname" maxlength="20"
               style="font-weight: bold">
-            <mat-icon matSuffix>person</mat-icon>
+            <mat-icon matSuffix>person_pin</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">Phone Number</mat-label>
+            <!-- <span matPrefix>+91</span> -->
             <input matInput placeholder="Enter Phone Number" formControlName="phone" maxlength="13"
               (keypress)="numberOnly($event)" style="font-weight: bold">
             <mat-icon matSuffix>phone</mat-icon>
@@ -79,7 +93,7 @@
                 {{val.area}} ({{val.code}})
               </mat-option>
             </mat-select>
-            <mat-icon matSuffix>location_city</mat-icon>
+            <mat-icon matSuffix>near_me</mat-icon>
           </mat-form-field>
 
         </div>
@@ -88,29 +102,29 @@
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">Account Number</mat-label>
             <input matInput placeholder="Enter Account Number" formControlName="accountNumber" maxlength="13"
-              style="font-weight: bold">
-            <mat-icon matSuffix>person</mat-icon>
+              style="font-weight: bold" (keypress)="numberOnly($event)">
+            <mat-icon matSuffix>account_circle</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">Account Type</mat-label>
             <input matInput placeholder="Enter Account Type" formControlName="accountType" maxlength="10"
               style="font-weight: bold">
-            <mat-icon matSuffix>person</mat-icon>
+            <mat-icon matSuffix>account_tree</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">Bank Name</mat-label>
             <input matInput placeholder="Enter Bank Name" formControlName="bankName" maxlength="20"
               style="font-weight: bold">
-            <mat-icon matSuffix>phone</mat-icon>
+            <mat-icon matSuffix>account_balance</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">Branch Name</mat-label>
             <input matInput placeholder="Enter Branch Name" formControlName="branchName" maxlength="20"
               style="font-weight: bold">
-            <mat-icon matSuffix>phone</mat-icon>
+            <mat-icon matSuffix>account_box</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -124,21 +138,17 @@
             <mat-label style="font-weight: bold">IFSC Code</mat-label>
             <input matInput placeholder="Enter IFSC Code" formControlName="ifscCode" maxlength="20"
               style="font-weight: bold">
-            <mat-icon matSuffix>location_city</mat-icon>
+            <mat-icon matSuffix>accessibility</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">Tax Numbaer</mat-label>
             <input matInput placeholder="Enter Tax Number" formControlName="taxNumber" maxlength="20"
               style="font-weight: bold">
-            <mat-icon matSuffix>location_city</mat-icon>
+            <mat-icon matSuffix>pages</mat-icon>
           </mat-form-field>
 
-
-
-
         </div>
-
       </form>
     </div>
   </div>

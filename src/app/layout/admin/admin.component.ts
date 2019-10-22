@@ -66,6 +66,9 @@ export class AdminComponent implements OnInit {
     var formatJson = {};
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
+      if (val[i].areaId === undefined) {
+        val[i].areaId = { "areaCode": "", "formattedAddress": "", "_id": "" }
+      }
       formatJson = {
         "title": val[i].name.title,
         "firstname": val[i].name.firstName,
@@ -83,7 +86,8 @@ export class AdminComponent implements OnInit {
         "holderName": val[i].bankDetails.holderName,
         "ifscCode": val[i].bankDetails.ifscCode,
         "taxNumber": val[i].bankDetails.taxNumber,
-
+        "superAdmin": val[i].isSuperAdmin,
+        "activeAdmin": val[i].isActive,
         "media": val[i].medias
       }
       finalData.push(formatJson);
@@ -147,8 +151,6 @@ export class AdminComponent implements OnInit {
   }
 
   remove(val) {
-    debugger;
-
     this.cds.deleteAreaAdmin(this.cds.tokenLogin, val.adminId).subscribe(response => {
       this.snackBar.open(response["message"], "", {
         duration: 2000,
@@ -194,6 +196,8 @@ export class AddUser implements OnInit {
   titleCollection: any[];
   profilePicId: any;
   documentId: any;
+  superAdmin: boolean;
+  activeAdmin: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<AddUser>,
@@ -203,11 +207,12 @@ export class AddUser implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
+    this.superAdmin = false;
+    this.activeAdmin = true;
     this.profilePicId = "";
     this.documentId = "";
     this.region = this.cds2.areaData;
     var data = this.dialogRef.componentInstance.data.data1;
-    debugger;
     this.titleCollection = [{ "title": "Mr." }, { "title": "Mrs." }, { "title": "Miss." }];
     this.nextProcess();
     if (this.dialogRef.componentInstance.data.ind !== 'create') {
@@ -234,13 +239,16 @@ export class AddUser implements OnInit {
   nextProcess() {
     this.displayInd = true;
     this.createForm();
+    var data = this.dialogRef.componentInstance.data.data1;
+    this.superAdmin = data.superAdmin ? data.superAdmin : false;
+    this.activeAdmin = data.activeAdmin ? data.activeAdmin : true;
     if (this.dialogRef.componentInstance.data.ind == 'display') {
       this.displayInd = false;
       this.newUserForm.disable();
 
-      this.bindDisplayValues(this.dialogRef.componentInstance.data.data1);
+      this.bindDisplayValues(data);
     } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
-      this.bindDisplayValues(this.dialogRef.componentInstance.data.data1);
+      this.bindDisplayValues(data);
     } else if (this.dialogRef.componentInstance.data.ind == 'create') {
     }
   }
@@ -391,12 +399,21 @@ export class AddUser implements OnInit {
   }
 
   preview(files) {
+    debugger;
     if (files.length === 0)
       return;
 
     var mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-      this.message = "Only images are supported.";
+      this.snackBar.open("File Type Not supporting upload imgage only", "", {
+        duration: 2000,
+      });
+      return;
+    }
+    if (files[0].size > 2000000) {
+      this.snackBar.open("File size excceds 2MB", "", {
+        duration: 2000,
+      });
       return;
     }
 
@@ -419,7 +436,15 @@ export class AddUser implements OnInit {
 
     var mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-      this.message = "Only images are supported.";
+      this.snackBar.open("File Type Not supporting upload imgage only", "", {
+        duration: 2000,
+      });
+      return;
+    }
+    if (files[0].size > 2000000) {
+      this.snackBar.open("File size excceds 2MB", "", {
+        duration: 2000,
+      });
       return;
     }
 
@@ -436,6 +461,12 @@ export class AddUser implements OnInit {
       });
     });
 
+  }
+  toggeleSuperAdmin(evt) {
+    this.superAdmin = evt.checked;
+  }
+  toggeleAdminActive(evt) {
+    this.activeAdmin = evt.checked;
   }
   bindDisplayValues(val) {
     this.newUserForm.patchValue({

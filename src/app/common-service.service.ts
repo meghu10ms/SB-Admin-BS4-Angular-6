@@ -39,15 +39,26 @@ export class CommonServiceService implements OnInit {
     return this.http.post(this.url + "admin/login/", data);
   }
 
+  //Forgot Password
+  forgotPassword(body) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(this.url + "admin/forgot-password/", body,httpOptions);
+  }
+
   //Change Password
   changePassword(token,body) {
+    debugger;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': "Bearer" + " " + token
       })
     };
-    return this.http.post(this.url + "admin/change-password/", body);
+    return this.http.post(this.url + "admin/change-password/", body,httpOptions);
   }
   //get current admin details
   getCurentAdminDetails(token) {
@@ -96,7 +107,7 @@ export class CommonServiceService implements OnInit {
   }
 
   //delete admin details
-  deleteAreaAdmin(adminid,token){
+  deleteAreaAdmin(token,adminid){
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

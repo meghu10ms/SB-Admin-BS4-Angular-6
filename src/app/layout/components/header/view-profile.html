@@ -1,40 +1,7 @@
 <div mat-dialog-content>
 
     <div class="row">
-        <!-- <form [formGroup]="viewProfile">
-            <mat-accordion>
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Personal Information
-                        </mat-panel-title>
 
-                    </mat-expansion-panel-header>
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput placeholder=" Enter First Name" formControlName="firstname" maxlength="20">
-                            <mat-icon matSuffix>person</mat-icon>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Enter Last Name" formControlName="lastname" maxlength="20">
-                            <mat-icon matSuffix>person</mat-icon>
-                        </mat-form-field>
-                    </div>
-                </mat-expansion-panel>
-                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Bank Information
-                        </mat-panel-title>
-
-                    </mat-expansion-panel-header>
-
-                </mat-expansion-panel>
-            </mat-accordion>
-        </form> -->
         <form class="form-inline" [formGroup]="viewProfile">
 
             <div class="col-sm-6">
@@ -47,27 +14,27 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Last Name</mat-label>
                     <input matInput placeholder="Last Name" formControlName="lastname" maxlength="20" readonly="true">
-                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-icon matSuffix>person_pin</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>Account Number</mat-label>
                     <input matInput placeholder="Account Number" formControlName="accountNumber" maxlength="20"
                         readonly="true">
-                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-icon matSuffix>account_circle</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>Account Type</mat-label>
                     <input matInput placeholder="Account Type" formControlName="accountType" maxlength="20"
                         readonly="true">
-                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-icon matSuffix>account_tree</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>Bank Name</mat-label>
                     <input matInput placeholder="Bank Name" formControlName="bankName" maxlength="20" readonly="true">
-                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-icon matSuffix>account_balance</mat-icon>
                 </mat-form-field>
             </div>
             <div class="col-sm-6">
@@ -95,13 +62,13 @@
                     <mat-label>Branch Name</mat-label>
                     <input matInput placeholder="Branch Name" formControlName="branchName" maxlength="20"
                         readonly="true">
-                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-icon matSuffix>account_box</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>Tax Number</mat-label>
                     <input matInput placeholder="Tax Number" formControlName="taxNumber" maxlength="20" readonly="true">
-                    <mat-icon matSuffix>person</mat-icon>
+                    <mat-icon matSuffix>accessibility</mat-icon>
                 </mat-form-field>
             </div>
         </form>
