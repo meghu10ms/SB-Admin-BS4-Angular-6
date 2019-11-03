@@ -9,17 +9,20 @@ import {
     MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
-    MatNativeDateModule, MatSnackBarModule
+    MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
+    MatSlideToggleModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddUser } from './charts.component';
+import { ProductDetails } from './charts.component';
 
 @NgModule({
     imports: [CommonModule, Ng2Charts, ChartsRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
-        FormsModule, MatSnackBarModule],
-    declarations: [ChartsComponent, AddUser],
-    entryComponents: [AddUser]
+        FormsModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
+        MatSlideToggleModule],
+    declarations: [ChartsComponent, AddUser,ProductDetails],
+    entryComponents: [AddUser,ProductDetails]
 })
 export class ChartsModule { }

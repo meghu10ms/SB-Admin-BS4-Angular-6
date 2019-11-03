@@ -66,8 +66,8 @@ export class AdminComponent implements OnInit {
     var formatJson = {};
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
-      if (val[i].areaId === undefined) {
-        val[i].areaId = { "areaCode": "", "formattedAddress": "", "_id": "" }
+      if (val[i].areaId[0] === undefined || val[i].areaId[0].length === 0) {
+        val[i].areaId[0] = { "areaCode": "", "formattedAddress": "", "_id": "" }
       }
       formatJson = {
         "title": val[i].name.title,
@@ -75,9 +75,9 @@ export class AdminComponent implements OnInit {
         "lastname": val[i].name.lastName,
         "email": val[i].email,
         "ph": val[i].phoneNumber,
-        "region": val[i].areaId.areaCode,
-        "city": val[i].areaId.formattedAddress,
-        "areaId": val[i].areaId._id,
+        "region": val[i].areaId[0].areaCode,
+        "city": val[i].areaId[0].formattedAddress,
+        "areaId": val[i].areaId[0]._id,
         "adminId": val[i]._id,
         "accountNumber": val[i].bankDetails.accountNumber,
         "accountType": val[i].bankDetails.accountType,
@@ -222,7 +222,7 @@ export class AddUser implements OnInit {
         this.cds2.getMedia(this.cds2.tokenLogin, data.media[1]._id).subscribe(response => {
           this.imgURL1 = response["path"];
           this.documentId = response["_id"];
-          //this.nextProcess();
+
         }, error => {
           this.snackBar.open(error.error.message, "", {
             duration: 2000,
@@ -259,9 +259,9 @@ export class AddUser implements OnInit {
       title: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      phone: ['', Validators.required],
+      phone: ['+91', Validators.required],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-      city: ['', Validators.required],
+      city: ['Bangalore', Validators.required],
       region: ['', Validators.required],
 
       accountNumber: ['', Validators.required],
@@ -319,7 +319,9 @@ export class AddUser implements OnInit {
             "bankName": filledData.bankName,
             "branchName": filledData.branchName,
             "taxNumber": filledData.taxNumber
-          }
+          },
+          "isSuperAdmin": this.superAdmin,
+          "isActive": this.activeAdmin
         };
         this.cds2.postAreaAdmin(this.cds2.tokenLogin, createData).subscribe(response => {
           this.snackBar.open(response["message"], "", {
@@ -340,7 +342,7 @@ export class AddUser implements OnInit {
           },
           "phoneNumber": filledData.phone,
           "email": filledData.email,
-          "password": filledData.email,
+          //"password": filledData.email,
           "areaId": filledData.areaId,
           "medias": medi,
           "bankDetails": {
@@ -351,7 +353,9 @@ export class AddUser implements OnInit {
             "bankName": filledData.bankName,
             "branchName": filledData.branchName,
             "taxNumber": filledData.taxNumber
-          }
+          },
+          "isSuperAdmin": this.superAdmin,
+          "isActive": this.activeAdmin
         };
         this.cds2.updateAreaAdmin(filledData.adminId, this.cds2.tokenLogin, createData1).subscribe(response => {
           this.snackBar.open(response["message"], "", {
@@ -417,6 +421,7 @@ export class AddUser implements OnInit {
       return;
     }
 
+
     const formData = new FormData();
     formData.append('file', files[0]);
     formData.append('name', 'profile_pictre');
@@ -469,6 +474,7 @@ export class AddUser implements OnInit {
     this.activeAdmin = evt.checked;
   }
   bindDisplayValues(val) {
+    debugger;
     this.newUserForm.patchValue({
       title: val.title,
       firstname: val.firstname,

@@ -1,0 +1,92 @@
+<div mat-dialog-content>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <form>
+                <div class="text-left">
+                    <mat-slide-toggle color="Primary" [checked]="this.view" 
+                        (change)="toggeleEdit($event)" labelPosition="before" matTooltip="Edit">
+                        Edit
+                    </mat-slide-toggle>
+
+                </div>
+
+                <hr />
+                <div class="text-left">
+                    <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar"
+                        *ngIf="!imgProductUrl">
+                    <img [src]="imgProductUrl" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgProductUrl">
+                    <h6 *ngIf="!imgProductUrl">Upload Product Photo...</h6>
+                    <input type="file" #file class="text-left left-block file-upload" accept='image/*'
+                        (change)="preview(file.files)" style="width:95%" [disabled]="!this.view" *ngIf="this.view">
+                    <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
+                </div>
+
+
+            </form>
+        </div>
+
+
+        <div class="col-sm-9">
+            <form class="form-inline" [formGroup]="productForm">
+                <div class="col-sm-6">
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">Product Name</mat-label>
+                        <input matInput placeholder=" Enter Product Name" formControlName="name" maxlength="20"
+                            style="font-weight: bold" >
+                        <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">Product Code</mat-label>
+                        <input matInput placeholder="Enter Product Code" formControlName="code" maxlength="20"
+                            style="font-weight: bold" >
+                        <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">Product Description</mat-label>
+                        <input matInput placeholder="Enter Product Description" formControlName="description"
+                            maxlength="20" style="font-weight: bold" >
+                        <mat-icon matSuffix>person_pin</mat-icon>
+                    </mat-form-field>
+
+
+                </div>
+                <div class="col-sm-6">
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">Price</mat-label>
+                        <input matInput placeholder="Enter Price" formControlName="price" maxlength="5"
+                            style="font-weight: bold" (keypress)="numberOnly($event)">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">Capacity</mat-label>
+                        <input matInput placeholder="Enter Capacity" formControlName="capacity" maxlength="6"
+                            style="font-weight: bold" (keypress)="numberOnly($event)">
+                        <mat-icon matSuffix>pages</mat-icon>
+                    </mat-form-field>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<mat-dialog-actions>
+    <div class="navbar-nav ml-auto">
+        <span>
+            <button class="btn btn-success" type="submit" matTooltip="Save"  (click)="createNewUser($event)"
+            *ngIf="this.view">
+                Save</button> &nbsp; &nbsp;
+            <button class="btn" type="reset" matTooltip="Reset" (click)="clearScreen($event)" *ngIf="this.view">
+                Reset</button>
+                &nbsp; &nbsp;
+            <button class="btn btn-success" type="submit" matTooltip="Close" (click)="Close($event)" *ngIf="!this.view">
+                Close</button>
+        </span>
+    </div>
+</mat-dialog-actions>

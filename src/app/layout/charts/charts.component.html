@@ -1,3 +1,8 @@
+<div class="overlay1" *ngIf="visible">
+    <span class="spinner">
+      <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+    </span>
+  </div>
 <div [@routerTransition]>
   <app-page-header [heading]="'Vendor'" [icon]="'fa-user'"></app-page-header>
   <div class="row">
@@ -32,9 +37,9 @@
           </ng-container>
 
           <!-- Position Column -->
-          <ng-container matColumnDef="lastname">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> LAST NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.lastname}} </td>
+          <ng-container matColumnDef="companyname">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> COMPANY NAME </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.companyname}} </td>
           </ng-container>
 
           <!-- Name Column -->
@@ -73,6 +78,11 @@
                 <button mat-icon-button aria-label="Display User" matTooltip="Display" style="width: 30px">
                   <mat-icon color="primary" aria-hidden="false" aria-label="display" (click)="display(element)">
                     keyboard_arrow_right</mat-icon>
+                </button>
+
+                <button mat-icon-button aria-label="Product" matTooltip="Product" style="width: 30px">
+                  <mat-icon color="primary" aria-hidden="false" aria-label="Product" (click)="product(element)">
+                    local_grocery_store</mat-icon>
                 </button>
               </div>
             </td>

@@ -18,7 +18,7 @@ export class CommonServiceService implements OnInit {
   /*######################################### EDIA DETAILS STARTS ##################################### */
   //post media files
   postMedia(body) {
-    return this.http.post(this.url + "media/",body);
+    return this.http.post(this.url + "media/", body);
   }
 
   //get media location
@@ -46,11 +46,11 @@ export class CommonServiceService implements OnInit {
         'Content-Type': 'application/json'
       })
     };
-    return this.http.post(this.url + "admin/forgot-password/", body,httpOptions);
+    return this.http.post(this.url + "admin/forgot-password/", body, httpOptions);
   }
 
   //Change Password
-  changePassword(token,body) {
+  changePassword(token, body) {
     debugger;
     const httpOptions = {
       headers: new HttpHeaders({
@@ -58,7 +58,7 @@ export class CommonServiceService implements OnInit {
         'Authorization': "Bearer" + " " + token
       })
     };
-    return this.http.post(this.url + "admin/change-password/", body,httpOptions);
+    return this.http.post(this.url + "admin/change-password/", body, httpOptions);
   }
   //get current admin details
   getCurentAdminDetails(token) {
@@ -83,7 +83,7 @@ export class CommonServiceService implements OnInit {
   }
 
   //create admin details
-  postAreaAdmin(token,body){
+  postAreaAdmin(token, body) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -91,11 +91,11 @@ export class CommonServiceService implements OnInit {
       })
     };
 
-    return this.http.post(this.url + "admin/", body,httpOptions);
+    return this.http.post(this.url + "admin/", body, httpOptions);
   }
 
   //update admin details
-  updateAreaAdmin(adminid,token,body){
+  updateAreaAdmin(adminid, token, body) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -103,11 +103,11 @@ export class CommonServiceService implements OnInit {
       })
     };
 
-    return this.http.patch(this.url + "admin/"+adminid, body,httpOptions);
+    return this.http.patch(this.url + "admin/" + adminid, body, httpOptions);
   }
 
   //delete admin details
-  deleteAreaAdmin(token,adminid){
+  deleteAreaAdmin(token, adminid) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export class CommonServiceService implements OnInit {
       })
     };
 
-    return this.http.delete(this.url + "admin/"+adminid, httpOptions);
+    return this.http.delete(this.url + "admin/" + adminid, httpOptions);
   }
 
   /*######################################### ADMIN DETAILS ENDS ##################################### */
@@ -159,6 +159,39 @@ export class CommonServiceService implements OnInit {
   }
 
   /*######################################### AREA DETAILS ENDS ##################################### */
+  /*######################################### VENDOR DETAILS STARTS ##################################### */
+  postVendor(token, body) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
 
+    return this.http.post(this.url + "vendor/", body, httpOptions);
+  }
+  //get all Vendor details
+  getAllVendorDetails(token) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+    return this.http.get(this.url + "vendor/", httpOptions);
+  }
+
+  //update Vendor details
+  updateVendor(vendorid, token, body) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    };
+
+    return this.http.patch(this.url + "vendor/" + vendorid, body, httpOptions);
+  }
+  /*######################################### VENDOR DETAILS ENDS ##################################### */
 }
 
