@@ -208,5 +208,8 @@ export class ChangePassword implements OnInit {
             });
         });
     }
+    Close(){
+        this.dialogRefChangePass.close();
+    }
 
 }

@@ -23,8 +23,6 @@ export class ChartsComponent implements OnInit {
     dataSource: any;
     displayedColumns: string[];
 
-    //displayedColumns: string[] = ['firstname', 'lastname', 'email', 'ph', 'region', 'actions'];
-    //dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -35,6 +33,7 @@ export class ChartsComponent implements OnInit {
         private cds: CommonServiceService) { }
 
     ngOnInit() {
+
         this.getVendorDetails();
     }
     getVendorDetails() {
@@ -173,17 +172,35 @@ export class ChartsComponent implements OnInit {
         });
     }
     remove(val) {
-        this.snackBar.open("Not Yet Implemented", "", {
-            duration: 2000,
+        debugger;
+        this.cds.deleteVendor(val.vendorObjId, this.cds.tokenLogin).subscribe(response => {
+            this.snackBar.open(response["message"], "", {
+                duration: 2000,
+            });
+            this.getVendorDetails();
+        }, error => {
+            this.snackBar.open(error.error.error.message, "", {
+                duration: 2000,
+            });
         });
     }
     product(val) {
         const dialogRefProduct = this.dialog.open(ProductDetails, {
             width: '70%',
-            height: '65%',
+            height: '80%',
             data: { data1: val }
         })
         dialogRefProduct.afterClosed().subscribe(result => {
+        });
+    }
+
+    onIndidualVendor(event, value) {
+        const dialogRefCalculation = this.dialog.open(PaymentCalaculation, {
+            width: '80%',
+            height: '65%',
+            data: { data: value }
+        })
+        dialogRefCalculation.afterClosed().subscribe(result => {
         });
     }
 }
@@ -498,6 +515,9 @@ export class AddUser implements OnInit {
     toggeleRetailer(evt) {
         this.Retailer = evt.checked;
     }
+    CloseUser() {
+        this.dialogRef.close();
+    }
     bindDisplayValues(val) {
         this.newUserForm.patchValue({
             title: val.title,
@@ -543,7 +563,6 @@ export class AddUser implements OnInit {
 export class ProductDetails implements OnInit {
     productForm: FormGroup;
     val: any;
-    pftelpat = "^[6789]{1}[0-9]{9}$";
     filevalid: any;
 
 
@@ -553,6 +572,10 @@ export class ProductDetails implements OnInit {
     region: any[];
     profilePicId: any;
     view: any;
+    sliderName: any;
+    productType: any;
+    productList: any;
+    indicator: any;
 
 
     constructor(
@@ -564,9 +587,12 @@ export class ProductDetails implements OnInit {
 
     ngOnInit() {
         this.view = false;
-        // this.imgProduct = "";
+        this.sliderName = "Add New Product";
+        this.indicator = "create";
+        this.productType = [{ "type": "Bottle" }, { "type": "Can" }, { "type": "Dispencer" }, { "type": "Tanker" }];
         var data = this.dialogRefProduct.componentInstance.data.data1;
-
+        this.createForm();
+        this.bindDisplayValues(data);
         this.nextProcess();
         // if (this.dialogRefProduct.componentInstance.data.ind !== 'create') {
         //     this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
@@ -580,11 +606,15 @@ export class ProductDetails implements OnInit {
         // }
     }
     nextProcess() {
+        this.cds2.getProduct(this.cds2.tokenLogin).subscribe(response => {
 
-        this.createForm();
-        var data = this.dialogRefProduct.componentInstance.data.data1;
-        this.bindDisplayValues(data);
-        this.productForm.disable();
+            this.productList = response;
+        }, error => {
+            this.snackBar.open(error.error.message, "", {
+                duration: 2000,
+            });
+        });
+
     }
     createForm() {
         this.productForm = this.fb.group({
@@ -594,8 +624,7 @@ export class ProductDetails implements OnInit {
             price: ['', Validators.required],
             capacity: ['', Validators.required],
             description: ['', Validators.required],
-            vendorId: ['', Validators.required],
-            activeProduct: ['', Validators.required]
+            vendorId: ['', Validators.required]
         })
     }
 
@@ -606,8 +635,39 @@ export class ProductDetails implements OnInit {
         this.imgProductUrl = "";
         this.profilePicId = "";
     }
-    createNewUser(oEvent) {
+    createProduct(oEvent) {
         if (this.productForm.valid && this.profilePicId != "") {
+            var medi = [];
+            medi.push(this.profilePicId);
+            var filledData = this.productForm.value;
+            var createData = {
+                "name": filledData.name,
+                "type": filledData.type,
+                "description": filledData.description,
+                "code": filledData.code,
+                "price": filledData.price,
+                "capacity": filledData.capacity,
+                "media": medi,
+                "vendor": filledData.vendorId,
+                "isActive": true
+            };
+            if (this.indicator === "create") {
+                this.cds2.postProduct(this.cds2.tokenLogin, createData).subscribe(response => {
+                    this.snackBar.open(response["message"], "", {
+                        duration: 2000,
+                    });
+                    this.dialogRefProduct.close();
+                }, error => {
+                    this.snackBar.open(error.error.error.message, "", {
+                        duration: 2000,
+                    });
+                });
+
+            } else if (this.indicator === "edit") {
+                this.snackBar.open("Not Yet Implemented", "", {
+                    duration: 2000,
+                });
+            }
 
         } else {
             for (let name in this.productForm.controls) {
@@ -621,9 +681,9 @@ export class ProductDetails implements OnInit {
                     this.productForm.controls[name].setErrors(null);
             }
             if (this.profilePicId == "") {
-                this.filevalid = true;
-            } else {
                 this.filevalid = false;
+            } else {
+                this.filevalid = true;
             }
 
         }
@@ -631,9 +691,9 @@ export class ProductDetails implements OnInit {
     numberOnly(event): boolean {
         const charCode = (event.which) ? event.which : event.keyCode;
 
-        if(charCode > 31 && (charCode < 48 || charCode > 57)) 
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
-         else
+        else
             return true;
     }
 
@@ -668,22 +728,88 @@ export class ProductDetails implements OnInit {
             });
         });
     }
-    toggeleEdit(evt) {
+    toggeleChangeView(evt) {
+        this.indicator = "create";
         this.view = evt.checked;
         if (this.view) {
-            this.productForm.enable();
+            this.sliderName = "View Products";
+            this.productForm.reset();
+            this.imgProductUrl = "";
+            this.profilePicId = "";
         } else {
-            this.productForm.disable();
+            this.sliderName = "Add New Product";
         }
-
     }
-    Close(evt) {
+    CancelProduct(evt) {
+        // this.view = !this.view;
+        // if (this.view) {
+        //     this.sliderName = "View Products";
+        //     this.productForm.reset();
+        //     this.imgProductUrl = "";
+        //     this.profilePicId = "";
+        // } else {
+        //     this.sliderName = "Add New Product";
+        // }
         this.dialogRefProduct.close();
+    }
+    deleteProduct(evt) {
+        this.cds2.deleteProduct(evt._id, this.cds2.tokenLogin).subscribe(response => {
+            this.nextProcess();
+        }, error => {
+            this.snackBar.open(error.error.error.message, "", {
+                duration: 2000,
+            });
+        });
+    }
+    editProduct(evt) {
+        this.bindDisplayValuesEdit(evt);
+        this.indicator = "edit";
+        this.view = !(this.view);
+        if (this.view) {
+            this.sliderName = "Add New Product";
+        } else {
+            this.sliderName = "View Products";
+            this.productForm.reset();
+            this.imgProductUrl = "";
+            this.profilePicId = "";
+        }
     }
     bindDisplayValues(val) {
         this.productForm.patchValue({
-
+            "vendorId": val.vendorObjId
         })
     }
+    bindDisplayValuesEdit(val) {
+        this.productForm.patchValue({
+            "name": val.name,
+            "code": val.code,
+            "type": val.type,
+            "capacity": val.capacity,
+            "description": val.description,
+            "price": val.price,
+            "vendorId": val.vendor
+        })
+    }
+}
+
+@Component({
+    templateUrl: 'payment-calculation.html',
+})
+export class PaymentCalaculation implements OnInit {
+
+    constructor(
+        public dialogRefCalculation: MatDialogRef<AddUser>,
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,
+        private fb: FormBuilder,
+        private snackBar: MatSnackBar,
+        private cds2: CommonServiceService) { }
+
+    ngOnInit() {
+
+    }
+    ClosePaymentCalculation() {
+        this.dialogRefCalculation.close();
+    }
+
 }
 

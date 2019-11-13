@@ -1,86 +1,38 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Admin/Ads'" [icon]="'fa-picture-o'"></app-page-header>
-    <div class="row">
-      <div class="col-md-12">
-        <mat-toolbar>
-          <mat-toolbar-row>
-  
-            <span class="example-spacer"></span>
-            <div class="main">
-              <div class="form-group has-search">
-                <span class="fa fa-search form-control-feedback"></span>
-                <input type="text" class="form-control" placeholder="Search" (keyup)="applyFilter($event.target.value)"
-                  matTooltip="Search">
-              </div>
-            </div>
-            <button mat-icon-button color="primary" aria-label="Add new Area" matTooltip="Add new Area">
-              <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="add()">add_box</mat-icon>
+  <app-page-header [heading]="'Admin/Ads'" [icon]="'fa-picture-o'"></app-page-header>
+  <div class="row">
+    <div fxLayout="row wrap" fxLayout.lt-sm="row" fxLayoutGap="5px" fxLayoutAlign="flex-start">
+      <div *ngFor="let _ of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" style="
+      border: 4px solid rgb(148, 192, 218) !important;">
+        <!-- <mat-card>
+          <div>Shiba Inu</div>
+          <img mat-card-image src="../assets/images/avtar.png" alt="Photo of a Shiba Inu">
+          <div>
+            <p>
+              The Shiba Inu is the smallest.
+            </p>
+          </div>
+          <div>
+            <button mat-button>LIKE</button>
+            <button mat-button>SHARE</button>
+          </div>
+         </mat-card> -->
+        <div fxFlex="0 1 calc(33.3% - 32px)" fxFlex.lt-md="0 1 calc(50% - 10px)" fxFlex.lt-sm="100%">
+          <h6> Name </h6>
+          <div>
+            <img src="../assets/images/avtar.png" alt="Ads">
+          </div>
+          <div class="row">
+            <button mat-button color="primary" class="col-sm-6">
+              <mat-icon (click)="editProduct(val)">edit</mat-icon>
             </button>
-  
-  
-          </mat-toolbar-row>
-        </mat-toolbar>
-  
-        <div class="example-container mat-elevation-z8">
-          <table mat-table [dataSource]="dataSource" matSort>
-  
-            <!-- Position Column -->
-            <ng-container matColumnDef="code">
-              <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> AREA CODE </th>
-              <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.code}} </td>
-            </ng-container>
-  
-            <!-- Position Column -->
-            <ng-container matColumnDef="area">
-              <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> AREA NAME </th>
-              <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.area}} </td>
-            </ng-container>
-  
-            <!-- Name Column -->
-            <ng-container matColumnDef="lt">
-              <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> LATITUDE </th>
-              <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.lt}} </td>
-            </ng-container>
-  
-            <!-- Weight Column -->
-            <ng-container matColumnDef="lg">
-              <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> LONGITUDE </th>
-              <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.lg}} </td>
-            </ng-container>
-  
-            
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="actions">
-              <th style="width: 20%" mat-header-cell *matHeaderCellDef> ACTION </th>
-              <td style="width: 20%" mat-cell *matCellDef="let element">
-                <div class="row">
-                  <button mat-icon-button aria-label="Edit Area" matTooltip="Edit" style="width: 30px">
-                    <mat-icon color="primary" aria-hidden="false" aria-label="edit" (click)="edit(element)">edit
-                    </mat-icon>
-                  </button>
-  
-                  <button mat-icon-button aria-label="Remove Area" matTooltip="Remove" style="width: 30px">
-                    <mat-icon color="warn" aria-hidden="false" aria-label="delete icon" (click)="remove(element)">delete
-                    </mat-icon>
-                  </button>
-  
-                  <button mat-icon-button aria-label="Display Area" matTooltip="Display" style="width: 30px">
-                    <mat-icon color="primary" aria-hidden="false" aria-label="display" (click)="display(element)">
-                      keyboard_arrow_right</mat-icon>
-                  </button>
-                </div>
-              </td>
-            </ng-container>
-  
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-  
-          <mat-paginator [pageSizeOptions]="[7, 10, 15]" showFirstLastButtons></mat-paginator>
+            <button mat-button color="primary" class="col-sm-6">
+              <mat-icon (click)="deleteProduct(val)">delete</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
-  
-  
-      
-      </div>
+
     </div>
+  </div>
+</div>

@@ -249,7 +249,9 @@
         *ngIf="displayInd">
         Save</button> &nbsp; &nbsp;
       <button class="btn" type="reset" matTooltip="Reset" (click)="clearScreen($event)" *ngIf="displayInd">
-        Reset</button>
+        Reset</button> &nbsp; &nbsp;
+        <button class="btn btn-success" type="submit" matTooltip="Close" (click)="CloseUser($event)" *ngIf="!this.view">
+            Close</button>
     </span>
   </div>
 </mat-dialog-actions>

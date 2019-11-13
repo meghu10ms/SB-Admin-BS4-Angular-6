@@ -15,6 +15,17 @@ export class CommonServiceService implements OnInit {
 
   ngOnInit() { }
 
+  //get Token
+  getTokenAccess(token) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer" + " " + token
+      })
+    }
+    return httpOptions;
+  }
+
   /*######################################### EDIA DETAILS STARTS ##################################### */
   //post media files
   postMedia(body) {
@@ -23,13 +34,8 @@ export class CommonServiceService implements OnInit {
 
   //get media location
   getMedia(token, mediaId) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
-    return this.http.get(this.url + "media/" + mediaId, httpOptions);
+
+    return this.http.get(this.url + "media/" + mediaId, this.getTokenAccess(token));
   }
 
   /*######################################### MEDIA DETAILS ENDS ##################################### */
@@ -51,84 +57,45 @@ export class CommonServiceService implements OnInit {
 
   //Change Password
   changePassword(token, body) {
-    debugger;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
-    return this.http.post(this.url + "admin/change-password/", body, httpOptions);
+
+    return this.http.post(this.url + "admin/change-password/", body, this.getTokenAccess(token));
   }
   //get current admin details
   getCurentAdminDetails(token) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
-    return this.http.get(this.url + "admin/current-admin", httpOptions);
+
+    return this.http.get(this.url + "admin/current-admin", this.getTokenAccess(token));
   }
 
   //get all admins details
   getAllAdminDetails(token) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
-    return this.http.get(this.url + "admin", httpOptions);
+
+    return this.http.get(this.url + "admin", this.getTokenAccess(token));
   }
 
   //create admin details
   postAreaAdmin(token, body) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
 
-    return this.http.post(this.url + "admin/", body, httpOptions);
+    return this.http.post(this.url + "admin/", body, this.getTokenAccess(token));
   }
 
   //update admin details
   updateAreaAdmin(adminid, token, body) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
 
-    return this.http.patch(this.url + "admin/" + adminid, body, httpOptions);
+    return this.http.patch(this.url + "admin/" + adminid, body, this.getTokenAccess(token));
   }
 
   //delete admin details
   deleteAreaAdmin(token, adminid) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
 
-    return this.http.delete(this.url + "admin/" + adminid, httpOptions);
+    return this.http.delete(this.url + "admin/" + adminid, this.getTokenAccess(token));
   }
 
   /*######################################### ADMIN DETAILS ENDS ##################################### */
   /*######################################### AREA DETAILS STARTS ##################################### */
   //get area detail
   getAllAraeDetails(token) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
-    return this.http.get(this.url + "area/", httpOptions);
+
+    return this.http.get(this.url + "area/", this.getTokenAccess(token));
   }
 
   //get area detail
@@ -138,59 +105,64 @@ export class CommonServiceService implements OnInit {
 
   //delete area details
   deleteAreaDetails(areaCode, token) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
+
     return this.http.delete(this.url + "area/" + areaCode);
   }
 
   //update area detail
   updateAreaDetails(areaCode, body, token) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
+
     return this.http.patch(this.url + "area/" + areaCode, body);
   }
 
   /*######################################### AREA DETAILS ENDS ##################################### */
   /*######################################### VENDOR DETAILS STARTS ##################################### */
+  //create vendor
   postVendor(token, body) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
 
-    return this.http.post(this.url + "vendor/", body, httpOptions);
+    return this.http.post(this.url + "vendor/", body, this.getTokenAccess(token));
   }
   //get all Vendor details
   getAllVendorDetails(token) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
-    return this.http.get(this.url + "vendor/", httpOptions);
+
+    return this.http.get(this.url + "vendor/", this.getTokenAccess(token));
   }
 
   //update Vendor details
   updateVendor(vendorid, token, body) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer" + " " + token
-      })
-    };
 
-    return this.http.patch(this.url + "vendor/" + vendorid, body, httpOptions);
+    return this.http.patch(this.url + "vendor/" + vendorid, body, this.getTokenAccess(token));
+  }
+
+  //delete Vendor details
+  deleteVendor(vendorid, token) {
+
+    return this.http.delete(this.url + "vendor/" + vendorid, this.getTokenAccess(token));
+  }
+  /*######################################### VENDOR DETAILS ENDS ##################################### */
+  /*######################################### Product DETAILS STARTS ##################################### */
+  //create product
+  postProduct(token, body) {
+
+    return this.http.post(this.url + "products/", body, this.getTokenAccess(token));
+  }
+
+  //get product
+  getProduct(token) {
+
+    return this.http.get(this.url + "products/", this.getTokenAccess(token));
+  }
+
+  //update product details
+  updateProduct(productid, token, body) {
+
+    return this.http.patch(this.url + "products/" + productid, body, this.getTokenAccess(token));
+  }
+
+  //delete product details
+  deleteProduct(productid, token) {
+
+    return this.http.delete(this.url + "products/" + productid, this.getTokenAccess(token));
   }
   /*######################################### VENDOR DETAILS ENDS ##################################### */
 }

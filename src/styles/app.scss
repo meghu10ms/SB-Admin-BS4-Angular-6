@@ -59,3 +59,22 @@ mat-dialog-container{
       .mat-progress-spinner circle, .mat-spinner circle {
        stroke: #69bcec;
        }
+
+       .product-card{
+        border: 5px solid rgb(230, 201, 201) !important;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+      }
+
+    //   .mat-card {
+    //     padding: 2px !important;
+    // }
+      .mat-card-image {
+        /* width: calc(100% + 32px); */
+        margin: 0 -16px 16px -16px;
+        margin-left: 20% !important;
+    }
+    .img {
+        width: 40% !important;
+        height: 40% !important;
+       }

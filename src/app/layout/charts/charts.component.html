@@ -1,8 +1,8 @@
 <div class="overlay1" *ngIf="visible">
-    <span class="spinner">
-      <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
-    </span>
-  </div>
+  <span class="spinner">
+    <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+  </span>
+</div>
 <div [@routerTransition]>
   <app-page-header [heading]="'Vendor'" [icon]="'fa-user'"></app-page-header>
   <div class="row">
@@ -33,7 +33,8 @@
           <!-- Position Column -->
           <ng-container matColumnDef="firstname">
             <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.firstname}} </td>
+            <td style="width: 20%" mat-cell *matCellDef="let element">
+              <a  href="javascript:void(0)" (click)="onIndidualVendor($event,element)">{{element.firstname}} </a> </td>
           </ng-container>
 
           <!-- Position Column -->
@@ -62,7 +63,7 @@
 
           <!-- Symbol Column -->
           <ng-container matColumnDef="actions">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef > ACTION </th>
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef> ACTION </th>
             <td style="width: 20%" mat-cell *matCellDef="let element">
               <div class="row">
                 <button mat-icon-button aria-label="Edit User" matTooltip="Edit" style="width: 30px">

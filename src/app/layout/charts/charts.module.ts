@@ -10,19 +10,21 @@ import {
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
     MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,MatCardModule,MatGridListModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {FlexLayoutModule} from '@angular/flex-layout';
 import { AddUser } from './charts.component';
 import { ProductDetails } from './charts.component';
+import { PaymentCalaculation } from './charts.component';
 
 @NgModule({
     imports: [CommonModule, Ng2Charts, ChartsRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
         FormsModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
-        MatSlideToggleModule],
-    declarations: [ChartsComponent, AddUser,ProductDetails],
-    entryComponents: [AddUser,ProductDetails]
+        MatSlideToggleModule,MatCardModule,FlexLayoutModule,MatGridListModule],
+    declarations: [ChartsComponent, AddUser,ProductDetails,PaymentCalaculation],
+    entryComponents: [AddUser,ProductDetails,PaymentCalaculation]
 })
 export class ChartsModule { }

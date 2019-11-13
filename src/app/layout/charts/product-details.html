@@ -1,17 +1,16 @@
+<div class="text-left">
+    <mat-slide-toggle color="Primary" [checked]="this.view" (change)="toggeleChangeView($event)" labelPosition="before"
+        matTooltip={{this.sliderName}}>
+        {{this.sliderName}}
+    </mat-slide-toggle>
+</div>
+<hr />
 <div mat-dialog-content>
 
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-3" *ngIf="this.view">
             <form>
-                <div class="text-left">
-                    <mat-slide-toggle color="Primary" [checked]="this.view" 
-                        (change)="toggeleEdit($event)" labelPosition="before" matTooltip="Edit">
-                        Edit
-                    </mat-slide-toggle>
 
-                </div>
-
-                <hr />
                 <div class="text-left">
                     <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar"
                         *ngIf="!imgProductUrl">
@@ -22,33 +21,30 @@
                     <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
                 </div>
 
-
             </form>
         </div>
-
-
-        <div class="col-sm-9">
+        <div class="col-sm-9" *ngIf="this.view">
             <form class="form-inline" [formGroup]="productForm">
                 <div class="col-sm-6">
 
                     <mat-form-field appearance="outline">
                         <mat-label style="font-weight: bold">Product Name</mat-label>
                         <input matInput placeholder=" Enter Product Name" formControlName="name" maxlength="20"
-                            style="font-weight: bold" >
+                            style="font-weight: bold">
                         <mat-icon matSuffix>person</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label style="font-weight: bold">Product Code</mat-label>
                         <input matInput placeholder="Enter Product Code" formControlName="code" maxlength="20"
-                            style="font-weight: bold" >
+                            style="font-weight: bold">
                         <mat-icon matSuffix>person_pin</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label style="font-weight: bold">Product Description</mat-label>
                         <input matInput placeholder="Enter Product Description" formControlName="description"
-                            maxlength="20" style="font-weight: bold" >
+                            maxlength="20" style="font-weight: bold">
                         <mat-icon matSuffix>person_pin</mat-icon>
                     </mat-form-field>
 
@@ -59,7 +55,17 @@
                     <mat-form-field appearance="outline">
                         <mat-label style="font-weight: bold">Price</mat-label>
                         <input matInput placeholder="Enter Price" formControlName="price" maxlength="5"
-                            style="font-weight: bold" (keypress)="numberOnly($event)">
+                            style="font-weight: bold" type="number">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">Type</mat-label>
+                        <mat-select formControlName="type" placeholder="Enter type" style="font-weight: bold">
+                            <mat-option *ngFor="let val of productType" [value]="val.type">
+                                {{val.type}}
+                            </mat-option>
+                        </mat-select>
                         <mat-icon matSuffix>account_tree</mat-icon>
                     </mat-form-field>
 
@@ -67,26 +73,54 @@
                     <mat-form-field appearance="outline">
                         <mat-label style="font-weight: bold">Capacity</mat-label>
                         <input matInput placeholder="Enter Capacity" formControlName="capacity" maxlength="6"
-                            style="font-weight: bold" (keypress)="numberOnly($event)">
+                            style="font-weight: bold" type="number">
                         <mat-icon matSuffix>pages</mat-icon>
                     </mat-form-field>
 
                 </div>
             </form>
         </div>
+
+        <div class="row" *ngIf="!this.view">
+            <div class="col-sm-4 product-card" *ngFor="let val of this.productList">
+                <mat-card class="card">
+                    <div class="row">
+                        <h6 class="col-sm-12">{{val.name}}({{val.code}})</h6>
+                    </div>
+                    <img mat-card-image src="../assets/images/avtar.png" alt="Name"
+                        class="avatar img-circle img-thumbnail img">
+                    <mat-card-content>
+                        <p>
+                            {{val.description}}
+                        </p>
+                        <div class="row">
+                            <h6 class="col-sm-6">Qty : {{val.capacity}}</h6>
+                            <h6 class="col-sm-6">Rate : {{val.price}}</h6>
+                        </div>
+                        <div class="row">
+                            <h6 class="col-sm-12">Type : {{val.type}}</h6>
+                        </div>
+                    </mat-card-content>
+                    <div class="row">
+                        <button mat-button color="primary" class="col-sm-6">
+                            <mat-icon (click)="editProduct(val)">edit</mat-icon>
+                        </button>
+                        <button mat-button color="primary" class="col-sm-6">
+                            <mat-icon (click)="deleteProduct(val)">delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
     </div>
 </div>
-<mat-dialog-actions>
+<mat-dialog-actions *ngIf="this.view">
     <div class="navbar-nav ml-auto">
         <span>
-            <button class="btn btn-success" type="submit" matTooltip="Save"  (click)="createNewUser($event)"
-            *ngIf="this.view">
+            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createProduct($event)">
                 Save</button> &nbsp; &nbsp;
-            <button class="btn" type="reset" matTooltip="Reset" (click)="clearScreen($event)" *ngIf="this.view">
-                Reset</button>
-                &nbsp; &nbsp;
-            <button class="btn btn-success" type="submit" matTooltip="Close" (click)="Close($event)" *ngIf="!this.view">
-                Close</button>
+            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="CancelProduct($event)">
+                Cancel</button> &nbsp; &nbsp;
         </span>
     </div>
 </mat-dialog-actions>
