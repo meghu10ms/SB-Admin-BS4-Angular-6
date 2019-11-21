@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonServiceService } from '../../common-service.service';
 export interface DialogData {
   data1: any;
   ind: any;
@@ -19,17 +20,135 @@ export interface DialogData {
 })
 export class SupplierComponent implements OnInit {
 
-  displayedColumns: string[] = ['firstname', 'lastname', 'email', 'ph', 'region', 'actions'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  visible: any;
+  dataSource: any;
+  data: any;
+  displayedColumns: string[];
+
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   public comments = [];
-  constructor(public dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private cds: CommonServiceService) { }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
+    this.getSupplierDetails();
+  }
+  getSupplierDetails() {
+    this.visible = true;
+    this.cds.getAllDelivaryPartnerDetails(this.cds.tokenLogin).subscribe(response => {
+      this.visible = false;
+      this.data = this.getTableData(response["DeliveryPartner"]);
+      this.insertAreaToDelivaryPartner();
+      const ELEMENT_DATA = this.data;
+      this.displayedColumns = ['firstname', 'email', 'ph', 'bloodGroup', 'region', 'actions'];
+      this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
+
+        this.cds.areaData = this.getAreaData(response["areas"]);
+
+      }, error => {
+        this.visible = false;
+        this.snackBar.open(error.error.message, "", {
+          duration: 2000,
+        });
+      })
+    }, error => {
+      this.visible = false;
+      this.snackBar.open(error.error.message, "", {
+        duration: 2000,
+      });
+    })
+
+  }
+  insertAreaToDelivaryPartner() {
+    if (!this.cds.areaData) {
+      return;
+    }
+    this.data.forEach(element => {
+      for (var i = 0; i < this.cds.areaData.length; i++) {
+        if (element.areaId == this.cds.areaData[i].id) {
+          element.region = this.cds.areaData[i].code;
+          break;
+        }
+      }
+    });
+  }
+  getTableData(val) {
+    var formatJson = {};
+    var finalData = [];
+    for (let i = 0; i < val.length; i++) {
+      if (val[i].areaId === undefined) {
+        val[i].areaId = { "areaCode": "", "formattedAddress": "", "_id": "" }
+      }
+      formatJson = {
+        "title": val[i].name.title,
+        "firstname": val[i].name.firstName,
+        "lastname": val[i].name.lastName,
+        "email": val[i].email,
+        "ph": val[i].phoneNumber,
+        "deliveryPartnerId": val[i].deliveryPartnerId,
+        "areaId": val[i].areaId,
+        "deliveryPartnerObjId": val[i]._id,
+        "region": val[i].areaId.areaCode,
+        "bloodGroup": val[i].bloodGroup,
+
+        "Pcity": val[i].address.city,
+        "Pcountry": val[i].address.country,
+        "PflatNumber": (val[i].address.flatNumber ? val[i].address.flatNumber : ""),
+        "PlandMark": val[i].address.landMark,
+        "PpostalCode": val[i].address.postalCode,
+        "Pstate": val[i].address.state,
+        "street": (val[i].address.street ? val[i].address.street : ""),
+
+        "Ccity": val[i].currentAddress.city,
+        "Ccountry": val[i].currentAddress.country,
+        "CflatNumber": (val[i].currentAddress.flatNumber ? val[i].currentAddress.flatNumber : ""),
+        "ClandMark": val[i].currentAddress.landMark,
+        "CpostalCode": val[i].currentAddress.postalCode,
+        "Cstate": val[i].currentAddress.state,
+        "Cstreet": val[i].currentAddress.street,
+
+        "accountNumber": val[i].bankDetails.accountNumber,
+        "accountType": val[i].bankDetails.accountType,
+        "bankName": val[i].bankDetails.bankName,
+        "branchName": val[i].bankDetails.branchName,
+        "holderName": val[i].bankDetails.holderName,
+        "ifscCode": val[i].bankDetails.ifscCode,
+        "panNumber": val[i].bankDetails.taxNumber,
+
+        "isRetailer": val[i].isRetailer,
+        "activeDelivaryPartner": val[i].isDeliveryPartner,
+        "relatedVendor": val[i].relatedVendor,
+        "media": val[i].medias
+      }
+      finalData.push(formatJson);
+      formatJson = {};
+    }
+    return finalData;
+  }
+  getAreaData(val) {
+    var formatJson = {};
+    var finalData = [];
+    for (let i = 0; i < val.length; i++) {
+      formatJson = {
+        "code": val[i].areaCode,
+        "area": val[i].formattedAddress,
+        "lt": val[i].latitude,
+        "lg": val[i].longitude,
+        "id": val[i]._id
+
+      }
+      finalData.push(formatJson);
+      formatJson = {};
+    }
+    return finalData;
   }
 
   add() {
@@ -40,6 +159,7 @@ export class SupplierComponent implements OnInit {
       data: { ind: "create", data1: "" }
     })
     dialogRef.afterClosed().subscribe(result => {
+      this.getSupplierDetails();
     });
   }
   applyFilter(filterValue: string) {
@@ -56,6 +176,7 @@ export class SupplierComponent implements OnInit {
       data: { ind: "edit", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {
+      this.getSupplierDetails();
     });
   }
   display(val) {
@@ -68,11 +189,26 @@ export class SupplierComponent implements OnInit {
     });
   }
   remove(val) {
-    this.snackBar.open("Not Yet Implemented", "", {
-      duration: 2000,
+    this.cds.deleteDelivaryPartner(val.deliveryPartnerObjId, this.cds.tokenLogin).subscribe(response => {
+      this.snackBar.open(response["message"], "", {
+        duration: 2000,
+      });
+      this.getSupplierDetails();
+    }, error => {
+      this.snackBar.open(error.error.error.message, "", {
+        duration: 2000,
+      });
     });
   }
-
+  onIndidualVendor(event, value) {
+    const dialogRefCalculation = this.dialog.open(PaymentCalaculation, {
+        width: '80%',
+        height: '65%',
+        data: { data: value }
+    })
+    dialogRefCalculation.afterClosed().subscribe(result => {
+    });
+}
 }
 export interface PeriodicElement {
   firstname: string;
@@ -82,32 +218,8 @@ export interface PeriodicElement {
   region: string;
   address: string;
   city: string;
-  dob: string;
-
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { firstname: 'Hydrogen', lastname: 'Hydrogen', email: 'pavankumar@gmail.com', ph: 9899067878, region: 'Bommanahlli', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Helium', lastname: 'Helium', email: 'sureshkumar@gmail.com', ph: 9998767878, region: 'Banaswadi', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Lithium', lastname: 'Lithium', email: 'Ajay@gmail.com', ph: 6698767878, region: 'Yalahanka', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Beryllium', lastname: 'Beryllium', email: 'shashi@gmail.com', ph: 5698767878, region: 'Pinya', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Boron', lastname: 'Boron', email: 'mohan@gmail.com', ph: 9890067878, region: 'Kormangala', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Carbon', lastname: 'Carbon', email: 'guru@gmail.com', ph: 9898767823, region: 'Vijaynagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Nitrogen', lastname: 'Nitrogen', email: 'gouri@gmail.com', ph: 9845267878, region: 'Rajaji Nagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Oxygen', lastname: 'Oxygen', email: 'manu@gmail.com', ph: 9198767878, region: 'Mejestic', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Fluorine', lastname: 'Fluorine', email: 'john@gmail.com', ph: 9098767878, region: 'Madiwala', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Neon', lastname: 'Neon', email: 'aravind@gmail.com', ph: 7798767878, region: 'BTM', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Sodium', lastname: 'Sodium', email: 'pallavi@gmail.com', ph: 6698767878, region: 'Jaya nagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Magnesium', lastname: 'Magnesium', email: 'ali@gmail.com', ph: 5598767878, region: 'J P Nagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Aluminum', lastname: 'Aluminum', email: 'akram@gmail.com', ph: 6598767878, region: 'Kanakpur', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Silicon', lastname: 'Silicon', email: 'shahid@gmail.com', ph: 7898767878, region: 'Arakere', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Phosphorus', lastname: 'Phosphorus', email: 'sonu@gmail.com', ph: 7898767878, region: 'Electronic city', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Sulfur', lastname: 'Sulfur', email: 'gitar@gmail.com', ph: 9098767878, region: 'Singasandra', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Chlorine', lastname: 'Chlorine', email: 'tarun@gmail.com', ph: 1198767878, region: 'Manipal county', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Argon', lastname: 'Argon', email: 'stk@gmail.com', ph: 2298767878, region: 'DLF', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Potassium', lastname: 'Potassium', email: 'c12mnj@gmail.com', ph: 3498767878, region: 'Aksjaynagar', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-  { firstname: 'Calcium', lastname: 'Calcium', email: 'aa23aa@gmail.com', ph: 5298767878, region: 'Dommalur', address: 'Bangalore', city: 'Bangalore', dob: '20/05/2019' },
-];
 
 
 
@@ -116,96 +228,109 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class AddUser implements OnInit {
   newUserForm: FormGroup;
-  fileFor: FormGroup;
   val: any;
   pftelpat = "^[6789]{1}[0-9]{9}$";
   filevalid: any;
   filevalid1: any;
   displayInd: any;
-  //
+
   public imagePath;
   imgURL: any;
   public message: string;
-  //
+  region: any[];
+  titleCollection: any[];
+  profilePicId: any;
+  activeDelivaryPartner: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<AddUser>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder, private _snackBar: MatSnackBar) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private cds2: CommonServiceService) { }
 
   ngOnInit() {
-    debugger;
+
+    this.activeDelivaryPartner = true;
+    this.profilePicId = "";
+
+    this.region = this.cds2.areaData;
+    var data = this.dialogRef.componentInstance.data.data1;
+    this.titleCollection = [{ "title": "Mr" }, { "title": "Mrs" }, { "title": "Miss" }];
+    this.nextProcess();
+    if (this.dialogRef.componentInstance.data.ind !== 'create') {
+      this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]).subscribe(response => {
+        this.imgURL = response["path"];
+        this.profilePicId = response["_id"];
+      }, error => {
+        this.snackBar.open(error.error.message, "", {
+          duration: 2000,
+        });
+      });
+    }
+  }
+  nextProcess() {
     this.displayInd = true;
     this.createForm();
-    this.fileForm();
+    var data = this.dialogRef.componentInstance.data.data1;
     if (this.dialogRef.componentInstance.data.ind == 'display') {
       this.displayInd = false;
-      this.fileFor.disable()
-      this.newUserForm.disable()
+      this.newUserForm.disable();
 
-      this.bindDisplayValues(this.dialogRef.componentInstance.data.data1);
+      this.bindDisplayValues(data);
     } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
-      this.bindDisplayValues(this.dialogRef.componentInstance.data.data1);
+      this.bindDisplayValues(data);
     } else if (this.dialogRef.componentInstance.data.ind == 'create') {
-
     }
-
   }
   createForm() {
     this.newUserForm = this.fb.group({
+      title: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(this.pftelpat)]],
+      phone: ['+91', Validators.required],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
       region: ['', Validators.required],
-      dob: ['', Validators.required],
-      doj: ['', Validators.required],
-      adhar: ['', Validators.required]
-    })
-  }
-  fileForm() {
-    this.fileFor = this.fb.group({
-      profile: ['', Validators.required],
-      document: ['', Validators.required],
+      bloodGroup: ['', Validators.required],
 
+      PflatNumber: ['', Validators.required],
+      Pstreet: ['', Validators.required],
+      PlandMark: ['', Validators.required],
+      Pcity: ['Bangalore', Validators.required],
+      Pstate: ['Karnataka', Validators.required],
+      Pcountry: ['India', Validators.required],
+      PpostalCode: ['', Validators.required],
+
+      CflatNumber: ['', Validators.required],
+      Cstreet: ['', Validators.required],
+      ClandMark: ['', Validators.required],
+      Ccity: ['Bangalore', Validators.required],
+      Cstate: ['Karnataka', Validators.required],
+      Ccountry: ['India', Validators.required],
+      CpostalCode: ['', Validators.required],
+
+      accountNumber: ['', Validators.required],
+      accountType: ['', Validators.required],
+      bankName: ['', Validators.required],
+      branchName: ['', Validators.required],
+      holderName: ['', Validators.required],
+      ifscCode: ['', Validators.required],
+      panNumber: ['', Validators.required],
+      areaId: [''],
+      deliveryPartnerId: [''],
+      deliveryPartnerObjId: ['']
     })
   }
+
   clearScreen(oEvent) {
     this.newUserForm.reset();
-    this.fileFor.reset();
     this.filevalid = false;
     this.filevalid1 = false;
+    this.imgURL = "";
+    this.profilePicId = "";
   }
-  createNewUser(oEvent) {
-    debugger;
-    if (this.newUserForm.valid && this.fileFor.valid) {
-      debugger;
-    } else {
-      for (let name in this.newUserForm.controls) {
-        if (this.newUserForm.controls[name].value == '' || this.newUserForm.controls[name].value == null) {
-          this.newUserForm.controls[name].markAsTouched();
-          this._snackBar.open("Please Enter All values", "", {
-            duration: 2000,
-          });
-        }
-        else
-          this.newUserForm.controls[name].setErrors(null);
-      }
-      if (this.fileFor.controls['profile'].value == '' || this.fileFor.controls['profile'].value == null) {
-        this.filevalid = true;
-      } else {
-        this.filevalid = false;
-      }
-      if (this.fileFor.controls['document'].value == '' || this.fileFor.controls['document'].value == null) {
-        this.filevalid1 = true;
-      } else {
-        this.filevalid1 = false;
-      }
-    }
-  }
+
   numberOnly(event): boolean {
-    debugger;
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
@@ -214,34 +339,245 @@ export class AddUser implements OnInit {
   }
 
   preview(files) {
-    debugger;
     if (files.length === 0)
       return;
 
     var mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-      this.message = "Only images are supported.";
+      this.snackBar.open("File Type Not supporting upload imgage only", "", {
+        duration: 2000,
+      });
+      return;
+    }
+    if (files[0].size > 2000000) {
+      this.snackBar.open("File size excceds 2MB", "", {
+        duration: 2000,
+      });
       return;
     }
 
-    var reader = new FileReader();
-    this.imagePath = files;
-    reader.readAsDataURL(files[0]);
-    reader.onload = (_event) => {
-      this.imgURL = reader.result;
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    formData.append('name', 'profile_pictre');
+    this.cds2.postMedia(formData).subscribe(response => {
+      this.imgURL = response["media"].path;
+      this.profilePicId = response["media"]._id;
+      this.filevalid = false;
+    }, error => {
+      this.snackBar.open(error.error.error.message, "", {
+        duration: 2000,
+      });
+    });
+  }
+  createNewUser(oEvent) {
+    if (this.newUserForm.valid && this.profilePicId != "") {
+      var medi = [];
+      medi.push(this.profilePicId);
+      var filledData = this.newUserForm.value;
+      var aId = "";
+      for (var i = 0; i < this.cds2.areaData.length; i++) {
+        if (filledData.region == this.cds2.areaData[i].code) {
+          aId = this.cds2.areaData[i].id;
+        }
+      }
+
+      if (this.dialogRef.componentInstance.data.ind == 'create') {
+        var createData = {
+          "name": {
+            "title": filledData.title,
+            "firstName": filledData.firstname,
+            "lastName": filledData.lastname
+          },
+          "address": {
+            "flatNumber": filledData.PflatNumber,
+            "street": filledData.Pstreet,
+            "landMark": filledData.PlandMark,
+            "city": filledData.Pcity,
+            "state": filledData.Pstate,
+            "country": filledData.Pcountry,
+            "postalCode": filledData.PpostalCode,
+            "formattedAddress": "all the Above",
+          },
+          "currentAddress": {
+            "flatNumber": filledData.CflatNumber,
+            "street": filledData.Cstreet,
+            "landMark": filledData.ClandMark,
+            "city": filledData.Ccity,
+            "state": filledData.Cstate,
+            "country": filledData.Ccountry,
+            "postalCode": filledData.CpostalCode,
+            "formattedAddress": "all the Above",
+          },
+          "phoneNumber": filledData.phone,
+          "email": filledData.email,
+          "password": filledData.email,
+          "areaId": aId,
+          "bloodGroup": filledData.bloodGroup,
+          "formattedAddress": "all the Above",
+          "medias": medi,
+
+          "bankDetails": {
+            "accountNumber": filledData.accountNumber,
+            "accountType": filledData.accountType,
+            "holderName": filledData.holderName,
+            "ifscCode": filledData.ifscCode,
+            "bankName": filledData.bankName,
+            "branchName": filledData.branchName,
+            "panNumber": filledData.taxNumber
+          },
+          "isActive": this.activeDelivaryPartner,
+        };
+        this.cds2.postDelivaryPartner(this.cds2.tokenLogin, createData).subscribe(response => {
+          this.snackBar.open(response["message"], "", {
+            duration: 2000,
+          });
+          this.dialogRef.close();
+        }, error => {
+          this.snackBar.open(error.error.error.message, "", {
+            duration: 2000,
+          });
+        });
+      } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
+        var createData1 = {
+          "name": {
+            "title": filledData.title,
+            "firstName": filledData.firstname,
+            "lastName": filledData.lastname
+          },
+          "address": {
+            "flatNumber": filledData.PflatNumber,
+            "street": filledData.Pstreet,
+            "landMark": filledData.PlandMark,
+            "city": filledData.Pcity,
+            "state": filledData.Pstate,
+            "country": filledData.Pcountry,
+            "postalCode": filledData.PpostalCode,
+            "formattedAddress": "all the Above",
+          },
+          "currentAddress": {
+            "flatNumber": filledData.CflatNumber,
+            "street": filledData.Cstreet,
+            "landMark": filledData.ClandMark,
+            "city": filledData.Ccity,
+            "state": filledData.Cstate,
+            "country": filledData.Ccountry,
+            "postalCode": filledData.CpostalCode,
+            "formattedAddress": "all the Above",
+          },
+          "phoneNumber": filledData.phone,
+          "email": filledData.email,
+          //"password": filledData.email,
+          "areaId": aId,
+          "bloodGroup": filledData.bloodGroup,
+          "formattedAddress": "all the Above",
+          "medias": medi,
+
+          "bankDetails": {
+            "accountNumber": filledData.accountNumber,
+            "accountType": filledData.accountType,
+            "holderName": filledData.holderName,
+            "ifscCode": filledData.ifscCode,
+            "bankName": filledData.bankName,
+            "branchName": filledData.branchName,
+            "panNumber": filledData.taxNumber
+          },
+          "isActive": this.activeDelivaryPartner,
+        };
+        this.cds2.updateDelivaryPartner(filledData.deliveryPartnerObjId, this.cds2.tokenLogin, createData1).subscribe(response => {
+          this.snackBar.open(response["message"], "", {
+            duration: 2000,
+          });
+          this.dialogRef.close();
+        }, error => {
+          this.snackBar.open(error.error.error.message, "", {
+            duration: 2000,
+          });
+        });
+      }
+
+    } else {
+      for (let name in this.newUserForm.controls) {
+        if (this.newUserForm.controls[name].value == '' || this.newUserForm.controls[name].value == null) {
+          this.newUserForm.controls[name].markAsTouched();
+          this.snackBar.open("Please Enter All values", "", {
+            duration: 2000,
+          });
+        }
+        else
+          this.newUserForm.controls[name].setErrors(null);
+      }
+      if (this.profilePicId == "") {
+        this.filevalid = true;
+      } else {
+        this.filevalid = false;
+      }
+
     }
   }
+  toggeleActive(evt) {
+    this.activeDelivaryPartner = evt.checked;
+  }
+  CloseUser() {
+    this.dialogRef.close();
+  }
   bindDisplayValues(val) {
-    debugger;
     this.newUserForm.patchValue({
+      title: val.title,
       firstname: val.firstname,
       lastname: val.lastname,
-      email: val.email,
       phone: val.ph,
-      address: val.address,
-      city: val.city,
+      email: val.email,
+      bloodGroup: val.bloodGroup,
       region: val.region,
-      dob: new Date()
+
+      PflatNumber: val.PflatNumber,
+      Pstreet: val.Pstreet,
+      PlandMark: val.PlandMark,
+      Pcity: val.Pcity,
+      Pstate: val.Pstate,
+      Pcountry: val.Pcountry,
+      PpostalCode: val.PpostalCode,
+
+      CflatNumber: val.CflatNumber,
+      Cstreet: val.Cstreet,
+      ClandMark: val.ClandMark,
+      Ccity: val.Ccity,
+      Cstate: val.Cstate,
+      Ccountry: val.Ccountry,
+      CpostalCode: val.CpostalCode,
+
+      accountNumber: val.accountNumber,
+      accountType: val.accountType,
+      bankName: val.bankName,
+      branchName: val.branchName,
+      holderName: val.holderName,
+      ifscCode: val.ifscCode,
+      panNumber: val.panNumber,
+      areaId: val.areaId,
+      deliveryPartnerId: val.deliveryPartnerId,
+      deliveryPartnerObjId: val.deliveryPartnerObjId
     })
   }
+}
+
+
+@Component({
+  templateUrl: 'payment-calculation.html',
+})
+export class PaymentCalaculation implements OnInit {
+
+  constructor(
+      public dialogRefCalculation: MatDialogRef<AddUser>,
+      @Inject(MAT_DIALOG_DATA) public data: DialogData,
+      private fb: FormBuilder,
+      private snackBar: MatSnackBar,
+      private cds2: CommonServiceService) { }
+
+  ngOnInit() {
+
+  }
+  ClosePaymentCalculation() {
+      this.dialogRefCalculation.close();
+  }
+
 }

@@ -403,7 +403,6 @@ export class AddUser implements OnInit {
   }
 
   preview(files) {
-    debugger;
     if (files.length === 0)
       return;
 
@@ -474,7 +473,6 @@ export class AddUser implements OnInit {
     this.activeAdmin = evt.checked;
   }
   bindDisplayValues(val) {
-    debugger;
     this.newUserForm.patchValue({
       title: val.title,
       firstname: val.firstname,

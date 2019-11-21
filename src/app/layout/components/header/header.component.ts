@@ -131,7 +131,6 @@ export class ViewProfile implements OnInit {
             ifscCode: val.bankDetails.ifscCode,
             taxNumber: val.bankDetails.taxNumber
         })
-        debugger;
     }
 
 }
@@ -152,7 +151,6 @@ export class ChangePassword implements OnInit {
         private cds2: CommonServiceService) { }
 
     ngOnInit() {
-        debugger;
         this.changePass = this.fb.group({
             id: [''],
             oldPassword: ['', Validators.required],

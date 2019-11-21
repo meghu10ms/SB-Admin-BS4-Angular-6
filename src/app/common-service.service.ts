@@ -165,5 +165,29 @@ export class CommonServiceService implements OnInit {
     return this.http.delete(this.url + "products/" + productid, this.getTokenAccess(token));
   }
   /*######################################### VENDOR DETAILS ENDS ##################################### */
+  /*######################################### DELIVARY PARTNER STARTS ##################################### */
+  //create Delivary Partner
+  postDelivaryPartner(token, body) {
+
+    return this.http.post(this.url + "develiverypartner/", body, this.getTokenAccess(token));
+  }
+  //get all Delivary Partner
+  getAllDelivaryPartnerDetails(token) {
+
+    return this.http.get(this.url + "develiverypartner/", this.getTokenAccess(token));
+  }
+
+  //update Delivary Partner
+  updateDelivaryPartner(vendorid, token, body) {
+
+    return this.http.patch(this.url + "develiverypartner/" + vendorid, body, this.getTokenAccess(token));
+  }
+
+  //delete Delivary Partner
+  deleteDelivaryPartner(vendorid, token) {
+
+    return this.http.delete(this.url + "develiverypartner/" + vendorid, this.getTokenAccess(token));
+  }
+  /*######################################### Delivary Partner DETAILS ENDS ##################################### */
 }
 

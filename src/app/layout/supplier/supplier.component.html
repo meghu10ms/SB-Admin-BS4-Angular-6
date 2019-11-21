@@ -1,3 +1,8 @@
+<div class="overlay1" *ngIf="visible">
+  <span class="spinner">
+    <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+  </span>
+</div>
 <div [@routerTransition]>
   <app-page-header [heading]="'Supplier'" [icon]="'fa-motorcycle'"></app-page-header>
   <div class="row">
@@ -27,13 +32,8 @@
           <!-- Position Column -->
           <ng-container matColumnDef="firstname">
             <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.firstname}} </td>
-          </ng-container>
-
-          <!-- Position Column -->
-          <ng-container matColumnDef="lastname">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> LAST NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.lastname}} </td>
+            <td style="width: 20%" mat-cell *matCellDef="let element">
+              <a href="javascript:void(0)" (click)="onIndidualVendor($event,element)">{{element.firstname}} </a> </td>
           </ng-container>
 
           <!-- Name Column -->
@@ -52,6 +52,12 @@
           <ng-container matColumnDef="region">
             <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
             <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.region}} </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="bloodGroup">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> Blood Group </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.bloodGroup}} </td>
           </ng-container>
 
           <!-- Symbol Column -->

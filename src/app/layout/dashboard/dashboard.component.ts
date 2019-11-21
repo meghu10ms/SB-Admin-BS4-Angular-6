@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
         
         var chart = this.AmCharts.makeChart( "chartdiv", {
             "hideCredits":"true",
-            "type": "pie",
+            "type": "serial",
             "theme": "none",
             "titles": [{
                 "text": "Demo Chart-1"

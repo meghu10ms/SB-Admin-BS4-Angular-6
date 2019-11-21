@@ -112,7 +112,6 @@ export class AreaComponent implements OnInit {
     });
   }
   remove(val) {
-    debugger;
     this.cds.deleteAreaDetails(val.id, this.cds.tokenLogin).subscribe(response => {
       this.snackBar.open(response["message"], "", {
         duration: 2000,

@@ -8,19 +8,22 @@ import {
     MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
-    MatNativeDateModule, MatSnackBarModule
+    MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
+    MatSlideToggleModule,MatCardModule,MatGridListModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddUser } from './supplier.component';
+import { PaymentCalaculation } from './supplier.component';
 
 
 @NgModule({
     imports: [CommonModule, SupplierRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
-        FormsModule, MatSnackBarModule
+        FormsModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
+        MatSlideToggleModule,MatCardModule,MatGridListModule
     ],
-    declarations: [SupplierComponent, AddUser],
-    entryComponents: [AddUser]
+    declarations: [SupplierComponent, AddUser,PaymentCalaculation],
+    entryComponents: [AddUser,PaymentCalaculation]
 })
 export class SupplierModule { }

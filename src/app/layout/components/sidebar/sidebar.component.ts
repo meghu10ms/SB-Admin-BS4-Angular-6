@@ -86,7 +86,6 @@ export class SidebarComponent implements OnInit {
     }
 
     onProfile() {
-        debugger;
     }
 
 }

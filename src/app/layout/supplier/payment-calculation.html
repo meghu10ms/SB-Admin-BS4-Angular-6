@@ -1,0 +1,98 @@
+<div mat-dialog-content>
+    <!-- <div class="row"> -->
+
+    <form class="form-inline">
+        <div class="col-sm-3.6">
+            <mat-form-field appearance="outline">
+                <mat-label style="font-weight: bold">Delivary Partner Name</mat-label>
+                <input matInput placeholder="Delivary Partner Name" maxlength="20" disabled=true style="font-weight: bold">
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-3.6">
+            <mat-form-field appearance="outline">
+                <mat-label style="font-weight: bold">Delivary Partner Code</mat-label>
+                <input matInput placeholder="Delivary Partner Code" maxlength="20" disabled=true style="font-weight: bold">
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-3.6">
+            <mat-form-field appearance="outline">
+                <mat-label style="font-weight: bold">Region</mat-label>
+                <input matInput placeholder="Region" maxlength="20" disabled=true style="font-weight: bold">
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-2">
+            <mat-form-field appearance="outline">
+                <mat-label style="font-weight: bold">Phone Number</mat-label>
+                <input matInput placeholder="Phone Number" maxlength="20" disabled=true style="font-weight: bold">
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12 text-center">
+            <mat-form-field color="primary" appearance="outline">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="picker1" readonly style="font-weight: bold">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field color="primary" appearance="outline">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="picker2" readonly style="font-weight: bold">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2 color="primary" disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <button class="btn btn-success" type="submit" matTooltip="Search" (click)="PaymentEstimate($event)">
+                Go</button>
+        </div>
+    </form>
+
+    <!-- </div> -->
+    <hr />
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Total Can Recived : 0</label>
+        </div>
+        <div class="col-sm-4">
+            <label>Total With Can Sold : 0</label>
+        </div>
+        <div class="col-sm-4">
+            <label>Total Without Can Sold : 0</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Total Can Recived Amount : 0</label>
+        </div>
+        <div class="col-sm-4">
+            <label>Total With Can Sold Amount : 0</label>
+        </div>
+        <div class="col-sm-4">
+            <label>Total Without Can Sold Amount : 0</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Total Can Recived Amount: 0</label>
+        </div>
+        <div class="col-sm-4">
+            <label>Total Can Sold Amount : 0</label>
+        </div>
+        <!-- <div class="col-sm-4">
+            <label>Total Can Sold : 0</label>
+        </div> -->
+    </div>
+</div>
+<mat-dialog-actions>
+    <div class="navbar-nav ml-auto">
+        <span>
+            <button class="btn btn-success" type="submit" matTooltip="Close" (click)="ClosePaymentCalculation($event)">
+                Close</button>
+        </span>
+    </div>
+</mat-dialog-actions>

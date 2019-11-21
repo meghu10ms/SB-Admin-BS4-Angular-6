@@ -22,7 +22,6 @@ export class SignupComponent implements OnInit {
         })
     }
     onChangePassword() {
-        debugger;
         if (this.forgotPasswordForm.invalid) {
             this.snackBar.open("Enter Valid Email", "", {
                 duration: 2000,
@@ -35,7 +34,6 @@ export class SignupComponent implements OnInit {
                 duration: 2000,
             });
         }, error => {
-            debugger;
             this.snackBar.open(error.error.message, "", {
                 duration: 2000,
             });

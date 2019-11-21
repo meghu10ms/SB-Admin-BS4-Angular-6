@@ -116,7 +116,6 @@ export class ViewAd implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData, private fb: FormBuilder, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    debugger;
     this.displayInd = true;
     this.createForm();
     
@@ -147,9 +146,7 @@ export class ViewAd implements OnInit {
     // this.filevalid1 = false;
   }
   createNewUser(oEvent) {
-    debugger;
     if (this.newUserForm.valid) {
-      debugger;
     } else {
       for (let name in this.newUserForm.controls) {
         if (this.newUserForm.controls[name].value == '' || this.newUserForm.controls[name].value == null) {
@@ -166,7 +163,6 @@ export class ViewAd implements OnInit {
   
   
   bindDisplayValues(val) {
-    debugger;
     this.newUserForm.patchValue({
       code: val.code,
       area: val.area,

@@ -172,7 +172,6 @@ export class ChartsComponent implements OnInit {
         });
     }
     remove(val) {
-        debugger;
         this.cds.deleteVendor(val.vendorObjId, this.cds.tokenLogin).subscribe(response => {
             this.snackBar.open(response["message"], "", {
                 duration: 2000,
@@ -362,7 +361,7 @@ export class AddUser implements OnInit {
                     },
                     "phoneNumber": filledData.phone,
                     "email": filledData.email,
-                    //"password": filledData.email,
+                    "password": filledData.email,
                     "areaId": aId,
                     "formattedAddress": "all the Above",
                     "medias": medi,
@@ -607,8 +606,18 @@ export class ProductDetails implements OnInit {
     }
     nextProcess() {
         this.cds2.getProduct(this.cds2.tokenLogin).subscribe(response => {
-
+            debugger;
             this.productList = response;
+            var pathX = "http://localhost:3000/media/";
+            for (var i = 0; i < this.productList.length; i++) {
+                debugger;
+                if (this.productList[i].medias[0]) {
+                    this.productList[i].imageDummyPath = pathX + this.productList[i].medias[0] + "/download";
+                } else {
+                    this.productList[i].imageDummyPath = "../assets/images/avtar.png";
+                }
+                //this.productList[i].imageDummyPath 
+            }
         }, error => {
             this.snackBar.open(error.error.message, "", {
                 duration: 2000,

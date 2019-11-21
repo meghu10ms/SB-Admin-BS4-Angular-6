@@ -149,7 +149,6 @@ export class AddUser implements OnInit {
   }
 
   numberOnly(event): boolean {
-    debugger;
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
@@ -159,7 +158,6 @@ export class AddUser implements OnInit {
 
 
   bindDisplayValues(val) {
-    debugger;
     this.newUserForm.patchValue({
       firstname: val.firstname,
       lastname: val.lastname,
