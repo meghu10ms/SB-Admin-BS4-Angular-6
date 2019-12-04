@@ -879,6 +879,9 @@ export class PaymentCalaculation implements OnInit {
     ClosePaymentCalculation() {
         this.dialogRefCalculation.close();
     }
+    PaymentEstimate(){
+        
+    }
 
 }
 

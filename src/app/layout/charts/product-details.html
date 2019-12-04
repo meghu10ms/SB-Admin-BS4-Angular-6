@@ -19,7 +19,7 @@
             <form>
 
                 <div class="text-left">
-                    <mat-slide-toggle color="Primary" [checked]="this.Active" (change)="toggeleActive($event)"
+                    <mat-slide-toggle color="Primary" [checked]="this.Active" (change)="toggeleActive()"
                         labelPosition="before" matTooltip="Active" *ngIf="this.isAdmin">
                         Active
                     </mat-slide-toggle>
@@ -164,9 +164,9 @@
 <mat-dialog-actions *ngIf="this.view">
     <div class="navbar-nav ml-auto">
         <span>
-            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createProduct($event)">
+            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createProduct()">
                 Save</button> &nbsp; &nbsp;
-            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="CancelProduct($event)">
+            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="CancelProduct()">
                 Cancel</button> &nbsp; &nbsp;
         </span>
     </div>

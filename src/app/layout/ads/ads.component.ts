@@ -9,6 +9,7 @@ export interface DialogData {
   ind: any;
 }
 
+
 @Component({
   selector: 'app-ads',
   templateUrl: './ads.component.html',

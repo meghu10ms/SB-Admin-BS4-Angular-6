@@ -14,7 +14,7 @@ export class CommonServiceService implements OnInit {
   currentAdminDetail: any;
   areaData: any;
   //url = "http://139.59.82.247/";
-  url = environment.url;
+  url = environment.apiUrl;
   ngOnInit() { }
 
   //get Token
@@ -214,6 +214,31 @@ export class CommonServiceService implements OnInit {
   postAds(token, body) {
 
     return this.http.post(this.url + "ads/", body, this.getTokenAccess(token));
+  }
+  /*######################################### Delivary Partner DETAILS ENDS ##################################### */
+  /*######################################### Ads details starts ################################################ */
+  //get all Ads
+  getAllOffer(token) {
+
+    return this.http.get(this.url + "offer/search/", this.getTokenAccess(token));
+  }
+
+  //delete all Ads
+  deleteOffer(pId, token) {
+
+    return this.http.delete(this.url + "offer/" + pId, this.getTokenAccess(token));
+  }
+
+  //update Ads
+  updateOffer(adsId, token, body) {
+
+    return this.http.patch(this.url + "offer/" + adsId, body, this.getTokenAccess(token));
+  }
+
+  //update Ads
+  postOffer(token, body) {
+
+    return this.http.post(this.url + "offer/", body, this.getTokenAccess(token));
   }
   /*######################################### Delivary Partner DETAILS ENDS ##################################### */
 }

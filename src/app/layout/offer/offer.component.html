@@ -5,25 +5,26 @@
 </div>
 
 <div [@routerTransition]>
-  <app-page-header [heading]="'Admin/Ads'" [icon]="'fa-picture-o'"></app-page-header>
+  <app-page-header [heading]="'Admin/Offer'" [icon]="'fa-picture-o'"></app-page-header>
 
-  <mat-toolbar>Customer App Ads
+  <mat-toolbar>Customer App Offers
     <span class="space"> </span>
-    <button mat-icon-button color="primary" aria-label="Add new Ads" matTooltip="Add new Ads">
+    <button mat-icon-button color="primary" aria-label="Add new Ads" matTooltip="Add new Offer">
       <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="newAds()">add_box</mat-icon>
     </button>
   </mat-toolbar>
   <div class="mt-7 mb-10 ml-5 mr-5" fxLayout="row wrap" flex-wrap fxLayout.xs="row wrap" fxLayoutWrap fxLayoutGap="0.5%"
     fxLayoutAlign="left">
-    <div fxFlex="19.5%" style="border: 2px solid rgb(148, 192, 218) !important;" *ngFor="let val of AdsCollection">
+    <div fxFlex="19.5%" style="border: 2px solid rgb(148, 192, 218) !important;" *ngFor="let val of OfferCollection">
       <h6 class="jtext-center"> {{val.name}} ({{val.description}}) </h6>
-      <div>
-        <img src="{{val.path}}" alt="Ads" height="80" width="200" class="avatar img-circle img-thumbnail">
+      <div>F
+        <!-- <img src="{{val.path}}" alt="Offer" height="80" width="200" class="avatar img-circle img-thumbnail"> -->
       </div>
       <p style="font-size: 10px;">
         From Date :{{val.fromDate}} <br />
-        To Date :{{val.toDate}} <br />
-        Interval :{{val.interval}} &nbsp; &nbsp; Type :{{val.type}}
+        Valid Duration :{{val.validDuration}} <br />
+        Type :{{val.type}} <br />
+        Percentage :{{val.percentage}} &nbsp; &nbsp; Amount :{{val.amount}}
       </p>
 
       <div>
