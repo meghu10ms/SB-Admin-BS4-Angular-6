@@ -4,7 +4,7 @@
   </span>
 </div>
 <div [@routerTransition]>
-  <app-page-header [heading]="'Supplier'" [icon]="'fa-motorcycle'"></app-page-header>
+  <app-page-header [heading]="'Delivary Partner'" [icon]="'fa-motorcycle'"></app-page-header>
   <div class="row">
     <div class="col-md-12">
       <mat-toolbar>
@@ -49,6 +49,12 @@
           </ng-container>
 
           <!-- Weight Column -->
+          <ng-container matColumnDef="uid">
+            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> User Id </th>
+            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.uid}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
           <ng-container matColumnDef="region">
             <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
             <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.region}} </td>
@@ -56,8 +62,8 @@
 
           <!-- Position Column -->
           <ng-container matColumnDef="bloodGroup">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> Blood Group </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.bloodGroup}} </td>
+            <th style="width: 10%" mat-header-cell *matHeaderCellDef mat-sort-header> Blood Group </th>
+            <td style="width: 10%" mat-cell *matCellDef="let element"> {{element.bloodGroup}} </td>
           </ng-container>
 
           <!-- Symbol Column -->

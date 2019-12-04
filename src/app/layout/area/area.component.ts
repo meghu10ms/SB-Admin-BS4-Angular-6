@@ -212,7 +212,7 @@ export class AddArea implements OnInit {
       }
 
       if (this.dialogRef.componentInstance.data.ind == 'create') {
-        this.cds1.postAreaDetails(bodyData).subscribe(response => {
+        this.cds1.postAreaDetails(bodyData,this.cds1.tokenLogin).subscribe(response => {
           this._snackBar.open(response["message"], "", {
             duration: 2000,
           });

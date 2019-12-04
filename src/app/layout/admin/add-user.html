@@ -18,21 +18,21 @@
         <hr />
         <div class="text-left">
           <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL">
-          <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL">
+          <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL" height="150" width="150">
           <h6 *ngIf="!imgURL">Upload photo...</h6>
           <input *ngIf="this.displayInd" type="file" #file class="text-left left-block file-upload" accept='image/*'
-            (change)="preview(file.files)" style="width:95%">
+            (change)="preview(file.files)" style="width:95%" >
           <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
         </div>
 
         <hr />
         <div class="text-left">
           <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL1">
-          <img [src]="imgURL1" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL1">
+          <img [src]="imgURL1" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL1" height="150" width="150">
 
           <h6 *ngIf="!imgURL1">Upload Documents</h6>
           <input *ngIf="this.displayInd" type="file" #file1 class="text-left left-block file-upload" accept='image/*'
-            (change)="previewDocument(file1.files)">
+            (change)="previewDocument(file1.files)" >
           <span style="color:red" *ngIf="filevalid1"> Please Choose File</span>
         </div>
       </form>
@@ -137,7 +137,7 @@
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">IFSC Code</mat-label>
             <input matInput placeholder="Enter IFSC Code" formControlName="ifscCode" maxlength="20"
-              style="font-weight: bold">
+              style="font-weight: bold" >
             <mat-icon matSuffix>accessibility</mat-icon>
           </mat-form-field>
 

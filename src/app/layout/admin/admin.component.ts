@@ -44,16 +44,16 @@ export class AdminComponent implements OnInit {
       this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
+      // this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
 
-        this.cds.areaData = this.getAreaData(response["areas"]);
+      //   this.cds.areaData = this.getAreaData(response["areas"]);
 
-      }, error => {
-        this.visible = false;
-        this.snackBar.open(error.error.message, "", {
-          duration: 2000,
-        });
-      })
+      // }, error => {
+      //   this.visible = false;
+      //   this.snackBar.open(error.error.message, "", {
+      //     duration: 2000,
+      //   });
+      // })
     }, error => {
       this.visible = false;
       this.snackBar.open(error.error.message, "", {
@@ -401,7 +401,19 @@ export class AddUser implements OnInit {
     } else
       return true;
   }
+  // IfscValidation(event): boolean {
+  //   debugger;
+  //   if (event.key.length < 5) {
+  //     event.key =  event.key.toUpperCase();
+  //   } else {
+  //     const charCode = (event.which) ? event.which : event.keyCode;
+  //     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+  //       return false;
+  //     } else
+  //       return true;
+  //   }
 
+  // }
   preview(files) {
     if (files.length === 0)
       return;

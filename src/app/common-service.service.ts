@@ -1,5 +1,7 @@
 import { Injectable, Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from './../environments/environment';
+
 
 
 @Injectable({
@@ -11,8 +13,8 @@ export class CommonServiceService implements OnInit {
   tokenLogin: any;
   currentAdminDetail: any;
   areaData: any;
-  url = "http://localhost:3000/";
-
+  //url = "http://139.59.82.247/";
+  url = environment.url;
   ngOnInit() { }
 
   //get Token
@@ -99,20 +101,20 @@ export class CommonServiceService implements OnInit {
   }
 
   //get area detail
-  postAreaDetails(body) {
-    return this.http.post(this.url + "area/", body);
+  postAreaDetails(body, token) {
+    return this.http.post(this.url + "area/", body, this.getTokenAccess(token));
   }
 
   //delete area details
   deleteAreaDetails(areaCode, token) {
 
-    return this.http.delete(this.url + "area/" + areaCode);
+    return this.http.delete(this.url + "area/" + areaCode, this.getTokenAccess(token));
   }
 
   //update area detail
   updateAreaDetails(areaCode, body, token) {
 
-    return this.http.patch(this.url + "area/" + areaCode, body);
+    return this.http.patch(this.url + "area/" + areaCode, body, this.getTokenAccess(token));
   }
 
   /*######################################### AREA DETAILS ENDS ##################################### */
@@ -144,25 +146,25 @@ export class CommonServiceService implements OnInit {
   //create product
   postProduct(token, body) {
 
-    return this.http.post(this.url + "products/", body, this.getTokenAccess(token));
+    return this.http.post(this.url + "product/", body, this.getTokenAccess(token));
   }
 
   //get product
-  getProduct(token) {
+  getProduct(token, vId) {
 
-    return this.http.get(this.url + "products/", this.getTokenAccess(token));
+    return this.http.get(this.url + "product/vendor/" + vId, this.getTokenAccess(token));
   }
 
   //update product details
   updateProduct(productid, token, body) {
 
-    return this.http.patch(this.url + "products/" + productid, body, this.getTokenAccess(token));
+    return this.http.patch(this.url + "product/" + productid, body, this.getTokenAccess(token));
   }
 
   //delete product details
   deleteProduct(productid, token) {
 
-    return this.http.delete(this.url + "products/" + productid, this.getTokenAccess(token));
+    return this.http.delete(this.url + "product/" + productid, this.getTokenAccess(token));
   }
   /*######################################### VENDOR DETAILS ENDS ##################################### */
   /*######################################### DELIVARY PARTNER STARTS ##################################### */
@@ -187,6 +189,31 @@ export class CommonServiceService implements OnInit {
   deleteDelivaryPartner(vendorid, token) {
 
     return this.http.delete(this.url + "develiverypartner/" + vendorid, this.getTokenAccess(token));
+  }
+  /*######################################### Delivary Partner DETAILS ENDS ##################################### */
+  /*######################################### Ads details starts ################################################ */
+  //get all Ads
+  getAllAds(token) {
+
+    return this.http.get(this.url + "ads/search/", this.getTokenAccess(token));
+  }
+
+  //delete all Ads
+  deleteAds(pId, token) {
+
+    return this.http.delete(this.url + "ads/" + pId, this.getTokenAccess(token));
+  }
+
+  //update Ads
+  updateAds(adsId, token, body) {
+
+    return this.http.patch(this.url + "ads/" + adsId, body, this.getTokenAccess(token));
+  }
+
+  //update Ads
+  postAds(token, body) {
+
+    return this.http.post(this.url + "ads/", body, this.getTokenAccess(token));
   }
   /*######################################### Delivary Partner DETAILS ENDS ##################################### */
 }

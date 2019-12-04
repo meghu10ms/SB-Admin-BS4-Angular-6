@@ -66,9 +66,7 @@ mat-dialog-container{
         padding-right: 0px !important;
       }
 
-    //   .mat-card {
-    //     padding: 2px !important;
-    // }
+    
       .mat-card-image {
         /* width: calc(100% + 32px); */
         margin: 0 -16px 16px -16px;
@@ -78,3 +76,12 @@ mat-dialog-container{
         width: 40% !important;
         height: 40% !important;
        }
+
+       .space {
+        flex: 1 1 auto !important;
+      }
+
+      .jtext-small {
+        font-size: 10px !important;
+      }
+      

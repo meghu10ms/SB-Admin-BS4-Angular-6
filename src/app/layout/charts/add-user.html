@@ -1,3 +1,9 @@
+<div class="overlay1" *ngIf="visible">
+    <span class="spinner">
+      <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+    </span>
+  </div>
+<div >
 <div mat-dialog-content>
 
   <div class="row">
@@ -23,10 +29,10 @@
         
         <div class="text-left">
           <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL">
-          <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL">
+          <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL" height="150" width="150" >
           <h6 *ngIf="!imgURL">Upload photo...</h6>
           <input type="file" #file class="text-left left-block file-upload" accept='image/*'
-            (change)="preview(file.files)" style="width:95%">
+            (change)="preview(file.files)" style="width:95%" *ngIf="displayInd">
           <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
         </div>
 

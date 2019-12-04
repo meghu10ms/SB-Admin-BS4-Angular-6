@@ -42,20 +42,20 @@ export class ChartsComponent implements OnInit {
             this.visible = false;
             var data = this.getTableData(response["vendors"]);
             const ELEMENT_DATA = data;
-            this.displayedColumns = ['firstname', 'companyname', 'email', 'ph', 'region', 'actions'];
+            this.displayedColumns = ['firstname', 'companyname', 'uid', 'ph', 'region', 'actions'];
             this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
-            this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
+            // this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
 
-                this.cds.areaData = this.getAreaData(response["areas"]);
+            //     this.cds.areaData = this.getAreaData(response["areas"]);
 
-            }, error => {
-                this.visible = false;
-                this.snackBar.open(error.error.message, "", {
-                    duration: 2000,
-                });
-            })
+            // }, error => {
+            //     this.visible = false;
+            //     this.snackBar.open(error.error.message, "", {
+            //         duration: 2000,
+            //     });
+            // })
         }, error => {
             this.visible = false;
             this.snackBar.open(error.error.message, "", {
@@ -77,6 +77,7 @@ export class ChartsComponent implements OnInit {
                 "lastname": val[i].ownerName.lastName,
                 "email": val[i].email,
                 "ph": val[i].phoneNumber,
+                "uid": val[i].uid,
 
                 "companyname": val[i].companyName,
                 "cin": val[i].cin,
@@ -185,8 +186,8 @@ export class ChartsComponent implements OnInit {
     }
     product(val) {
         const dialogRefProduct = this.dialog.open(ProductDetails, {
-            width: '70%',
-            height: '80%',
+            width: '80%',
+            height: '88%',
             data: { data1: val }
         })
         dialogRefProduct.afterClosed().subscribe(result => {
@@ -213,7 +214,7 @@ export interface PeriodicElement {
     address: string;
     city: string;
     dob: string;
-
+    uid: string;
 }
 
 
@@ -237,6 +238,7 @@ export class AddUser implements OnInit {
     Retailer: boolean;
     Vendor: boolean;
     activeVendor: boolean;
+    visible:any;
 
     constructor(
         public dialogRef: MatDialogRef<AddUser>,
@@ -256,10 +258,13 @@ export class AddUser implements OnInit {
         this.titleCollection = [{ "title": "Mr" }, { "title": "Mrs" }, { "title": "Miss" }];
         this.nextProcess();
         if (this.dialogRef.componentInstance.data.ind !== 'create') {
+            this.visible = true;
             this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
+                this.visible = false;
                 this.imgURL = response["path"];
                 this.profilePicId = response["_id"];
             }, error => {
+                this.visible = false;
                 this.snackBar.open(error.error.message, "", {
                     duration: 2000,
                 });
@@ -380,12 +385,15 @@ export class AddUser implements OnInit {
                     "isVendor": this.Vendor,
                     "isRetailer": this.Retailer,
                 };
+                this.visible = true;
                 this.cds2.postVendor(this.cds2.tokenLogin, createData).subscribe(response => {
+                    this.visible = false;
                     this.snackBar.open(response["message"], "", {
                         duration: 2000,
                     });
                     this.dialogRef.close();
                 }, error => {
+                    this.visible = false;
                     this.snackBar.open(error.error.error.message, "", {
                         duration: 2000,
                     });
@@ -433,12 +441,15 @@ export class AddUser implements OnInit {
                     "isVendor": this.Vendor,
                     "isRetailer": this.Retailer,
                 };
+                this.visible = true;
                 this.cds2.updateVendor(filledData.vendorObjId, this.cds2.tokenLogin, createData1).subscribe(response => {
+                    this.visible = false;
                     this.snackBar.open(response["message"], "", {
                         duration: 2000,
                     });
                     this.dialogRef.close();
                 }, error => {
+                    this.visible = false;
                     this.snackBar.open(error.error.error.message, "", {
                         duration: 2000,
                     });
@@ -495,11 +506,14 @@ export class AddUser implements OnInit {
         const formData = new FormData();
         formData.append('file', files[0]);
         formData.append('name', 'profile_pictre');
+        this.visible = true;
         this.cds2.postMedia(formData).subscribe(response => {
+            this.visible = false;
             this.imgURL = response["media"].path;
             this.profilePicId = response["media"]._id;
             this.filevalid = false;
         }, error => {
+            this.visible = false;
             this.snackBar.open(error.error.error.message, "", {
                 duration: 2000,
             });
@@ -575,6 +589,10 @@ export class ProductDetails implements OnInit {
     productType: any;
     productList: any;
     indicator: any;
+    Active: any;
+    count: any;
+    isAdmin: boolean;
+    visible1: any;
 
 
     constructor(
@@ -585,45 +603,59 @@ export class ProductDetails implements OnInit {
         private cds2: CommonServiceService) { }
 
     ngOnInit() {
+        var selectedAdmin = this.cds2.currentAdminDetail;
+        this.isAdmin = selectedAdmin.isSuperAdmin;
         this.view = false;
+        this.Active = false;
+        this.count = 0;
         this.sliderName = "Add New Product";
         this.indicator = "create";
-        this.productType = [{ "type": "Bottle" }, { "type": "Can" }, { "type": "Dispencer" }, { "type": "Tanker" }];
+        this.productType = [{ "type": "TANKER" }, { "type": "CANE" }];
         var data = this.dialogRefProduct.componentInstance.data.data1;
         this.createForm();
         this.bindDisplayValues(data);
         this.nextProcess();
-        // if (this.dialogRefProduct.componentInstance.data.ind !== 'create') {
-        //     this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
-        //         this.imgProductUrl = response["path"];
-        //         this.profilePicId = response["_id"];
-        //     }, error => {
-        //         this.snackBar.open(error.error.message, "", {
-        //             duration: 2000,
-        //         });
-        //     });
-        // }
+
     }
     nextProcess() {
-        this.cds2.getProduct(this.cds2.tokenLogin).subscribe(response => {
-            debugger;
-            this.productList = response;
-            var pathX = "http://localhost:3000/media/";
-            for (var i = 0; i < this.productList.length; i++) {
-                debugger;
-                if (this.productList[i].medias[0]) {
-                    this.productList[i].imageDummyPath = pathX + this.productList[i].medias[0] + "/download";
-                } else {
-                    this.productList[i].imageDummyPath = "../assets/images/avtar.png";
-                }
-                //this.productList[i].imageDummyPath 
-            }
+        this.visible1 = true;
+        this.cds2.getProduct(this.cds2.tokenLogin, this.dialogRefProduct.componentInstance.data.data1.vendorObjId).subscribe(response => {
+            this.productList = this.getProductData(response["products"]);
+            this.count = response["count"];
+            this.visible1 = false;
         }, error => {
+            this.visible1 = false;
             this.snackBar.open(error.error.message, "", {
                 duration: 2000,
             });
         });
 
+    }
+    getProductData(val) {
+        var formatJson = {};
+        var finalData = [];
+        for (let i = 0; i < val.length; i++) {
+            formatJson = {
+                "name": val[i].name,
+                "type": val[i].type,
+                "description": val[i].description,
+                "code": val[i].code,
+                "withCanePrice": val[i].withCanePrice,
+                "withCaneCost": val[i].withCaneCost,
+                "cost": val[i].cost,
+                "price": val[i].price,
+                "capacity": val[i].capacity,
+                "media": (val[i].medias[0] ? val[i].medias[0].path : "../assets/images/avtar.png"),
+                "mediaId": (val[i].medias[0] ? val[i].medias[0]._id : ""),
+                "vendor": val[i].vendor,
+                "productId": val[i]._id,
+                "isActive": val[i].isActive
+
+            }
+            finalData.push(formatJson);
+            formatJson = {};
+        }
+        return finalData;
     }
     createForm() {
         this.productForm = this.fb.group({
@@ -631,9 +663,13 @@ export class ProductDetails implements OnInit {
             type: ['', Validators.required],
             code: ['', Validators.required],
             price: ['', Validators.required],
+            cost: ['', Validators.required],
+            withCaneCost: ['', Validators.required],
+            withCanePrice: ['', Validators.required],
             capacity: ['', Validators.required],
             description: ['', Validators.required],
-            vendorId: ['', Validators.required]
+            vendorId: [''],
+            productId: [''],
         })
     }
 
@@ -654,27 +690,43 @@ export class ProductDetails implements OnInit {
                 "type": filledData.type,
                 "description": filledData.description,
                 "code": filledData.code,
+                "withCanePrice": filledData.withCanePrice,
+                "withCaneCost": filledData.withCaneCost,
+                "cost": filledData.cost,
                 "price": filledData.price,
                 "capacity": filledData.capacity,
-                "media": medi,
-                "vendor": filledData.vendorId,
-                "isActive": true
+                "medias": medi,
+                "vendor": this.dialogRefProduct.componentInstance.data.data1.vendorObjId,
+                "isActive": this.Active
             };
             if (this.indicator === "create") {
+                this.visible1 = true;
                 this.cds2.postProduct(this.cds2.tokenLogin, createData).subscribe(response => {
+                    this.visible1 = false;
                     this.snackBar.open(response["message"], "", {
                         duration: 2000,
                     });
                     this.dialogRefProduct.close();
                 }, error => {
+                    this.visible1 = false;
                     this.snackBar.open(error.error.error.message, "", {
                         duration: 2000,
                     });
                 });
 
             } else if (this.indicator === "edit") {
-                this.snackBar.open("Not Yet Implemented", "", {
-                    duration: 2000,
+                this.visible1 = true;
+                this.cds2.updateProduct(filledData.productId, this.cds2.tokenLogin, createData).subscribe(response => {
+                    this.visible1 = false;
+                    this.snackBar.open(response["message"], "", {
+                        duration: 2000,
+                    });
+                    this.dialogRefProduct.close();
+                }, error => {
+                    this.visible1 = false;
+                    this.snackBar.open(error.error.error.message, "", {
+                        duration: 2000,
+                    });
                 });
             }
 
@@ -727,11 +779,14 @@ export class ProductDetails implements OnInit {
         const formData = new FormData();
         formData.append('file', files[0]);
         formData.append('name', 'profile_pictre');
+        this.visible1 = true;
         this.cds2.postMedia(formData).subscribe(response => {
+            this.visible1 = false;
             this.imgProductUrl = response["media"].path;
             this.profilePicId = response["media"]._id;
             this.filevalid = false;
         }, error => {
+            this.visible1 = false;
             this.snackBar.open(error.error.error.message, "", {
                 duration: 2000,
             });
@@ -745,26 +800,21 @@ export class ProductDetails implements OnInit {
             this.productForm.reset();
             this.imgProductUrl = "";
             this.profilePicId = "";
+            this.Active = false;
         } else {
             this.sliderName = "Add New Product";
         }
     }
     CancelProduct(evt) {
-        // this.view = !this.view;
-        // if (this.view) {
-        //     this.sliderName = "View Products";
-        //     this.productForm.reset();
-        //     this.imgProductUrl = "";
-        //     this.profilePicId = "";
-        // } else {
-        //     this.sliderName = "Add New Product";
-        // }
         this.dialogRefProduct.close();
     }
     deleteProduct(evt) {
+        this.visible1 = true;
         this.cds2.deleteProduct(evt._id, this.cds2.tokenLogin).subscribe(response => {
+            this.visible1 = false;
             this.nextProcess();
         }, error => {
+            this.visible1 = false;
             this.snackBar.open(error.error.error.message, "", {
                 duration: 2000,
             });
@@ -783,12 +833,18 @@ export class ProductDetails implements OnInit {
             this.profilePicId = "";
         }
     }
+    toggeleActive(evt) {
+        this.Active = evt.checked;
+    }
     bindDisplayValues(val) {
         this.productForm.patchValue({
             "vendorId": val.vendorObjId
         })
     }
     bindDisplayValuesEdit(val) {
+        this.imgProductUrl = val.media;
+        this.profilePicId = val.mediaId;
+        this.Active = val.isActive;
         this.productForm.patchValue({
             "name": val.name,
             "code": val.code,
@@ -796,7 +852,11 @@ export class ProductDetails implements OnInit {
             "capacity": val.capacity,
             "description": val.description,
             "price": val.price,
-            "vendorId": val.vendor
+            "cost": val.cost,
+            "withCanePrice": val.withCanePrice,
+            "withCaneCost": val.withCaneCost,
+            "vendorId": this.dialogRefProduct.componentInstance.data.data1.vendorObjId,
+            "productId": val.productId
         })
     }
 }

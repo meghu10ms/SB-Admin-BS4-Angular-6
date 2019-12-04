@@ -45,20 +45,20 @@ export class SupplierComponent implements OnInit {
       this.data = this.getTableData(response["DeliveryPartner"]);
       this.insertAreaToDelivaryPartner();
       const ELEMENT_DATA = this.data;
-      this.displayedColumns = ['firstname', 'email', 'ph', 'bloodGroup', 'region', 'actions'];
+      this.displayedColumns = ['firstname', 'email','uid', 'ph', 'bloodGroup', 'region', 'actions'];
       this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
+      // this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
 
-        this.cds.areaData = this.getAreaData(response["areas"]);
+      //   this.cds.areaData = this.getAreaData(response["areas"]);
 
-      }, error => {
-        this.visible = false;
-        this.snackBar.open(error.error.message, "", {
-          duration: 2000,
-        });
-      })
+      // }, error => {
+      //   this.visible = false;
+      //   this.snackBar.open(error.error.message, "", {
+      //     duration: 2000,
+      //   });
+      // })
     }, error => {
       this.visible = false;
       this.snackBar.open(error.error.message, "", {
@@ -98,6 +98,7 @@ export class SupplierComponent implements OnInit {
         "deliveryPartnerObjId": val[i]._id,
         "region": val[i].areaId.areaCode,
         "bloodGroup": val[i].bloodGroup,
+        "uid":val[i].uid,
 
         "Pcity": val[i].address.city,
         "Pcountry": val[i].address.country,
@@ -202,13 +203,13 @@ export class SupplierComponent implements OnInit {
   }
   onIndidualVendor(event, value) {
     const dialogRefCalculation = this.dialog.open(PaymentCalaculation, {
-        width: '80%',
-        height: '65%',
-        data: { data: value }
+      width: '80%',
+      height: '65%',
+      data: { data: value }
     })
     dialogRefCalculation.afterClosed().subscribe(result => {
     });
-}
+  }
 }
 export interface PeriodicElement {
   firstname: string;
@@ -218,6 +219,7 @@ export interface PeriodicElement {
   region: string;
   address: string;
   city: string;
+  uid:string;
 }
 
 
@@ -240,6 +242,7 @@ export class AddUser implements OnInit {
   region: any[];
   titleCollection: any[];
   profilePicId: any;
+  Retailer: boolean;
   activeDelivaryPartner: boolean;
 
   constructor(
@@ -250,7 +253,7 @@ export class AddUser implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
-
+    this.Retailer = false;
     this.activeDelivaryPartner = true;
     this.profilePicId = "";
 
@@ -410,7 +413,7 @@ export class AddUser implements OnInit {
           },
           "phoneNumber": filledData.phone,
           "email": filledData.email,
-          "password": filledData.email,
+          //"password": filledData.email,
           "areaId": aId,
           "bloodGroup": filledData.bloodGroup,
           "formattedAddress": "all the Above",
@@ -426,6 +429,7 @@ export class AddUser implements OnInit {
             "panNumber": filledData.taxNumber
           },
           "isActive": this.activeDelivaryPartner,
+          "isRetailer": this.Retailer,
         };
         this.cds2.postDelivaryPartner(this.cds2.tokenLogin, createData).subscribe(response => {
           this.snackBar.open(response["message"], "", {
@@ -482,6 +486,7 @@ export class AddUser implements OnInit {
             "panNumber": filledData.taxNumber
           },
           "isActive": this.activeDelivaryPartner,
+          "isRetailer": this.Retailer,
         };
         this.cds2.updateDelivaryPartner(filledData.deliveryPartnerObjId, this.cds2.tokenLogin, createData1).subscribe(response => {
           this.snackBar.open(response["message"], "", {
@@ -516,6 +521,9 @@ export class AddUser implements OnInit {
   }
   toggeleActive(evt) {
     this.activeDelivaryPartner = evt.checked;
+  }
+  toggeleRetailer(evt) {
+    this.Retailer = evt.checked;
   }
   CloseUser() {
     this.dialogRef.close();
@@ -567,17 +575,17 @@ export class AddUser implements OnInit {
 export class PaymentCalaculation implements OnInit {
 
   constructor(
-      public dialogRefCalculation: MatDialogRef<AddUser>,
-      @Inject(MAT_DIALOG_DATA) public data: DialogData,
-      private fb: FormBuilder,
-      private snackBar: MatSnackBar,
-      private cds2: CommonServiceService) { }
+    public dialogRefCalculation: MatDialogRef<AddUser>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private cds2: CommonServiceService) { }
 
   ngOnInit() {
 
   }
   ClosePaymentCalculation() {
-      this.dialogRefCalculation.close();
+    this.dialogRefCalculation.close();
   }
 
 }

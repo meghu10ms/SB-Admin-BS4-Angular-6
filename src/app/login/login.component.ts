@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
     visible: any;
     loginForm: FormGroup;
-    forgotPassword:boolean;
+    forgotPassword: boolean;
 
     constructor(
         public router: Router,
@@ -43,14 +43,24 @@ export class LoginComponent implements OnInit {
             var enteredData = { "email": values.email, "password": values.password }
             this.visible = true;
             this.cds.getLogin(enteredData).subscribe(response => {
-                this.visible = false;
+                //this.visible = false;
                 this.cds.tokenLogin = response["token"];
                 this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
-                    this.visible = false;
+
                     this.forgotPassword = false;
                     var val = JSON.stringify(response);
                     this.cds.currentAdminDetail = JSON.parse(val);
-                    this.router.navigate(['/dashboard']);
+                    this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
+                        this.visible = false;
+                        this.cds.areaData = this.getAreaData(response["areas"]);
+                        this.router.navigate(['/dashboard']);
+                    }, error => {
+                        this.visible = false;
+                        this.snackBar.open(error.error.message, "", {
+                            duration: 2000,
+                        });
+                    })
+
                 }, error => {
                     this.visible = false;
                     this.snackBar.open(error.error.message, "", {
@@ -71,7 +81,24 @@ export class LoginComponent implements OnInit {
             });
         }
     }
-    onForgetPassword(){
+    getAreaData(val) {
+        var formatJson = {};
+        var finalData = [];
+        for (let i = 0; i < val.length; i++) {
+            formatJson = {
+                "code": val[i].areaCode,
+                "area": val[i].formattedAddress,
+                "lt": val[i].latitude,
+                "lg": val[i].longitude,
+                "id": val[i]._id
+
+            }
+            finalData.push(formatJson);
+            formatJson = {};
+        }
+        return finalData;
+    }
+    onForgetPassword() {
         this.router.navigate(['/signup']);
     }
 }

@@ -1,8 +1,15 @@
-<div class="text-left">
+<div class="overlay1" *ngIf="visible1">
+        <span class="spinner">
+          <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+        </span>
+      </div>
+<div >
     <mat-slide-toggle color="Primary" [checked]="this.view" (change)="toggeleChangeView($event)" labelPosition="before"
-        matTooltip={{this.sliderName}}>
+        matTooltip={{this.sliderName}} class="text-left">
         {{this.sliderName}}
     </mat-slide-toggle>
+    <span class="space"> </span>
+    <span class="text-right"> Toatl Product Count : {{this.count}}</span>
 </div>
 <hr />
 <div mat-dialog-content>
@@ -12,8 +19,14 @@
             <form>
 
                 <div class="text-left">
+                    <mat-slide-toggle color="Primary" [checked]="this.Active" (change)="toggeleActive($event)"
+                        labelPosition="before" matTooltip="Active" *ngIf="this.isAdmin">
+                        Active
+                    </mat-slide-toggle>
+                    <hr />
+
                     <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar"
-                        *ngIf="!imgProductUrl">
+                        *ngIf="!imgProductUrl" height="150" width="150">
                     <img [src]="imgProductUrl" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgProductUrl">
                     <h6 *ngIf="!imgProductUrl">Upload Product Photo...</h6>
                     <input type="file" #file class="text-left left-block file-upload" accept='image/*'
@@ -44,19 +57,8 @@
                     <mat-form-field appearance="outline">
                         <mat-label style="font-weight: bold">Product Description</mat-label>
                         <input matInput placeholder="Enter Product Description" formControlName="description"
-                            maxlength="20" style="font-weight: bold">
+                            maxlength="50" style="font-weight: bold">
                         <mat-icon matSuffix>person_pin</mat-icon>
-                    </mat-form-field>
-
-
-                </div>
-                <div class="col-sm-6">
-
-                    <mat-form-field appearance="outline">
-                        <mat-label style="font-weight: bold">Price</mat-label>
-                        <input matInput placeholder="Enter Price" formControlName="price" maxlength="5"
-                            style="font-weight: bold" type="number">
-                        <mat-icon matSuffix>account_tree</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
@@ -70,6 +72,10 @@
                     </mat-form-field>
 
 
+
+                </div>
+                <div class="col-sm-6">
+
                     <mat-form-field appearance="outline">
                         <mat-label style="font-weight: bold">Capacity</mat-label>
                         <input matInput placeholder="Enter Capacity" formControlName="capacity" maxlength="6"
@@ -77,35 +83,76 @@
                         <mat-icon matSuffix>pages</mat-icon>
                     </mat-form-field>
 
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">Price</mat-label>
+                        <input matInput placeholder="Enter Price" formControlName="price" maxlength="5"
+                            style="font-weight: bold" type="number">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">With Can Price</mat-label>
+                        <input matInput placeholder="Enter With Can Price" formControlName="withCanePrice" maxlength="8"
+                            style="font-weight: bold" type="number">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">Cost</mat-label>
+                        <input matInput placeholder="Enter Cost" formControlName="cost" maxlength="8"
+                            style="font-weight: bold" type="number">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label style="font-weight: bold">With Can Cost</mat-label>
+                        <input matInput placeholder="Enter With Can Cost" formControlName="withCaneCost" maxlength="8"
+                            style="font-weight: bold" type="number">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
                 </div>
             </form>
         </div>
 
-        <div class="row" *ngIf="!this.view">
-            <div class="col-sm-4 product-card" *ngFor="let val of this.productList">
-                <mat-card class="card">
+        <div class="mt-7 mb-10 ml-5 mr-5" fxLayout="row wrap" flex-wrap fxLayout.xs="row wrap" fxLayoutWrap
+            fxLayoutGap="0.5%" fxLayoutAlign="left" *ngIf="!this.view">
+            <div fxFlex="30%" style="border: 3px solid rgb(148, 192, 218) !important;"
+                *ngFor="let val of this.productList">
+                <mat-card>
                     <div class="row">
                         <h6 class="col-sm-12">{{val.name}}({{val.code}})</h6>
                     </div>
-                    <img mat-card-image src="{{val.imageDummyPath}}" alt="Name"
-                        class="avatar img-circle img-thumbnail img">
+                    <img mat-card-image src="{{val.media}}" alt="Name" class="avatar img-circle img-thumbnail img"
+                        height="150" width="150">
                     <mat-card-content>
                         <p>
                             {{val.description}}
                         </p>
                         <div class="row">
-                            <h6 class="col-sm-6">Qty : {{val.capacity}}</h6>
-                            <h6 class="col-sm-6">Rate : {{val.price}}</h6>
+                            <h6 >Qty :{{val.capacity}}</h6>
+                            <span class="space"></span>
+                            <h6 >Rate :{{val.price}}</h6>
+                        </div>
+
+                        <div class="row">
+                            <h6 >Type :{{val.type}}</h6>
+                            <span class="space"></span>
+                            <h6 >Cost :{{val.cost}}</h6>
+                        </div>
+                       
+                        <div class="row">
+                            <h6 >With Can Price :{{val.withCanePrice}}</h6>
                         </div>
                         <div class="row">
-                            <h6 class="col-sm-12">Type : {{val.type}}</h6>
+                            <h6 >With Can Cost :{{val.withCaneCost}}</h6>
                         </div>
                     </mat-card-content>
                     <div class="row">
                         <button mat-button color="primary" class="col-sm-6">
                             <mat-icon (click)="editProduct(val)">edit</mat-icon>
                         </button>
-                        <button mat-button color="primary" class="col-sm-6">
+                        <button mat-button color="primary" class="col-sm-6" *ngIf="this.isAdmin">
                             <mat-icon (click)="deleteProduct(val)">delete</mat-icon>
                         </button>
                     </div>

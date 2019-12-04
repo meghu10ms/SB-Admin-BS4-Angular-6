@@ -9,7 +9,8 @@ import {
     MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
-    MatNativeDateModule, MatSnackBarModule,MatCardModule,MatGridListModule
+    MatNativeDateModule, MatSnackBarModule, MatProgressSpinnerModule, MatSelectModule,
+    MatSlideToggleModule, MatCardModule, MatGridListModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewAd } from './ads.component';
@@ -19,9 +20,10 @@ import { ViewAd } from './ads.component';
     imports: [CommonModule, AdsRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
-        FormsModule, MatSnackBarModule,FlexLayoutModule,MatCardModule,MatGridListModule
+        FormsModule, MatSnackBarModule, FlexLayoutModule, MatCardModule, MatGridListModule, MatProgressSpinnerModule, MatSelectModule,
+        MatSlideToggleModule
     ],
-    declarations: [AdsComponent,ViewAd],
+    declarations: [AdsComponent, ViewAd],
     entryComponents: [ViewAd]
 })
 export class AdsModule { }

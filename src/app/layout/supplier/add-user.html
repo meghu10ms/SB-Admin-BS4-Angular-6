@@ -5,6 +5,11 @@
       <form>
         <div class="text-left">
 
+          <mat-slide-toggle color="Primary" [checked]="this.Retailer" [disabled]="!this.displayInd"
+            (change)="toggeleRetailer($event)" labelPosition="before" matTooltip="Retailer">
+            Retailer
+          </mat-slide-toggle>
+          <hr />
           <mat-slide-toggle color="Primary" [checked]="this.activeDelivaryPartner" [disabled]="!this.displayInd"
             (change)="toggeleActive($event)" labelPosition="before" matTooltip="Active Delivary Partner">
             Active Vendor :

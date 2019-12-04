@@ -1,48 +1,116 @@
 <div mat-dialog-content>
+  <div class="row">
+    <div class="col-sm-3">
+      <form>
 
-    <div class="row">
-  
+        <div class="text-left">
+          <mat-slide-toggle color="Primary" [checked]="this.Active" (change)="toggeleActive($event)"
+            labelPosition="before" matTooltip="Active">
+            Active
+          </mat-slide-toggle>
+          <hr />
+
+          <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar"
+            *ngIf="!imgProductUrl" height="150" width="150">
+          <img [src]="imgProductUrl" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgProductUrl">
+          <h6 *ngIf="!imgProductUrl">Upload Ads Photo...</h6>
+          <input type="file" #file class="text-left left-block file-upload" accept='image/*'
+            (change)="preview(file.files)" style="width:95%" >
+          <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
+
+          <hr />
+
+          <!-- <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar"
+            *ngIf="!imgProductUrl1" height="150" width="150">
+          <img [src]="imgProductUrl1" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgProductUrl1">
+          <h6 *ngIf="!imgProductUrl1">Upload offer Photo...</h6>
+          <input type="file" #file class="text-left left-block file-upload" accept='image/*'
+            (change)="preview1(file.files)" style="width:95%" > -->
+         
+        </div>
+
+      </form>
+    </div>
+    <div class="col-sm-9">
       <form class="form-inline" [formGroup]="newUserForm">
         <div class="col-sm-6">
-  
+
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Area Code</mat-label>
-            <input matInput placeholder=" Enter Area Code" formControlName="code" maxlength="20"
+            <mat-label style="font-weight: bold">Ads Name</mat-label>
+            <input matInput placeholder=" Enter Product Name" formControlName="name" maxlength="20"
               style="font-weight: bold">
             <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
-  
+          
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Area Name</mat-label>
-            <input matInput placeholder="Enter Area Name" formControlName="area" maxlength="20" style="font-weight: bold">
-            <mat-icon matSuffix>person</mat-icon>
+            <mat-label style="font-weight: bold">Product Description</mat-label>
+            <input matInput placeholder="Enter Product Description" formControlName="description" maxlength="50"
+              style="font-weight: bold">
+            <mat-icon matSuffix>person_pin</mat-icon>
           </mat-form-field>
-  
+
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Langitude</mat-label>
-            <input matInput placeholder="Enter Langitude" formControlName="lt" maxlength="10" style="font-weight: bold">
-            <mat-icon matSuffix>phone</mat-icon>
-          </mat-form-field>
-  
+              <mat-label style="font-weight: bold">Ads Url</mat-label>
+              <input matInput placeholder="Enter Ads Url" formControlName="url" maxlength="50"
+                style="font-weight: bold">
+              <mat-icon matSuffix>person_pin</mat-icon>
+            </mat-form-field>
+
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Latitude</mat-label>
-            <input matInput placeholder="Enter Latitude" formControlName="lg" maxlength="20" style="font-weight: bold">
-            <mat-icon matSuffix>email</mat-icon>
+            <mat-label style="font-weight: bold">Type</mat-label>
+            <mat-select formControlName="type" placeholder="Enter type" style="font-weight: bold">
+              <mat-option *ngFor="let val of adsType" [value]="val.type">
+                {{val.type}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>account_tree</mat-icon>
           </mat-form-field>
-  
+
+
+
+        </div>
+        <div class="col-sm-6">
+
+          <mat-form-field appearance="outline">
+            <mat-label style="font-weight: bold">Interval</mat-label>
+            <input matInput placeholder="Enter Interval in secends" formControlName="interval" maxlength="6"
+              style="font-weight: bold" type="number">
+            <mat-icon matSuffix>pages</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+              <mat-label style="font-weight: bold">Offer</mat-label>
+              <input matInput placeholder="Enter Offer" formControlName="offer" maxlength="25"
+                style="font-weight: bold">
+              <mat-icon matSuffix>pages</mat-icon>
+            </mat-form-field>
+
+          <mat-form-field color="primary" appearance="outline">
+              <mat-label>From Date</mat-label>
+              <input matInput [matDatepicker]="picker1" readonly style="font-weight: bold" formControlName="fromDate">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field color="primary" appearance="outline">
+              <mat-label>To Date</mat-label>
+              <input matInput [matDatepicker]="picker2" readonly style="font-weight: bold" formControlName="toDate">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2 color="primary" disabled="false"></mat-datepicker>
+          </mat-form-field>
+
         </div>
       </form>
     </div>
   </div>
-  <mat-dialog-actions>
-  
-    <div class="navbar-nav ml-auto">
-      <span>
-        <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createNewUser($event)"
-          *ngIf="displayInd">
-          Save</button> &nbsp; &nbsp;
-        <button class="btn" type="reset" matTooltip="Reset" (click)="clearScreen($event)" *ngIf="displayInd">
-          Reset</button>
-      </span>
-    </div>
-  </mat-dialog-actions>
+</div>
+<mat-dialog-actions>
+  <div class="navbar-nav ml-auto">
+    <span>
+      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createAds()">
+        Save</button> &nbsp; &nbsp;
+      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="CancelPage()">
+        Cancel</button> &nbsp; &nbsp;
+    </span>
+  </div>
+</mat-dialog-actions>
