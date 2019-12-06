@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { Router } from '@angular/router';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
+import { CommonServiceService } from '../../common-service.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-dashboard',
@@ -10,36 +12,46 @@ import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
     animations: [routerTransition()]
 })
 export class DashboardComponent implements OnInit {
-    public alerts: Array<any> = [];
-    public sliders: Array<any> = [];
+   
     private chart: AmChart;
     private chart1: AmChart;
+    visible:any;
 
-    constructor(private route: Router, private AmCharts: AmChartsService) {
-        this.sliders.push(
-            {
-                imagePath: 'assets/images/w2.jpg',
-                label: 'First slide label',
-                text:
-                    'Nulla vitae elit libero, a pharetra augue mollis interdum.'
-            },
-            {
-                imagePath: 'assets/images/w3.jpg',
-                label: 'Second slide label',
-                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-            },
-            {
-                imagePath: 'assets/images/w2.jpg',
-                label: 'Third slide label',
-                text:
-                    'Praesent commodo cursus magna, vel scelerisque nisl consectetur.'
-            }
-        );
-
-
+    constructor(private route: Router, 
+      private AmCharts: AmChartsService,
+      private cds: CommonServiceService,
+      private snackBar: MatSnackBar,) {
+       
     }
+    getAreaData(val) {
+      var formatJson = {};
+      var finalData = [];
+      for (let i = 0; i < val.length; i++) {
+          formatJson = {
+              "code": val[i].areaCode,
+              "area": val[i].formattedAddress,
+              "lt": val[i].latitude,
+              "lg": val[i].longitude,
+              "id": val[i]._id
+
+          }
+          finalData.push(formatJson);
+          formatJson = {};
+      }
+      return finalData;
+  }
 
     ngOnInit() {
+      this.visible = true;
+      this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
+        this.visible = false;
+        this.cds.areaData = this.getAreaData(response["areas"]);
+    }, error => {
+        this.visible = false;
+        this.snackBar.open(error.error.message, "", {
+            duration: 2000,
+        });
+    })
         
         var chart = this.AmCharts.makeChart( "chartdiv", {
             "hideCredits":"true",

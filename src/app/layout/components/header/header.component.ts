@@ -31,7 +31,6 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit() {
         if (this.cds.tokenLogin === undefined) {
-            localStorage.removeItem('isLoggedin');
             this.router.navigate(['/login']);
         } else {
             var selectedAdmin = this.cds.currentAdminDetail.name;
@@ -52,6 +51,7 @@ export class HeaderComponent implements OnInit {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+        localStorage.removeItem('authToken');
         this.cds.currentAdminDetail = undefined;
         this.cds.tokenLogin = undefined;
         this.router.navigate(['/login']);
@@ -206,7 +206,7 @@ export class ChangePassword implements OnInit {
             });
         });
     }
-    Close(){
+    Close() {
         this.dialogRefChangePass.close();
     }
 

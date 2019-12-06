@@ -1,3 +1,8 @@
+<div class="overlay1" *ngIf="visible">
+    <span class="spinner">
+      <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+    </span>
+  </div>
 <div [@routerTransition]>
     <h2 class="text-muted"> <small>Statistics Overview</small></h2>
     <div class="row">

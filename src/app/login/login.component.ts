@@ -25,48 +25,55 @@ export class LoginComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.forgotPassword = false;
+        if (localStorage.getItem('isLoggedin')) {
+            this.cds.tokenLogin = localStorage.getItem('authToken')
+            this.visible = true;
+            this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
+                this.visible = false;
+                var val = JSON.stringify(response);
+                this.cds.currentAdminDetail = JSON.parse(val);
+                this.router.navigate(['/dashboard']);
+            }, error => {
+                this.visible = false;
+                this.snackBar.open(error.error.message, "", {
+                    duration: 2000,
+                });
+            })
+        } else {
+            this.forgotPassword = false;
+        }
+
         this.loginForm = this.fb.group({
             email: ['', Validators.required],
             password: ['', Validators.required]
         })
+
     }
 
     onLoggedin() {
-        localStorage.setItem('isLoggedin', 'true');
-        //this.router.navigate(['/dashboard']);
-
-
         if (this.loginForm.valid) {
-
             var values = this.loginForm.value;
             var enteredData = { "email": values.email, "password": values.password }
             this.visible = true;
             this.cds.getLogin(enteredData).subscribe(response => {
-                //this.visible = false;
+                this.visible = false;
+                this.forgotPassword = false;
+                localStorage.setItem('isLoggedin', 'true');
+                localStorage.setItem('authToken', response["token"]);
                 this.cds.tokenLogin = response["token"];
-                this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
+                this.router.navigate(['/not-found']);
+                // this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
+                //     this.visible = false;
+                //     this.forgotPassword = false;
+                //     var val = JSON.stringify(response);
+                //     this.cds.currentAdminDetail = JSON.parse(val);
 
-                    this.forgotPassword = false;
-                    var val = JSON.stringify(response);
-                    this.cds.currentAdminDetail = JSON.parse(val);
-                    this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
-                        this.visible = false;
-                        this.cds.areaData = this.getAreaData(response["areas"]);
-                        this.router.navigate(['/dashboard']);
-                    }, error => {
-                        this.visible = false;
-                        this.snackBar.open(error.error.message, "", {
-                            duration: 2000,
-                        });
-                    })
-
-                }, error => {
-                    this.visible = false;
-                    this.snackBar.open(error.error.message, "", {
-                        duration: 2000,
-                    });
-                })
+                // }, error => {
+                //     this.visible = false;
+                //     this.snackBar.open(error.error.message, "", {
+                //         duration: 2000,
+                //     });
+                // })
 
             }, error => {
                 this.visible = false;
@@ -81,23 +88,7 @@ export class LoginComponent implements OnInit {
             });
         }
     }
-    getAreaData(val) {
-        var formatJson = {};
-        var finalData = [];
-        for (let i = 0; i < val.length; i++) {
-            formatJson = {
-                "code": val[i].areaCode,
-                "area": val[i].formattedAddress,
-                "lt": val[i].latitude,
-                "lg": val[i].longitude,
-                "id": val[i]._id
 
-            }
-            finalData.push(formatJson);
-            formatJson = {};
-        }
-        return finalData;
-    }
     onForgetPassword() {
         this.router.navigate(['/signup']);
     }

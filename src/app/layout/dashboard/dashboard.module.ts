@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard.component';
 
 import { StatModule } from '../../shared';
 import { AmChartsModule } from "@amcharts/amcharts3-angular";
+import {  MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
 
 @NgModule({
     imports: [
@@ -14,7 +15,7 @@ import { AmChartsModule } from "@amcharts/amcharts3-angular";
         NgbCarouselModule,
         DashboardRoutingModule,
         StatModule,
-        AmChartsModule
+        AmChartsModule,MatSnackBarModule, MatProgressSpinnerModule
     ],
     declarations: [
         DashboardComponent

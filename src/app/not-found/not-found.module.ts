@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { NotFoundRoutingModule } from './not-found-routing.module';
 import { NotFoundComponent } from './not-found.component';
+import {MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
-    NotFoundRoutingModule
+    NotFoundRoutingModule,MatSnackBarModule, MatProgressSpinnerModule
   ],
   declarations: [NotFoundComponent]
 })

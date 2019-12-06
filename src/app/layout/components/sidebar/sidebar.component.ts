@@ -32,7 +32,6 @@ export class SidebarComponent implements OnInit {
 
     ngOnInit() {
         if (this.cds.tokenLogin === undefined) {
-            localStorage.removeItem('isLoggedin');
             this.router.navigate(['/login']);
         } else {
             this.isActive = false;
@@ -80,6 +79,7 @@ export class SidebarComponent implements OnInit {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+        localStorage.removeItem('authToken');
         this.cds.currentAdminDetail = undefined;
         this.cds.tokenLogin = undefined;
         this.router.navigate(['/login']);
