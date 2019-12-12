@@ -66,15 +66,12 @@ mat-dialog-container{
         padding-right: 0px !important;
       }
 
-    
-      .mat-card-image {
-        /* width: calc(100% + 32px); */
-        margin: 0 -16px 16px -16px;
-        margin-left: 20% !important;
-    }
     .img {
         width: 40% !important;
-        height: 40% !important;
+        height: 25% !important;
+       }
+       .imgDiv {
+        text-align: -webkit-center !important;
        }
 
        .space {
@@ -82,6 +79,43 @@ mat-dialog-container{
       }
 
       .jtext-small {
-        font-size: 10px !important;
+        font-size: 12px !important;
+      }
+
+      .border{
+        border: 2px solid #9bc5dd !important;
+        margin-left: 4px;
+        margin-right: 4px;
+        margin-bottom: 4px;
+        margin-top: 4px;
+      }
+
+      .fontBold{
+        font-weight: bold !important;
+      }
+
+      .fileuploader{
+        width:95% !important;
       }
       
+      .jtext-center {
+        text-align: center !important;
+        font-weight: bold !important;
+      }
+
+      .addNewProduct{
+        height: 100% !important;
+        margin: auto;
+        cursor: pointer;
+        text-align: center !important;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-drag: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .columnWidth{
+        width: 20%;
+      }

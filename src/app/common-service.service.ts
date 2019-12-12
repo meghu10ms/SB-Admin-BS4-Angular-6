@@ -241,5 +241,12 @@ export class CommonServiceService implements OnInit {
     return this.http.post(this.url + "offer/", body, this.getTokenAccess(token));
   }
   /*######################################### Delivary Partner DETAILS ENDS ##################################### */
+  /*######################################### Customers DETAILS Starts ##################################### */
+  //get all Ads
+  getAllCustomers(token) {
+
+    return this.http.get(this.url + "customer/admin/search/", this.getTokenAccess(token));
+  }
+  /*######################################### Customers DETAILS Ends ######################################## */
 }
 

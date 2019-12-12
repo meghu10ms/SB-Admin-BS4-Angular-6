@@ -35,7 +35,9 @@ export class SupplierComponent implements OnInit {
     private cds: CommonServiceService) { }
 
   ngOnInit() {
-
+    if (this.cds.tokenLogin === undefined) {
+      this.cds.tokenLogin = sessionStorage.getItem("authToken");
+    }
     this.getSupplierDetails();
   }
   getSupplierDetails() {
@@ -45,7 +47,7 @@ export class SupplierComponent implements OnInit {
       this.data = this.getTableData(response["DeliveryPartner"]);
       this.insertAreaToDelivaryPartner();
       const ELEMENT_DATA = this.data;
-      this.displayedColumns = ['firstname', 'email','uid', 'ph', 'bloodGroup', 'region', 'actions'];
+      this.displayedColumns = ['firstname', 'email', 'uid', 'ph', 'bloodGroup', 'region', 'actions'];
       this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -98,7 +100,7 @@ export class SupplierComponent implements OnInit {
         "deliveryPartnerObjId": val[i]._id,
         "region": val[i].areaId.areaCode,
         "bloodGroup": val[i].bloodGroup,
-        "uid":val[i].uid,
+        "uid": val[i].uid,
 
         "Pcity": val[i].address.city,
         "Pcountry": val[i].address.country,
@@ -134,29 +136,28 @@ export class SupplierComponent implements OnInit {
     }
     return finalData;
   }
-  getAreaData(val) {
-    var formatJson = {};
-    var finalData = [];
-    for (let i = 0; i < val.length; i++) {
-      formatJson = {
-        "code": val[i].areaCode,
-        "area": val[i].formattedAddress,
-        "lt": val[i].latitude,
-        "lg": val[i].longitude,
-        "id": val[i]._id
+  // getAreaData(val) {
+  //   var formatJson = {};
+  //   var finalData = [];
+  //   for (let i = 0; i < val.length; i++) {
+  //     formatJson = {
+  //       "code": val[i].areaCode,
+  //       "area": val[i].formattedAddress,
+  //       "lt": val[i].latitude,
+  //       "lg": val[i].longitude,
+  //       "id": val[i]._id
 
-      }
-      finalData.push(formatJson);
-      formatJson = {};
-    }
-    return finalData;
-  }
+  //     }
+  //     finalData.push(formatJson);
+  //     formatJson = {};
+  //   }
+  //   return finalData;
+  // }
 
   add() {
 
     const dialogRef = this.dialog.open(AddUser, {
-      width: '95%',
-      height: '80%',
+
       data: { ind: "create", data1: "" }
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -172,8 +173,6 @@ export class SupplierComponent implements OnInit {
   }
   edit(val) {
     const dialogRef = this.dialog.open(AddUser, {
-      width: '95%',
-      height: '80%',
       data: { ind: "edit", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -182,8 +181,6 @@ export class SupplierComponent implements OnInit {
   }
   display(val) {
     const dialogRef = this.dialog.open(AddUser, {
-      width: '95%',
-      height: '80%',
       data: { ind: "display", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -203,8 +200,6 @@ export class SupplierComponent implements OnInit {
   }
   onIndidualVendor(event, value) {
     const dialogRefCalculation = this.dialog.open(PaymentCalaculation, {
-      width: '80%',
-      height: '65%',
       data: { data: value }
     })
     dialogRefCalculation.afterClosed().subscribe(result => {
@@ -219,10 +214,8 @@ export interface PeriodicElement {
   region: string;
   address: string;
   city: string;
-  uid:string;
+  uid: string;
 }
-
-
 
 
 @Component({
@@ -587,8 +580,8 @@ export class PaymentCalaculation implements OnInit {
   ClosePaymentCalculation() {
     this.dialogRefCalculation.close();
   }
-  PaymentEstimate(){
-    
+  PaymentEstimate() {
+
   }
 
 }

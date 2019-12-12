@@ -14,11 +14,14 @@ export class SidebarComponent implements OnInit {
     showMenu: string;
     pushRightClass: string;
     isAdmin: boolean;
-    profileName:any;
+    profileName: any;
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
-    constructor(public router: Router, private cds: CommonServiceService, private snackBar: MatSnackBar) {
+    constructor(
+        public router: Router,
+        private cds: CommonServiceService,
+        private snackBar: MatSnackBar) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -78,8 +81,8 @@ export class SidebarComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.removeItem('isLoggedin');
-        localStorage.removeItem('authToken');
+        sessionStorage.removeItem('isLoggedin');
+        sessionStorage.removeItem('authToken');
         this.cds.currentAdminDetail = undefined;
         this.cds.tokenLogin = undefined;
         this.router.navigate(['/login']);

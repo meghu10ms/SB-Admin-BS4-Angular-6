@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
+import {
+    TimelineComponent,
+    NotificationComponent,
+    ChatComponent
+} from './components';
 
 import { StatModule } from '../../shared';
 import { AmChartsModule } from "@amcharts/amcharts3-angular";
-import {  MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatSnackBarModule, MatProgressSpinnerModule, MatGridListModule } from '@angular/material';
 
 @NgModule({
     imports: [
@@ -15,10 +20,17 @@ import {  MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material'
         NgbCarouselModule,
         DashboardRoutingModule,
         StatModule,
-        AmChartsModule,MatSnackBarModule, MatProgressSpinnerModule
+        AmChartsModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+        MatGridListModule,
+        NgbAlertModule
     ],
     declarations: [
-        DashboardComponent
+        DashboardComponent,
+        TimelineComponent,
+        NotificationComponent,
+        ChatComponent
     ]
 })
 export class DashboardModule { }

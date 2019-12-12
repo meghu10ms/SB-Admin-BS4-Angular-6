@@ -32,46 +32,46 @@
 
           <!-- Position Column -->
           <ng-container matColumnDef="firstname">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element">
-              <a  href="javascript:void(0)" (click)="onIndidualVendor($event,element)">{{element.firstname}} </a> </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element">
+              <a href="javascript:void(0)" (click)="onIndidualVendor($event,element)">{{element.firstname}} </a> </td>
           </ng-container>
 
           <!-- Position Column -->
           <ng-container matColumnDef="companyname">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> COMPANY NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.companyname}} </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> COMPANY NAME </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.companyname}} </td>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="uid">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> User Id </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.uid}} </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> USER ID </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.uid}} </td>
           </ng-container>
 
-           <!-- Name Column -->
-           <!-- <ng-container matColumnDef="email">
+          <!-- Name Column -->
+          <!-- <ng-container matColumnDef="email">
             <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
             <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.email}} </td>
           </ng-container> -->
 
           <!-- Weight Column -->
           <ng-container matColumnDef="ph">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.ph}} </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.ph}} </td>
           </ng-container>
 
           <!-- Weight Column -->
           <ng-container matColumnDef="region">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.region}} </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.region}} </td>
           </ng-container>
 
           <!-- Symbol Column -->
           <ng-container matColumnDef="actions">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef> ACTION </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element">
-              <div class="row">
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef> ACTION </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element">
+              <!-- <div class="row">
                 <button mat-icon-button aria-label="Edit User" matTooltip="Edit" style="width: 30px">
                   <mat-icon color="primary" aria-hidden="false" aria-label="edit" (click)="edit(element)">edit
                   </mat-icon>
@@ -91,7 +91,28 @@
                   <mat-icon color="primary" aria-hidden="false" aria-label="Product" (click)="product(element)">
                     local_grocery_store</mat-icon>
                 </button>
-              </div>
+              </div> -->
+
+              <!-- <button mat-icon-button aria-label="Edit User" class="dropdown-item" matTooltip="Edit" > -->
+              <mat-icon color="primary" aria-hidden="false" aria-label="edit" (click)="edit(element)">edit
+              </mat-icon>
+              <!-- </button> -->
+
+              <!-- <button mat-icon-button aria-label="Remove User" class="dropdown-item" matTooltip="Remove" > -->
+              <mat-icon color="warn" aria-hidden="false" aria-label="delete icon" (click)="remove(element)">delete
+              </mat-icon>
+              <!-- </button> -->
+
+              <!-- <button mat-icon-button aria-label="Display User" class="dropdown-item" matTooltip="Display" > -->
+              <mat-icon color="primary" aria-hidden="false" aria-label="display" (click)="display(element)">
+                keyboard_arrow_right</mat-icon>
+              <!-- </button> -->
+
+              <!-- <button mat-icon-button aria-label="Product" class="dropdown-item" matTooltip="Product" > -->
+              <mat-icon color="primary" aria-hidden="false" aria-label="Product" (click)="product(element)">
+                local_grocery_store</mat-icon>
+              <!-- </button> -->
+
             </td>
           </ng-container>
 

@@ -23,7 +23,9 @@ export class AdsComponent implements OnInit {
   visible: any;
   AdsCollection: any[];
   ngOnInit() {
-
+    if (this.cds.tokenLogin === undefined) {
+      this.cds.tokenLogin = sessionStorage.getItem("authToken");
+    }
     this.nextProcess();
   }
   nextProcess() {

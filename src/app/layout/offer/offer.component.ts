@@ -22,15 +22,17 @@ export class OfferComponent implements OnInit {
     private cds: CommonServiceService) { }
   visible: any;
   OfferCollection: any[];
-  ngOnInit() {
 
+  ngOnInit() {
+    if (this.cds.tokenLogin === undefined) {
+      this.cds.tokenLogin = sessionStorage.getItem("authToken");
+    }
     this.nextProcess();
   }
   nextProcess() {
     this.visible = true;
     this.cds.getAllOffer(this.cds.tokenLogin).subscribe(response => {
       this.visible = false;
-
       this.OfferCollection = this.getOffers(response["offers"]);
     }, error => {
       this.visible = false;
@@ -48,7 +50,6 @@ export class OfferComponent implements OnInit {
         "description": val[i].offerDescription,
         "couponCode": val[i].couponCode,
         "type": val[i].offerType,
-        //"isActive": val[i].isActive,
         "fromDate": val[i].validFrom,
         "validDuration": val[i].validDuration,
         "percentage": val[i].percentage,
@@ -61,7 +62,7 @@ export class OfferComponent implements OnInit {
     }
     return finalData;
   }
-  newAds() {
+  newOffer() {
     const dialogRef = this.dialog.open(ViewOffer, {
       width: '95%',
       height: '70%',
@@ -72,7 +73,7 @@ export class OfferComponent implements OnInit {
     });
   }
 
-  editAds(val) {
+  editOffers(val) {
     const dialogRef = this.dialog.open(ViewOffer, {
       width: '95%',
       height: '70%',
@@ -82,7 +83,7 @@ export class OfferComponent implements OnInit {
       this.nextProcess();
     });
   }
-  deleteAds(val) {
+  deleteOffers(val) {
     this.cds.deleteAds(val.id, this.cds.tokenLogin).subscribe(response => {
       this.nextProcess();
     }, error => {
@@ -100,13 +101,8 @@ export class OfferComponent implements OnInit {
 })
 export class ViewOffer implements OnInit {
   newUserForm: FormGroup;
-  // imgProductUrl: any;
-  // imgProductUrl1: any;
-  // Active: boolean;
-  // profilePicId: any;
-  // profilePicId1: any;
-  // filevalid: any;
   offerType: any[];
+  customersList: any[];
 
 
 
@@ -117,17 +113,14 @@ export class ViewOffer implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
-    // this.Active = false;
+    this.customersList = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
     this.offerType = [{ "type": "PRTG" }, { "type": "AMT" }];
     var data = this.dialogRef.componentInstance.data.data1;
     this.createForm();
     if (this.dialogRef.componentInstance.data.ind == 'edit') {
       this.bindDisplayValues(data);
-      // this.Active = data.isActive;
     } else {
-      // this.Active = false;
-      // this.imgProductUrl = "";
-      // this.profilePicId = "";
+
     }
   }
   createForm() {
@@ -138,7 +131,7 @@ export class ViewOffer implements OnInit {
       percentage: ['', Validators.required],
       type: ['', Validators.required],
       amount: ['', Validators.required],
-      customer: ['', Validators.required],
+      customer: [''],
       validDuration: ['', Validators.required],
       fromDate: ['', Validators.required],
 
@@ -151,88 +144,20 @@ export class ViewOffer implements OnInit {
     this.dialogRef.close();
   }
 
-  // toggeleActive(evt) {
-  //   this.Active = evt.checked;
-  // }
-  // preview(files) {
-  //   if (files.length === 0)
-  //     return;
-
-  //   var mimeType = files[0].type;
-  //   if (mimeType.match(/image\/*/) == null) {
-  //     this.snackBar.open("File Type Not supporting upload imgage only", "", {
-  //       duration: 2000,
-  //     });
-  //     return;
-  //   }
-  //   if (files[0].size > 2000000) {
-  //     this.snackBar.open("File size excceds 2MB", "", {
-  //       duration: 2000,
-  //     });
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append('file', files[0]);
-  //   formData.append('name', 'ads');
-  //   this.cds2.postMedia(formData).subscribe(response => {
-  //     this.imgProductUrl = response["media"].path;
-  //     this.profilePicId = response["media"]._id;
-  //     this.filevalid = false;
-  //   }, error => {
-  //     this.snackBar.open(error.error.error.message, "", {
-  //       duration: 2000,
-  //     });
-  //   });
-  // }
-  // preview1(files) {
-  //   if (files.length === 0)
-  //     return;
-
-  //   var mimeType = files[0].type;
-  //   if (mimeType.match(/image\/*/) == null) {
-  //     this.snackBar.open("File Type Not supporting upload imgage only", "", {
-  //       duration: 2000,
-  //     });
-  //     return;
-  //   }
-  //   if (files[0].size > 2000000) {
-  //     this.snackBar.open("File size excceds 2MB", "", {
-  //       duration: 2000,
-  //     });
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append('file', files[0]);
-  //   formData.append('name', 'offer');
-  //   this.cds2.postMedia(formData).subscribe(response => {
-  //     this.imgProductUrl1 = response["media"].path;
-  //     this.profilePicId1 = response["media"]._id;
-
-  //   }, error => {
-  //     this.snackBar.open(error.error.error.message, "", {
-  //       duration: 2000,
-  //     });
-  //   });
-  // }
-
   createAds() {
     if (this.newUserForm.valid) {
-      var medi = [];
-      // medi.push(this.profilePicId);
+      debugger;
       var filledData = this.newUserForm.value;
       var createData = {
-        "name": filledData.name,
-        "description": filledData.description,
-        "url": filledData.url,
-        //"offer": filledData.offer,
-        "fromDate": filledData.fromDate,
-        "toDate": filledData.toDate,
-        "interval": filledData.interval,
-        "type": filledData.type,
-        "isActive": filledData.isActive,
-        "medias": medi
+        "offername": filledData.name,
+        "offerDescription": filledData.description,
+        "couponCode": filledData.couponCode,
+        "percentage": filledData.percentage,
+        "amount": filledData.amount,
+        "validDuration": filledData.validDuration,
+        "OfferType": filledData.type,
+        "validFrom": filledData.fromDate,
+        "customers": filledData.customer
       };
       if (this.dialogRef.componentInstance.data.ind == 'create') {
 

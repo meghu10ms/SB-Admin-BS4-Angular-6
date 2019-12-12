@@ -13,9 +13,9 @@
       <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="newAds()">add_box</mat-icon>
     </button>
   </mat-toolbar>
-  <div class="mt-7 mb-10 ml-5 mr-5" fxLayout="row wrap" flex-wrap fxLayout.xs="row wrap" fxLayoutWrap fxLayoutGap="0.5%"
+  <!-- <div class="mt-7 mb-10 ml-5 mr-5" fxLayout="row wrap" flex-wrap fxLayout.xs="row wrap" fxLayoutWrap fxLayoutGap="0.5%"
     fxLayoutAlign="left">
-    <div fxFlex="19.5%" style="border: 2px solid rgb(148, 192, 218) !important;" *ngFor="let val of AdsCollection">
+    <div fxFlex="19.5%" class="border" *ngFor="let val of AdsCollection">
       <h6 class="jtext-center"> {{val.name}} ({{val.description}}) </h6>
       <div>
         <img src="{{val.path}}" alt="Ads" height="80" width="200" class="avatar img-circle img-thumbnail">
@@ -33,6 +33,43 @@
         <button mat-button color="primary" class="jtext-right">
           <mat-icon (click)="deleteAds(val)">delete</mat-icon>
         </button>
+      </div>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-sm-4" *ngFor="let val of AdsCollection">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header">{{val.name}}</div>
+        <div class="imgDiv">
+          <img src="{{val.path}}" alt="Ads"  class="img-thumbnail img">
+        </div>
+        <div class="card-body">
+          <p style="word-wrap: unset;">
+            {{val.description}}
+          </p>
+          <div class="row">
+            <div class="col-sm-6 jtext-small">
+              From Date :{{val.fromDate}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              To Date :{{val.toDate}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Interval :{{val.interval}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Type :{{val.type}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <button mat-button color="primary" (click)="editAds(val)" class="col text-left">
+           Edit
+          </button>
+          <button mat-button color="primary" (click)="deleteAds(val)" class="col text-right">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>

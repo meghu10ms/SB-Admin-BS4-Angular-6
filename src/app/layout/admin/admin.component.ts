@@ -32,6 +32,9 @@ export class AdminComponent implements OnInit {
     private cds: CommonServiceService) { }
 
   ngOnInit() {
+    if (this.cds.tokenLogin === undefined) {
+      this.cds.tokenLogin = sessionStorage.getItem("authToken");
+    }
     this.getAdminDetails();
   }
   getAdminDetails() {
@@ -115,8 +118,6 @@ export class AdminComponent implements OnInit {
   add() {
 
     const dialogRef = this.dialog.open(AddUser, {
-      width: '95%',
-      height: '80%',
       data: { ind: "create", data1: "" }
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -132,8 +133,6 @@ export class AdminComponent implements OnInit {
   }
   edit(val) {
     const dialogRef = this.dialog.open(AddUser, {
-      width: '95%',
-      height: '80%',
       data: { ind: "edit", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -142,8 +141,6 @@ export class AdminComponent implements OnInit {
   }
   display(val) {
     const dialogRef = this.dialog.open(AddUser, {
-      width: '95%',
-      height: '80%',
       data: { ind: "display", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {

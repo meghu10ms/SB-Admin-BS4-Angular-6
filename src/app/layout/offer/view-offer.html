@@ -1,28 +1,6 @@
 <div mat-dialog-content>
   <div class="row">
-    <!-- <div class="col-sm-3">
-      <form>
 
-        <div class="text-left">
-          <mat-slide-toggle color="Primary" [checked]="this.Active" (change)="toggeleActive($event)"
-            labelPosition="before" matTooltip="Active">
-            Active
-          </mat-slide-toggle>
-          <hr />
-
-          <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar"
-            *ngIf="!imgProductUrl" height="150" width="150">
-          <img [src]="imgProductUrl" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgProductUrl">
-          <h6 *ngIf="!imgProductUrl">Upload Offer Photo...</h6>
-          <input type="file" #file class="text-left left-block file-upload" accept='image/*'
-            (change)="preview(file.files)" style="width:95%" >
-          <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
-
-          <hr />         
-        </div>
-
-      </form>
-    </div> -->
     <div class="col-sm-12">
       <form class="form-inline" [formGroup]="newUserForm">
         <div class="col-sm-4">
@@ -67,8 +45,11 @@
 
           <mat-form-field appearance="outline">
             <mat-label style="font-weight: bold">Customers</mat-label>
-            <input matInput placeholder="Enter Offer" formControlName="customer" maxlength="25"
-              style="font-weight: bold">
+            <mat-select formControlName="customer" multiple placeholder="Choose Customers" style="font-weight: bold">
+              <mat-option *ngFor="let val of customersList" [value]="val">
+                {{val}}
+              </mat-option>
+            </mat-select>
             <mat-icon matSuffix>pages</mat-icon>
           </mat-form-field>
 

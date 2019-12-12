@@ -15,19 +15,44 @@ export class NotFoundComponent implements OnInit {
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    
+
     this.visible = true;
     this.cds.getCurentAdminDetails(this.cds.tokenLogin).subscribe(response => {
-      this.visible = false;
       var val = JSON.stringify(response);
       this.cds.currentAdminDetail = JSON.parse(val);
-      this.router.navigate(['/dashboard']);
+      this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
+        this.visible = false;
+        this.cds.areaData = this.getAreaData(response["areas"]);
+        this.router.navigate(['/dashboard']);
+      }, error => {
+        this.visible = false;
+        this.snackBar.open(error.error.message, "", {
+          duration: 2000,
+        });
+      })
     }, error => {
       this.visible = false;
       this.snackBar.open(error.error.message, "", {
         duration: 2000,
       });
     })
+  }
+  getAreaData(val) {
+    var formatJson = {};
+    var finalData = [];
+    for (let i = 0; i < val.length; i++) {
+      formatJson = {
+        "code": val[i].areaCode,
+        "area": val[i].formattedAddress,
+        "lt": val[i].latitude,
+        "lg": val[i].longitude,
+        "id": val[i]._id
+
+      }
+      finalData.push(formatJson);
+      formatJson = {};
+    }
+    return finalData;
   }
 
 }

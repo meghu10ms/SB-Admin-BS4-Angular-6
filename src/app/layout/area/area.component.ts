@@ -24,8 +24,6 @@ export class AreaComponent implements OnInit {
   dataSource: any;
   displayedColumns: string[];
 
-
-
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   public comments = [];
@@ -38,6 +36,9 @@ export class AreaComponent implements OnInit {
     this.getDeatails();
   }
   getDeatails() {
+    if (this.cds.tokenLogin === undefined) {
+      this.cds.tokenLogin = sessionStorage.getItem("authToken");
+    }
     this.visible = true;
     this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
       this.visible = false;
@@ -139,18 +140,6 @@ export interface PeriodicElement {
 
 }
 
-// const ELEMENT_DATA: PeriodicElement[] = [
-//   { code: 'A0001', area: 'Bommanahlli', lt: '100000.900', lg: '100000.900' },
-//   { code: 'A0002', area: 'Vijaynagar', lt: '100000.900', lg: '100000.900' },
-//   { code: 'A0003', area: 'Rajajinagar', lt: '100000.900', lg: '100000.900' },
-//   { code: 'A0004', area: 'HRBR Layout', lt: '100000.900', lg: '100000.900' },
-//   { code: 'A0005', area: 'Kalyannagar', lt: '100000.900', lg: '100000.900' },
-//   { code: 'A0006', area: 'Bapujinagar', lt: '100000.900', lg: '100000.900' },
-//   { code: 'A0007', area: 'Shivajinagar', lt: '100000.900', lg: '100000.900' },
-//   { code: 'A0008', area: 'Arakere', lt: '100000.900', lg: '100000.900' },
-// ];
-
-
 
 @Component({
   templateUrl: 'add-area.html',
@@ -212,7 +201,7 @@ export class AddArea implements OnInit {
       }
 
       if (this.dialogRef.componentInstance.data.ind == 'create') {
-        this.cds1.postAreaDetails(bodyData,this.cds1.tokenLogin).subscribe(response => {
+        this.cds1.postAreaDetails(bodyData, this.cds1.tokenLogin).subscribe(response => {
           this._snackBar.open(response["message"], "", {
             duration: 2000,
           });

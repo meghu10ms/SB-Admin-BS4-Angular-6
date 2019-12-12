@@ -50,8 +50,8 @@ export class HeaderComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.removeItem('isLoggedin');
-        localStorage.removeItem('authToken');
+        sessionStorage.removeItem('isLoggedin');
+        sessionStorage.removeItem('authToken');
         this.cds.currentAdminDetail = undefined;
         this.cds.tokenLogin = undefined;
         this.router.navigate(['/login']);

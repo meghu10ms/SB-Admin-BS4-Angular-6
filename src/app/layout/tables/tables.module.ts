@@ -8,7 +8,7 @@ import {
     MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
-    MatNativeDateModule, MatSnackBarModule
+    MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule,MatSlideToggleModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddUser } from './tables.component';
@@ -17,7 +17,7 @@ import { AddUser } from './tables.component';
     imports: [CommonModule, TablesRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
-        FormsModule, MatSnackBarModule],
+        FormsModule, MatSnackBarModule,MatProgressSpinnerModule,MatSlideToggleModule],
     declarations: [TablesComponent, AddUser],
     entryComponents: [AddUser]
 })

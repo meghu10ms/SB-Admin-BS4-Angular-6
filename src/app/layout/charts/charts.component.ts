@@ -33,6 +33,9 @@ export class ChartsComponent implements OnInit {
         private cds: CommonServiceService) { }
 
     ngOnInit() {
+        if (this.cds.tokenLogin === undefined) {
+            this.cds.tokenLogin = sessionStorage.getItem("authToken");
+        }
 
         this.getVendorDetails();
     }
@@ -72,45 +75,45 @@ export class ChartsComponent implements OnInit {
                 val[i].areaId = { "areaCode": "", "formattedAddress": "", "_id": "" }
             }
             formatJson = {
-                "title": val[i].ownerName.title,
-                "firstname": val[i].ownerName.firstName,
-                "lastname": val[i].ownerName.lastName,
-                "email": val[i].email,
-                "ph": val[i].phoneNumber,
-                "uid": val[i].uid,
+                "title": val[i].ownerName ? val[i].ownerName.title : "",
+                "firstname": val[i].ownerName ? val[i].ownerName.firstName : "",
+                "lastname": val[i].ownerName ? val[i].ownerName.lastName : "",
+                "email": val[i].email ? val[i].email : "",
+                "ph": val[i].phoneNumber ? val[i].phoneNumber : "",
+                "uid": val[i].uid ? val[i].uid : "",
 
-                "companyname": val[i].companyName,
-                "cin": val[i].cin,
-                "registratedAuthority": val[i].registratedAuthority,
-                "registrationNumber": val[i].registrationNumber,
-                "registrationYear": val[i].registrationYear,
-                "vendorId": val[i].vendorId,
-                "areaId": val[i].areaId,
-                "vendorObjId": val[i]._id,
-                "city": val[i].ownerAddress.city,
-                "country": val[i].ownerAddress.country,
-                "flatNumber": val[i].ownerAddress.flatNumber,
-                "landMark": val[i].ownerAddress.landMark,
-                "postalCode": val[i].ownerAddress.postalCode,
-                "state": val[i].ownerAddress.state,
-                "street": val[i].ownerAddress.street,
+                "companyname": val[i].companyName ? val[i].companyName : "",
+                "cin": val[i].cin ? val[i].cin : "",
+                "registratedAuthority": val[i].registratedAuthority ? val[i].registratedAuthority : "",
+                "registrationNumber": val[i].registrationNumber ? val[i].registrationNumber : "",
+                "registrationYear": val[i].registrationYear ? val[i].registrationYear : "",
+                "vendorId": val[i].vendorId ? val[i].vendorId : "",
+                "areaId": val[i].areaId ? val[i].areaId : "",
+                "vendorObjId": val[i]._id ? val[i]._id : "",
+                "city": val[i].ownerAddress ? val[i].ownerAddress.city : "",
+                "country": val[i].ownerAddress ? val[i].ownerAddress.country : "",
+                "flatNumber": val[i].ownerAddress ? val[i].ownerAddress.flatNumber : "",
+                "landMark": val[i].ownerAddress ? val[i].ownerAddress.landMark : "",
+                "postalCode": val[i].ownerAddress ? val[i].ownerAddress.postalCode : "",
+                "state": val[i].ownerAddress ? val[i].ownerAddress.state : "",
+                "street": val[i].ownerAddress ? val[i].ownerAddress.street : "",
 
-                "longitude": val[i].areaId.location["coordinates"][0],
-                "latitude": val[i].areaId.location["coordinates"][1],
-                "region": val[i].areaId.areaCode,
+                "longitude": val[i].areaId ? val[i].areaId.location["coordinates"][0] : "",
+                "latitude": val[i].areaId ? val[i].areaId.location["coordinates"][1] : "",
+                "region": val[i].areaId ? val[i].areaId.areaCode : "",
 
 
-                "accountNumber": val[i].bankDetails.accountNumber,
-                "accountType": val[i].bankDetails.accountType,
-                "bankName": val[i].bankDetails.bankName,
-                "branchName": val[i].bankDetails.branchName,
-                "holderName": val[i].bankDetails.holderName,
-                "ifscCode": val[i].bankDetails.ifscCode,
-                "taxNumber": val[i].bankDetails.taxNumber,
-                "isRetailer": val[i].isRetailer,
-                "activeAdmin": val[i].isActive,
-                "isVendor": val[i].isVendor,
-                "media": val[i].medias
+                "accountNumber": val[i].bankDetails ? val[i].bankDetails.accountNumber : "",
+                "accountType": val[i].bankDetails ? val[i].bankDetails.accountType : "",
+                "bankName": val[i].bankDetails ? val[i].bankDetails.bankName : "",
+                "branchName": val[i].bankDetails ? val[i].bankDetails.branchName : "",
+                "holderName": val[i].bankDetails ? val[i].bankDetails.holderName : "",
+                "ifscCode": val[i].bankDetails ? val[i].bankDetails.ifscCode : "",
+                "taxNumber": val[i].bankDetails ? val[i].bankDetails.taxNumber : "",
+                "isRetailer": val[i].isRetailer ? val[i].isRetailer : "",
+                "activeAdmin": val[i].isActive ? val[i].isActive : "",
+                "isVendor": val[i].isVendor ? val[i].isVendor : "",
+                "media": val[i].medias ? val[i].medias : []
             }
             finalData.push(formatJson);
             formatJson = {};
@@ -122,12 +125,11 @@ export class ChartsComponent implements OnInit {
         var finalData = [];
         for (let i = 0; i < val.length; i++) {
             formatJson = {
-                "code": val[i].areaCode,
-                "area": val[i].formattedAddress,
-                "lt": val[i].latitude,
-                "lg": val[i].longitude,
-                "id": val[i]._id
-
+                "code": val[i].areaCode ? val[i].areaCode : "",
+                "area": val[i].formattedAddress ? val[i].formattedAddress : "",
+                "lt": val[i].latitude ? val[i].latitude : "",
+                "lg": val[i].longitude ? val[i].longitude : "",
+                "id": val[i]._id ? val[i]._id : ""
             }
             finalData.push(formatJson);
             formatJson = {};
@@ -136,37 +138,31 @@ export class ChartsComponent implements OnInit {
     }
 
     add() {
-
         const dialogRef = this.dialog.open(AddUser, {
-            width: '95%',
-            height: '80%',
             data: { ind: "create", data1: "" }
         })
         dialogRef.afterClosed().subscribe(result => {
-            this.getVendorDetails();
+            if (result.action === "yes")
+                this.getVendorDetails();
         });
     }
     applyFilter(filterValue: string) {
         this.dataSource.filter = filterValue.trim().toLowerCase();
-
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
     }
     edit(val) {
         const dialogRef = this.dialog.open(AddUser, {
-            width: '95%',
-            height: '80%',
             data: { ind: "edit", data1: val }
         })
         dialogRef.afterClosed().subscribe(result => {
-            this.getVendorDetails();
+            if (result.action === "yes")
+                this.getVendorDetails();
         });
     }
     display(val) {
         const dialogRef = this.dialog.open(AddUser, {
-            width: '95%',
-            height: '80%',
             data: { ind: "display", data1: val }
         })
         dialogRef.afterClosed().subscribe(result => {
@@ -186,8 +182,6 @@ export class ChartsComponent implements OnInit {
     }
     product(val) {
         const dialogRefProduct = this.dialog.open(ProductDetails, {
-            width: '80%',
-            height: '88%',
             data: { data1: val }
         })
         dialogRefProduct.afterClosed().subscribe(result => {
@@ -196,8 +190,6 @@ export class ChartsComponent implements OnInit {
 
     onIndidualVendor(event, value) {
         const dialogRefCalculation = this.dialog.open(PaymentCalaculation, {
-            width: '80%',
-            height: '65%',
             data: { data: value }
         })
         dialogRefCalculation.afterClosed().subscribe(result => {
@@ -238,7 +230,7 @@ export class AddUser implements OnInit {
     Retailer: boolean;
     Vendor: boolean;
     activeVendor: boolean;
-    visible:any;
+    visible: any;
 
     constructor(
         public dialogRef: MatDialogRef<AddUser>,
@@ -261,8 +253,8 @@ export class AddUser implements OnInit {
             this.visible = true;
             this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
                 this.visible = false;
-                this.imgURL = response["path"];
-                this.profilePicId = response["_id"];
+                this.imgURL = response["path"] ? response["path"] : "";
+                this.profilePicId = response["_id"] ? response["_id"] : "";
             }, error => {
                 this.visible = false;
                 this.snackBar.open(error.error.message, "", {
@@ -391,7 +383,7 @@ export class AddUser implements OnInit {
                     this.snackBar.open(response["message"], "", {
                         duration: 2000,
                     });
-                    this.dialogRef.close();
+                    this.dialogRef.close({ action: "yes" });
                 }, error => {
                     this.visible = false;
                     this.snackBar.open(error.error.error.message, "", {
@@ -447,7 +439,7 @@ export class AddUser implements OnInit {
                     this.snackBar.open(response["message"], "", {
                         duration: 2000,
                     });
-                    this.dialogRef.close();
+                    this.dialogRef.close({ action: "yes" });
                 }, error => {
                     this.visible = false;
                     this.snackBar.open(error.error.error.message, "", {
@@ -529,7 +521,7 @@ export class AddUser implements OnInit {
         this.Retailer = evt.checked;
     }
     CloseUser() {
-        this.dialogRef.close();
+        this.dialogRef.close({ action: "" });
     }
     bindDisplayValues(val) {
         this.newUserForm.patchValue({
@@ -593,7 +585,7 @@ export class ProductDetails implements OnInit {
     count: any;
     isAdmin: boolean;
     visible1: any;
-
+    color = "#9bc5dd";
 
     constructor(
         public dialogRefProduct: MatDialogRef<AddUser>,
@@ -636,25 +628,25 @@ export class ProductDetails implements OnInit {
         var finalData = [];
         for (let i = 0; i < val.length; i++) {
             formatJson = {
-                "name": val[i].name,
-                "type": val[i].type,
-                "description": val[i].description,
-                "code": val[i].code,
-                "withCanePrice": val[i].withCanePrice,
-                "withCaneCost": val[i].withCaneCost,
-                "cost": val[i].cost,
-                "price": val[i].price,
-                "capacity": val[i].capacity,
+                "name": val[i].name ? val[i].name : "",
+                "type": val[i].type ? val[i].type : "",
+                "description": val[i].description ? val[i].description : "",
+                "code": val[i].code ? val[i].code : "",
+                "withCanePrice": val[i].withCanePrice ? val[i].withCanePrice : "",
+                "withCaneCost": val[i].withCaneCost ? val[i].withCaneCost : "",
+                "cost": val[i].cost ? val[i].cost : "",
+                "price": val[i].price ? val[i].price : "",
+                "capacity": val[i].capacity ? val[i].capacity : "",
                 "media": (val[i].medias[0] ? val[i].medias[0].path : "../assets/images/avtar.png"),
                 "mediaId": (val[i].medias[0] ? val[i].medias[0]._id : ""),
-                "vendor": val[i].vendor,
-                "productId": val[i]._id,
-                "isActive": val[i].isActive
-
+                "vendor": val[i].vendor ? val[i].vendor : "",
+                "productId": val[i]._id ? val[i]._id : "",
+                "isActive": val[i].isActive ? val[i].isActive : ""
             }
             finalData.push(formatJson);
             formatJson = {};
         }
+
         return finalData;
     }
     createForm() {
@@ -706,7 +698,7 @@ export class ProductDetails implements OnInit {
                     this.snackBar.open(response["message"], "", {
                         duration: 2000,
                     });
-                    this.dialogRefProduct.close();
+                    this.dialogRefProduct.close({ action: "yes" });
                 }, error => {
                     this.visible1 = false;
                     this.snackBar.open(error.error.error.message, "", {
@@ -721,7 +713,7 @@ export class ProductDetails implements OnInit {
                     this.snackBar.open(response["message"], "", {
                         duration: 2000,
                     });
-                    this.dialogRefProduct.close();
+                    this.dialogRefProduct.close({ action: "yes" });
                 }, error => {
                     this.visible1 = false;
                     this.snackBar.open(error.error.error.message, "", {
@@ -757,7 +749,10 @@ export class ProductDetails implements OnInit {
         else
             return true;
     }
-
+    validateProductCode(event): boolean {
+        const charCode = (event.which) ? event.which : event.keyCode;
+        return true;
+    }
     preview(files) {
         if (files.length === 0)
             return;
@@ -782,8 +777,8 @@ export class ProductDetails implements OnInit {
         this.visible1 = true;
         this.cds2.postMedia(formData).subscribe(response => {
             this.visible1 = false;
-            this.imgProductUrl = response["media"].path;
-            this.profilePicId = response["media"]._id;
+            this.imgProductUrl = response["media"].path ? response["media"].path : "";
+            this.profilePicId = response["media"]._id ? response["media"]._id : "";
             this.filevalid = false;
         }, error => {
             this.visible1 = false;
@@ -806,7 +801,7 @@ export class ProductDetails implements OnInit {
         }
     }
     CancelProduct(evt) {
-        this.dialogRefProduct.close();
+        this.dialogRefProduct.close({ action: "no" });
     }
     deleteProduct(evt) {
         this.visible1 = true;
@@ -823,6 +818,17 @@ export class ProductDetails implements OnInit {
     editProduct(evt) {
         this.bindDisplayValuesEdit(evt);
         this.indicator = "edit";
+        this.view = !(this.view);
+        if (this.view) {
+            this.sliderName = "Add New Product";
+        } else {
+            this.sliderName = "View Products";
+            this.productForm.reset();
+            this.imgProductUrl = "";
+            this.profilePicId = "";
+        }
+    }
+    addProduct(evt) {
         this.view = !(this.view);
         if (this.view) {
             this.sliderName = "Add New Product";
@@ -877,10 +883,10 @@ export class PaymentCalaculation implements OnInit {
 
     }
     ClosePaymentCalculation() {
-        this.dialogRefCalculation.close();
+        this.dialogRefCalculation.close({ action: "no" });
     }
-    PaymentEstimate(){
-        
+    PaymentEstimate() {
+
     }
 
 }
