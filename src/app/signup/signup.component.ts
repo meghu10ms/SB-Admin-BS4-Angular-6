@@ -30,11 +30,11 @@ export class SignupComponent implements OnInit {
         }
         var data = this.forgotPasswordForm.value;
         this.cds.forgotPassword(data).subscribe(response => {
-            this.snackBar.open(response["message"], "", {
+            this.snackBar.open((response ? response["message"] : ""), "", {
                 duration: 2000,
             });
         }, error => {
-            this.snackBar.open(error.error.message, "", {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                 duration: 2000,
             });
         })

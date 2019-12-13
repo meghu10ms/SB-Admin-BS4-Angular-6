@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./not-found.component.scss']
 })
 export class NotFoundComponent implements OnInit {
-  private visible: any;
+  public visible: any;
   constructor(public router: Router,
     private cds: CommonServiceService,
     private snackBar: MatSnackBar) { }

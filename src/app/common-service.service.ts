@@ -198,7 +198,7 @@ export class CommonServiceService implements OnInit {
     return this.http.get(this.url + "ads/search/", this.getTokenAccess(token));
   }
 
-  //delete all Ads
+  //delete  Ads
   deleteAds(pId, token) {
 
     return this.http.delete(this.url + "ads/" + pId, this.getTokenAccess(token));

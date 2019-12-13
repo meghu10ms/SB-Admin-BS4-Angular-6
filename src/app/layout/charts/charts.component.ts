@@ -61,7 +61,7 @@ export class ChartsComponent implements OnInit {
             // })
         }, error => {
             this.visible = false;
-            this.snackBar.open(error.error.message, "", {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                 duration: 2000,
             });
         })
@@ -142,7 +142,7 @@ export class ChartsComponent implements OnInit {
             data: { ind: "create", data1: "" }
         })
         dialogRef.afterClosed().subscribe(result => {
-            if (result.action === "yes")
+            if (result && result.action === "yes")
                 this.getVendorDetails();
         });
     }
@@ -157,7 +157,7 @@ export class ChartsComponent implements OnInit {
             data: { ind: "edit", data1: val }
         })
         dialogRef.afterClosed().subscribe(result => {
-            if (result.action === "yes")
+            if (result && result.action === "yes")
                 this.getVendorDetails();
         });
     }
@@ -175,13 +175,14 @@ export class ChartsComponent implements OnInit {
             });
             this.getVendorDetails();
         }, error => {
-            this.snackBar.open(error.error.error.message, "", {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                 duration: 2000,
             });
         });
     }
     product(val) {
         const dialogRefProduct = this.dialog.open(ProductDetails, {
+           
             data: { data1: val }
         })
         dialogRefProduct.afterClosed().subscribe(result => {
@@ -257,7 +258,7 @@ export class AddUser implements OnInit {
                 this.profilePicId = response["_id"] ? response["_id"] : "";
             }, error => {
                 this.visible = false;
-                this.snackBar.open(error.error.message, "", {
+                this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                     duration: 2000,
                 });
             });
@@ -386,7 +387,7 @@ export class AddUser implements OnInit {
                     this.dialogRef.close({ action: "yes" });
                 }, error => {
                     this.visible = false;
-                    this.snackBar.open(error.error.error.message, "", {
+                    this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                         duration: 2000,
                     });
                 });
@@ -442,7 +443,7 @@ export class AddUser implements OnInit {
                     this.dialogRef.close({ action: "yes" });
                 }, error => {
                     this.visible = false;
-                    this.snackBar.open(error.error.error.message, "", {
+                    this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                         duration: 2000,
                     });
                 });
@@ -506,7 +507,7 @@ export class AddUser implements OnInit {
             this.filevalid = false;
         }, error => {
             this.visible = false;
-            this.snackBar.open(error.error.error.message, "", {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                 duration: 2000,
             });
         });
@@ -617,7 +618,7 @@ export class ProductDetails implements OnInit {
             this.visible1 = false;
         }, error => {
             this.visible1 = false;
-            this.snackBar.open(error.error.message, "", {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                 duration: 2000,
             });
         });
@@ -701,7 +702,7 @@ export class ProductDetails implements OnInit {
                     this.dialogRefProduct.close({ action: "yes" });
                 }, error => {
                     this.visible1 = false;
-                    this.snackBar.open(error.error.error.message, "", {
+                    this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                         duration: 2000,
                     });
                 });
@@ -716,7 +717,7 @@ export class ProductDetails implements OnInit {
                     this.dialogRefProduct.close({ action: "yes" });
                 }, error => {
                     this.visible1 = false;
-                    this.snackBar.open(error.error.error.message, "", {
+                    this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                         duration: 2000,
                     });
                 });
@@ -782,7 +783,7 @@ export class ProductDetails implements OnInit {
             this.filevalid = false;
         }, error => {
             this.visible1 = false;
-            this.snackBar.open(error.error.error.message, "", {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                 duration: 2000,
             });
         });
@@ -810,7 +811,7 @@ export class ProductDetails implements OnInit {
             this.nextProcess();
         }, error => {
             this.visible1 = false;
-            this.snackBar.open(error.error.error.message, "", {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                 duration: 2000,
             });
         });

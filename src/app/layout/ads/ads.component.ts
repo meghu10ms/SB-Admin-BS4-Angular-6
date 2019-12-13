@@ -36,7 +36,7 @@ export class AdsComponent implements OnInit {
       this.AdsCollection = this.getAds(response["ads"]);
     }, error => {
       this.visible = false;
-      this.snackBar.open(error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     })
@@ -46,16 +46,16 @@ export class AdsComponent implements OnInit {
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
       formatJson = {
-        "name": val[i].name,
-        "description": val[i].description,
-        "interval": val[i].interval,
-        "type": val[i].type,
-        "isActive": val[i].isActive,
-        "fromDate": val[i].fromDate,
-        "toDate": val[i].toDate,
-        "url": val[i].url,
-        "offer": val[i].offer,
-        "adsId": val[i]._id,
+        "name": val[i].name ? val[i].name : "",
+        "description": val[i].description ? val[i].description : "",
+        "interval": val[i].interval ? val[i].interval : "",
+        "type": val[i].type ? val[i].type : "",
+        "isActive": val[i].isActive ? val[i].isActive : "",
+        "fromDate": val[i].fromDate ? new Date(val[i].fromDate).toDateString() : "",
+        "toDate": val[i].toDate ? new Date(val[i].toDate).toDateString() : "",
+        "url": val[i].url ? val[i].url : "",
+        "offer": val[i].offer ? val[i].offer : "",
+        "adsId": val[i]._id ? val[i]._id : "",
         "path": (val[i].medias.path ? val[i].medias.path : "../assets/images/avtar.png"),
         "id": (val[i].medias._id ? val[i].medias._id : "")
       }
@@ -86,10 +86,13 @@ export class AdsComponent implements OnInit {
     });
   }
   deleteAds(val) {
-    this.cds.deleteAds(val.id, this.cds.tokenLogin).subscribe(response => {
+    this.cds.deleteAds(val.adsId, this.cds.tokenLogin).subscribe(response => {
+      this.snackBar.open((response ? response["message"] : ""), "", {
+        duration: 2000,
+      });
       this.nextProcess();
     }, error => {
-      this.snackBar.open(error.error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     });
@@ -175,46 +178,16 @@ export class ViewAd implements OnInit {
     formData.append('file', files[0]);
     formData.append('name', 'ads');
     this.cds2.postMedia(formData).subscribe(response => {
-      this.imgProductUrl = response["media"].path;
-      this.profilePicId = response["media"]._id;
+      this.imgProductUrl = response["media"] ? response["media"].path : "";
+      this.profilePicId = response["media"] ? response["media"]._id : "";
       this.filevalid = false;
     }, error => {
-      this.snackBar.open(error.error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     });
   }
-  preview1(files) {
-    if (files.length === 0)
-      return;
 
-    var mimeType = files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
-      this.snackBar.open("File Type Not supporting upload imgage only", "", {
-        duration: 2000,
-      });
-      return;
-    }
-    if (files[0].size > 2000000) {
-      this.snackBar.open("File size excceds 2MB", "", {
-        duration: 2000,
-      });
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', files[0]);
-    formData.append('name', 'offer');
-    this.cds2.postMedia(formData).subscribe(response => {
-      this.imgProductUrl1 = response["media"].path;
-      this.profilePicId1 = response["media"]._id;
-
-    }, error => {
-      this.snackBar.open(error.error.error.message, "", {
-        duration: 2000,
-      });
-    });
-  }
 
   createAds() {
     if (this.newUserForm.valid && this.profilePicId != "") {
@@ -233,6 +206,9 @@ export class ViewAd implements OnInit {
         "isActive": filledData.isActive,
         "medias": medi
       };
+      if (filledData.offer) {
+        createData["offer"] = filledData.offer;
+      }
       if (this.dialogRef.componentInstance.data.ind == 'create') {
 
         this.cds2.postAds(this.cds2.tokenLogin, createData).subscribe(response => {
@@ -241,7 +217,7 @@ export class ViewAd implements OnInit {
           });
           this.dialogRef.close();
         }, error => {
-          this.snackBar.open(error.error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });
@@ -253,7 +229,7 @@ export class ViewAd implements OnInit {
           });
           this.dialogRef.close();
         }, error => {
-          this.snackBar.open(error.error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });

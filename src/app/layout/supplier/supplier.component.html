@@ -31,33 +31,33 @@
 
           <!-- Position Column -->
           <ng-container matColumnDef="firstname">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element">
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element">
               <a href="javascript:void(0)" (click)="onIndidualVendor($event,element)">{{element.firstname}} </a> </td>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="email">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.email}} </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.email}} </td>
           </ng-container>
 
           <!-- Weight Column -->
           <ng-container matColumnDef="ph">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.ph}} </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.ph}} </td>
           </ng-container>
 
           <!-- Weight Column -->
           <ng-container matColumnDef="uid">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> User Id </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.uid}} </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> User Id </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.uid}} </td>
           </ng-container>
 
           <!-- Weight Column -->
           <ng-container matColumnDef="region">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.region}} </td>
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.region}} </td>
           </ng-container>
 
           <!-- Position Column -->
@@ -68,8 +68,8 @@
 
           <!-- Symbol Column -->
           <ng-container matColumnDef="actions">
-            <th style="width: 20%" mat-header-cell *matHeaderCellDef> ACTION </th>
-            <td style="width: 20%" mat-cell *matCellDef="let element">
+            <th class="columnWidth" mat-header-cell *matHeaderCellDef> ACTION </th>
+            <td class="columnWidth" mat-cell *matCellDef="let element">
               <div class="row">
                 <button mat-icon-button aria-label="Edit User" matTooltip="Edit" style="width: 30px">
                   <mat-icon color="primary" aria-hidden="false" aria-label="edit" (click)="edit(element)">edit

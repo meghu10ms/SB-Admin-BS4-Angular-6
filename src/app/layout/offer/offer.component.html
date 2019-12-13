@@ -13,7 +13,7 @@
       <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="newOffer()">add_box</mat-icon>
     </button>
   </mat-toolbar>
-  <div class="mt-7 mb-10 ml-5 mr-5" fxLayout="row wrap" flex-wrap fxLayout.xs="row wrap" fxLayoutWrap fxLayoutGap="0.5%"
+  <!-- <div class="mt-7 mb-10 ml-5 mr-5" fxLayout="row wrap" flex-wrap fxLayout.xs="row wrap" fxLayoutWrap fxLayoutGap="0.5%"
     fxLayoutAlign="left">
     <div fxFlex="19.5%" style="border: 2px solid rgb(148, 192, 218) !important;" *ngFor="let val of OfferCollection">
       <h6 class="jtext-center"> {{val.name}} ({{val.description}}) </h6>
@@ -34,6 +34,44 @@
         <button mat-button color="primary" class="jtext-right">
           <mat-icon (click)="deleteOffers(val)">delete</mat-icon>
         </button>
+      </div>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-sm-4" *ngFor="let val of OfferCollection">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header">{{val.name}}</div>
+
+        <div class="card-body">
+          <p style="word-wrap: unset;">
+            {{val.description}}
+          </p>
+          <div class="row">
+            <div class="col-sm-6 jtext-small">
+              From Date :{{val.fromDate}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Valid Duration :{{val.validDuration}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Type :{{val.type}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Percentage :{{val.percentage}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Amount :{{val.amount}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <button mat-button color="primary" (click)="editOffers(val)" class="col text-left">
+            Edit
+          </button>
+          <button mat-button color="primary" (click)="deleteOffers(val)" class="col text-right">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -51,19 +51,10 @@ export class SupplierComponent implements OnInit {
       this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      // this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
 
-      //   this.cds.areaData = this.getAreaData(response["areas"]);
-
-      // }, error => {
-      //   this.visible = false;
-      //   this.snackBar.open(error.error.message, "", {
-      //     duration: 2000,
-      //   });
-      // })
     }, error => {
       this.visible = false;
-      this.snackBar.open(error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     })
@@ -259,7 +250,7 @@ export class AddUser implements OnInit {
         this.imgURL = response["path"];
         this.profilePicId = response["_id"];
       }, error => {
-        this.snackBar.open(error.error.message, "", {
+        this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
           duration: 2000,
         });
       });
@@ -360,7 +351,7 @@ export class AddUser implements OnInit {
       this.profilePicId = response["media"]._id;
       this.filevalid = false;
     }, error => {
-      this.snackBar.open(error.error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     });
@@ -430,7 +421,7 @@ export class AddUser implements OnInit {
           });
           this.dialogRef.close();
         }, error => {
-          this.snackBar.open(error.error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });
@@ -487,7 +478,7 @@ export class AddUser implements OnInit {
           });
           this.dialogRef.close();
         }, error => {
-          this.snackBar.open(error.error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });

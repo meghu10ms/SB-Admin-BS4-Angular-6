@@ -18,21 +18,23 @@
         <hr />
         <div class="text-left">
           <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL">
-          <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL" height="150" width="150">
+          <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL" height="150"
+            width="150">
           <h6 *ngIf="!imgURL">Upload photo...</h6>
           <input *ngIf="this.displayInd" type="file" #file class="text-left left-block file-upload" accept='image/*'
-            (change)="preview(file.files)" style="width:95%" >
+            (change)="preview(file.files)" style="width:95%">
           <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
         </div>
 
         <hr />
         <div class="text-left">
           <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL1">
-          <img [src]="imgURL1" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL1" height="150" width="150">
+          <img [src]="imgURL1" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL1" height="150"
+            width="150">
 
           <h6 *ngIf="!imgURL1">Upload Documents</h6>
           <input *ngIf="this.displayInd" type="file" #file1 class="text-left left-block file-upload" accept='image/*'
-            (change)="previewDocument(file1.files)" >
+            (change)="previewDocument(file1.files)">
           <span style="color:red" *ngIf="filevalid1"> Please Choose File</span>
         </div>
       </form>
@@ -43,8 +45,8 @@
         <div class="col-sm-6">
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Title</mat-label>
-            <mat-select formControlName="title" placeholder="Choose Title" style="font-weight: bold">
+            <mat-label class="fontBold">Title</mat-label>
+            <mat-select formControlName="title" placeholder="Choose Title" class="fontBold">
               <mat-option *ngFor="let val of titleCollection" [value]="val.title">
                 {{val.title}}
               </mat-option>
@@ -53,42 +55,40 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">First Name</mat-label>
-            <input matInput placeholder=" Enter First Name" formControlName="firstname" maxlength="20"
-              style="font-weight: bold">
+            <mat-label class="fontBold">First Name</mat-label>
+            <input matInput placeholder=" Enter First Name" formControlName="firstname" maxlength="20" class="fontBold">
             <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Last Name</mat-label>
-            <input matInput placeholder="Enter Last Name" formControlName="lastname" maxlength="20"
-              style="font-weight: bold">
+            <mat-label class="fontBold">Last Name</mat-label>
+            <input matInput placeholder="Enter Last Name" formControlName="lastname" maxlength="20" class="fontBold">
             <mat-icon matSuffix>person_pin</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Phone Number</mat-label>
+            <mat-label class="fontBold">Phone Number</mat-label>
             <!-- <span matPrefix>+91</span> -->
             <input matInput placeholder="Enter Phone Number" formControlName="phone" maxlength="13"
-              (keypress)="numberOnly($event)" style="font-weight: bold">
+              (keypress)="numberOnly($event)" class="fontBold">
             <mat-icon matSuffix>phone</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Email</mat-label>
-            <input matInput placeholder="Enter Email" formControlName="email" maxlength="25" style="font-weight: bold">
+            <mat-label class="fontBold">Email</mat-label>
+            <input matInput placeholder="Enter Email" formControlName="email" maxlength="25" class="fontBold">
             <mat-icon matSuffix>email</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">City</mat-label>
-            <input matInput placeholder="Enter City" formControlName="city" maxlength="20" style="font-weight: bold">
+            <mat-label class="fontBold">City</mat-label>
+            <input matInput placeholder="Enter City" formControlName="city" maxlength="20" class="fontBold">
             <mat-icon matSuffix>location_city</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Region</mat-label>
-            <mat-select formControlName="region" placeholder="Enter Region" style="font-weight: bold">
+            <mat-label class="fontBold">Region</mat-label>
+            <mat-select formControlName="region" placeholder="Enter Region" class="fontBold">
               <mat-option *ngFor="let val of region" [value]="val.code">
                 {{val.area}} ({{val.code}})
               </mat-option>
@@ -100,54 +100,50 @@
         <div class="col-sm-6">
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Account Number</mat-label>
+            <mat-label class="fontBold">Account Number</mat-label>
             <input matInput placeholder="Enter Account Number" formControlName="accountNumber" maxlength="13"
-              style="font-weight: bold" (keypress)="numberOnly($event)">
+              class="fontBold" (keypress)="numberOnly($event)">
             <mat-icon matSuffix>account_circle</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Account Type</mat-label>
+            <mat-label class="fontBold">Account Type</mat-label>
             <input matInput placeholder="Enter Account Type" formControlName="accountType" maxlength="10"
-              style="font-weight: bold">
+              class="fontBold">
             <mat-icon matSuffix>account_tree</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Bank Name</mat-label>
-            <input matInput placeholder="Enter Bank Name" formControlName="bankName" maxlength="20"
-              style="font-weight: bold">
+            <mat-label class="fontBold">Bank Name</mat-label>
+            <input matInput placeholder="Enter Bank Name" formControlName="bankName" maxlength="20" class="fontBold">
             <mat-icon matSuffix>account_balance</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Branch Name</mat-label>
+            <mat-label class="fontBold">Branch Name</mat-label>
             <input matInput placeholder="Enter Branch Name" formControlName="branchName" maxlength="20"
-              style="font-weight: bold">
+              class="fontBold">
             <mat-icon matSuffix>account_box</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Account Holder Name</mat-label>
+            <mat-label class="fontBold">Account Holder Name</mat-label>
             <input matInput placeholder="Enter Account Holder Name" formControlName="holderName" maxlength="20"
-              style="font-weight: bold">
+              class="fontBold">
             <mat-icon matSuffix>email</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">IFSC Code</mat-label>
-            <input matInput placeholder="Enter IFSC Code" formControlName="ifscCode" maxlength="20"
-              style="font-weight: bold" >
+            <mat-label class="fontBold">IFSC Code</mat-label>
+            <input matInput placeholder="Enter IFSC Code" formControlName="ifscCode" maxlength="20" class="fontBold">
             <mat-icon matSuffix>accessibility</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Tax Numbaer</mat-label>
-            <input matInput placeholder="Enter Tax Number" formControlName="taxNumber" maxlength="20"
-              style="font-weight: bold">
+            <mat-label class="fontBold">Tax Numbaer</mat-label>
+            <input matInput placeholder="Enter Tax Number" formControlName="taxNumber" maxlength="20" class="fontBold">
             <mat-icon matSuffix>pages</mat-icon>
           </mat-form-field>
-
         </div>
       </form>
     </div>
@@ -157,11 +153,12 @@
 
   <div class="navbar-nav ml-auto">
     <span>
-      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createNewUser()"
-        *ngIf="displayInd">
+      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createNewUser()" *ngIf="displayInd">
         Save</button> &nbsp; &nbsp;
       <button class="btn" type="reset" matTooltip="Reset" (click)="clearScreen()" *ngIf="displayInd">
-        Reset</button>
+        Reset</button>&nbsp; &nbsp;
+      <button class="btn" type="submit" matTooltip="Close" (click)="close()">
+        Close</button>
     </span>
   </div>
 </mat-dialog-actions>

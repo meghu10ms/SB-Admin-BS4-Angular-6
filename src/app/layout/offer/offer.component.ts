@@ -36,7 +36,7 @@ export class OfferComponent implements OnInit {
       this.OfferCollection = this.getOffers(response["offers"]);
     }, error => {
       this.visible = false;
-      this.snackBar.open(error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     })
@@ -46,16 +46,16 @@ export class OfferComponent implements OnInit {
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
       formatJson = {
-        "name": val[i].offername,
-        "description": val[i].offerDescription,
-        "couponCode": val[i].couponCode,
-        "type": val[i].offerType,
-        "fromDate": val[i].validFrom,
-        "validDuration": val[i].validDuration,
-        "percentage": val[i].percentage,
-        "amount": val[i].amount,
-        "customers": val[i].offer,
-        "offerId": val[i]._id
+        "name": val[i].offername ? val[i].offername : "",
+        "description": val[i].offerDescription ? val[i].offerDescription : "",
+        "couponCode": val[i].couponCode ? val[i].couponCode : "",
+        "type": val[i].offerType ? val[i].offerType : "",
+        "fromDate": val[i].validFrom ? new Date(val[i].validFrom).toDateString() : "",
+        "validDuration": val[i].validDuration ? val[i].validDuration : "",
+        "percentage": val[i].percentage ? val[i].percentage : "",
+        "amount": val[i].amount ? val[i].amount : "",
+        "customers": val[i].offer ? val[i].offer : "",
+        "offerId": val[i]._id ? val[i]._id : ""
       }
       finalData.push(formatJson);
       formatJson = {};
@@ -69,7 +69,8 @@ export class OfferComponent implements OnInit {
       data: { ind: "create", data1: "" }
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.nextProcess();
+      if (result && result.action === "yes")
+        this.nextProcess();
     });
   }
 
@@ -80,14 +81,19 @@ export class OfferComponent implements OnInit {
       data: { ind: "edit", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.nextProcess();
+      if (result && result.action === "yes")
+        this.nextProcess();
     });
   }
+
   deleteOffers(val) {
-    this.cds.deleteAds(val.id, this.cds.tokenLogin).subscribe(response => {
+    this.cds.deleteOffer(val.offerId, this.cds.tokenLogin).subscribe(response => {
+      this.snackBar.open((response ? response["message"] : ""), "", {
+        duration: 2000,
+      });
       this.nextProcess();
     }, error => {
-      this.snackBar.open(error.error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     });
@@ -113,7 +119,7 @@ export class ViewOffer implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
-    this.customersList = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+    //this.customersList = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
     this.offerType = [{ "type": "PRTG" }, { "type": "AMT" }];
     var data = this.dialogRef.componentInstance.data.data1;
     this.createForm();
@@ -134,19 +140,16 @@ export class ViewOffer implements OnInit {
       customer: [''],
       validDuration: ['', Validators.required],
       fromDate: ['', Validators.required],
-
       offerId: [''],
-
     })
   }
 
   CancelPage() {
-    this.dialogRef.close();
+    this.dialogRef.close({ action: "no" });
   }
 
   createAds() {
     if (this.newUserForm.valid) {
-      debugger;
       var filledData = this.newUserForm.value;
       var createData = {
         "offername": filledData.name,
@@ -155,9 +158,9 @@ export class ViewOffer implements OnInit {
         "percentage": filledData.percentage,
         "amount": filledData.amount,
         "validDuration": filledData.validDuration,
-        "OfferType": filledData.type,
+        "offerType": filledData.type,
         "validFrom": filledData.fromDate,
-        "customers": filledData.customer
+        "customers": filledData.customer ? filledData.customer : []
       };
       if (this.dialogRef.componentInstance.data.ind == 'create') {
 
@@ -165,9 +168,9 @@ export class ViewOffer implements OnInit {
           this.snackBar.open(response["message"], "", {
             duration: 2000,
           });
-          this.dialogRef.close();
+          this.dialogRef.close({ action: "yes" });
         }, error => {
-          this.snackBar.open(error.error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });
@@ -177,9 +180,9 @@ export class ViewOffer implements OnInit {
           this.snackBar.open(response["message"], "", {
             duration: 2000,
           });
-          this.dialogRef.close();
+          this.dialogRef.close({ action: "yes" });
         }, error => {
-          this.snackBar.open(error.error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });
@@ -196,16 +199,10 @@ export class ViewOffer implements OnInit {
         else
           this.newUserForm.controls[name].setErrors(null);
       }
-      // if (this.profilePicId == "") {
-      //   this.filevalid = false;
-      // } else {
-      //   this.filevalid = true;
-      // }
+
     }
   }
   bindDisplayValues(val) {
-    // this.imgProductUrl = val.path;
-    // this.profilePicId = val.id;
     this.newUserForm.patchValue({
       name: val.name,
       description: val.description,
@@ -216,7 +213,7 @@ export class ViewOffer implements OnInit {
       amount: val.amount,
       customer: val.customer,
       validDuration: val.amount,
-      fromDate: val.customer,
+      fromDate: val.fromDate,
       offerId: val.offerId
 
     });

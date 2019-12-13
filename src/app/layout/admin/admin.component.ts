@@ -59,7 +59,7 @@ export class AdminComponent implements OnInit {
       // })
     }, error => {
       this.visible = false;
-      this.snackBar.open(error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     })
@@ -73,25 +73,25 @@ export class AdminComponent implements OnInit {
         val[i].areaId[0] = { "areaCode": "", "formattedAddress": "", "_id": "" }
       }
       formatJson = {
-        "title": val[i].name.title,
-        "firstname": val[i].name.firstName,
-        "lastname": val[i].name.lastName,
-        "email": val[i].email,
-        "ph": val[i].phoneNumber,
-        "region": val[i].areaId[0].areaCode,
-        "city": val[i].areaId[0].formattedAddress,
-        "areaId": val[i].areaId[0]._id,
-        "adminId": val[i]._id,
-        "accountNumber": val[i].bankDetails.accountNumber,
-        "accountType": val[i].bankDetails.accountType,
-        "bankName": val[i].bankDetails.bankName,
-        "branchName": val[i].bankDetails.branchName,
-        "holderName": val[i].bankDetails.holderName,
-        "ifscCode": val[i].bankDetails.ifscCode,
-        "taxNumber": val[i].bankDetails.taxNumber,
-        "superAdmin": val[i].isSuperAdmin,
-        "activeAdmin": val[i].isActive,
-        "media": val[i].medias
+        "title": val[i].name ? val[i].name.title : "",
+        "firstname": val[i].name ? val[i].name.firstName : "",
+        "lastname": val[i].name ? val[i].name.lastName : "",
+        "email": val[i].email ? val[i].email : "",
+        "ph": val[i].phoneNumber ? val[i].phoneNumber : "",
+        "region": val[i].areaId[0] ? val[i].areaId[0].areaCode : "",
+        "city": val[i].areaId[0] ? val[i].areaId[0].formattedAddress : "",
+        "areaId": val[i].areaId[0] ? val[i].areaId[0]._id : "",
+        "adminId": val[i]._id ? val[i]._id : "",
+        "accountNumber": val[i].bankDetails ? val[i].bankDetails.accountNumber : "",
+        "accountType": val[i].bankDetails ? val[i].bankDetails.accountType : "",
+        "bankName": val[i].bankDetails ? val[i].bankDetails.bankName : "",
+        "branchName": val[i].bankDetails ? val[i].bankDetails.branchName : "",
+        "holderName": val[i].bankDetails ? val[i].bankDetails.holderName : "",
+        "ifscCode": val[i].bankDetails ? val[i].bankDetails.ifscCode : "",
+        "taxNumber": val[i].bankDetails ? val[i].bankDetails.taxNumber : "",
+        "superAdmin": val[i].isSuperAdmin ? val[i].isSuperAdmin : "",
+        "activeAdmin": val[i].isActive ? val[i].isActive : "",
+        "media": val[i].medias ? val[i].medias : []
       }
       finalData.push(formatJson);
       formatJson = {};
@@ -103,12 +103,11 @@ export class AdminComponent implements OnInit {
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
       formatJson = {
-        "code": val[i].areaCode,
-        "area": val[i].formattedAddress,
-        "lt": val[i].latitude,
-        "lg": val[i].longitude,
-        "id": val[i]._id
-
+        "code": val[i].areaCode ? val[i].areaCode : "",
+        "area": val[i].formattedAddress ? val[i].formattedAddress : "",
+        "lt": val[i].latitude ? val[i].latitude : "",
+        "lg": val[i].longitude ? val[i].longitude : "",
+        "id": val[i]._id ? val[i]._id : ""
       }
       finalData.push(formatJson);
       formatJson = {};
@@ -121,7 +120,8 @@ export class AdminComponent implements OnInit {
       data: { ind: "create", data1: "" }
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.getAdminDetails();
+      if (result && result.action === "yes")
+        this.getAdminDetails();
     });
   }
   applyFilter(filterValue: string) {
@@ -136,7 +136,8 @@ export class AdminComponent implements OnInit {
       data: { ind: "edit", data1: val }
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.getAdminDetails();
+      if (result && result.action === "yes")
+        this.getAdminDetails();
     });
   }
   display(val) {
@@ -154,7 +155,7 @@ export class AdminComponent implements OnInit {
       });
       this.getAdminDetails();
     }, error => {
-      this.snackBar.open(error.error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     });
@@ -170,7 +171,6 @@ export interface PeriodicElement {
   address: string;
   city: string;
   dob: string;
-
 }
 
 @Component({
@@ -213,23 +213,27 @@ export class AddUser implements OnInit {
     this.titleCollection = [{ "title": "Mr." }, { "title": "Mrs." }, { "title": "Miss." }];
     this.nextProcess();
     if (this.dialogRef.componentInstance.data.ind !== 'create') {
-      this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
-        this.imgURL = response["path"];
-        this.profilePicId = response["_id"];
-        this.cds2.getMedia(this.cds2.tokenLogin, data.media[1]._id).subscribe(response => {
-          this.imgURL1 = response["path"];
-          this.documentId = response["_id"];
-
+      if (data.media.length !== 0) {
+        this.cds2.getMedia(this.cds2.tokenLogin, (data.media[0] ? data.media[0]._id : "")).subscribe(response => {
+          this.imgURL = response ? response["path"] : "";
+          this.profilePicId = response ? response["_id"] : "";
+          if (data.media.length !== 1) {
+            this.cds2.getMedia(this.cds2.tokenLogin, (data.media[1] ? data.media[1]._id : "")).subscribe(response => {
+              this.imgURL1 = response ? response["path"] : "";
+              this.documentId = response ? response["_id"] : "";
+            }, error => {
+              this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
+                duration: 2000,
+              });
+            });
+          }
         }, error => {
-          this.snackBar.open(error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });
-      }, error => {
-        this.snackBar.open(error.error.message, "", {
-          duration: 2000,
-        });
-      });
+      }
+
     }
 
   }
@@ -270,8 +274,10 @@ export class AddUser implements OnInit {
       taxNumber: ['', Validators.required],
       areaId: [''],
       adminId: ['']
-
     })
+  }
+  close() {
+    this.dialogRef.close({ action: "no" });
   }
 
   clearScreen(oEvent) {
@@ -324,9 +330,9 @@ export class AddUser implements OnInit {
           this.snackBar.open(response["message"], "", {
             duration: 2000,
           });
-          this.dialogRef.close();
+          this.dialogRef.close({ action: "yes" });
         }, error => {
-          this.snackBar.open(error.error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });
@@ -355,12 +361,12 @@ export class AddUser implements OnInit {
           "isActive": this.activeAdmin
         };
         this.cds2.updateAreaAdmin(filledData.adminId, this.cds2.tokenLogin, createData1).subscribe(response => {
-          this.snackBar.open(response["message"], "", {
+          this.snackBar.open(response ? response["message"] : "", "", {
             duration: 2000,
           });
-          this.dialogRef.close();
+          this.dialogRef.close({ action: "yes" });
         }, error => {
-          this.snackBar.open(error.error.error.message, "", {
+          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
           });
         });
@@ -399,7 +405,6 @@ export class AddUser implements OnInit {
       return true;
   }
   // IfscValidation(event): boolean {
-  //   debugger;
   //   if (event.key.length < 5) {
   //     event.key =  event.key.toUpperCase();
   //   } else {
@@ -434,11 +439,11 @@ export class AddUser implements OnInit {
     formData.append('file', files[0]);
     formData.append('name', 'profile_pictre');
     this.cds2.postMedia(formData).subscribe(response => {
-      this.imgURL = response["media"].path;
-      this.profilePicId = response["media"]._id;
+      this.imgURL = response ? response["media"].path : "";
+      this.profilePicId = response ? response["media"]._id : "";
       this.filevalid = false;
     }, error => {
-      this.snackBar.open(error.error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     });
@@ -465,11 +470,11 @@ export class AddUser implements OnInit {
     formData.append('file', files[0]);
     formData.append('name', 'document');
     this.cds2.postMedia(formData).subscribe(response => {
-      this.imgURL1 = response["media"].path;
-      this.documentId = response["media"]._id;
+      this.imgURL1 = response ? response["media"].path : "";
+      this.documentId = response ? response["media"]._id : "";
       this.filevalid1 = false;
     }, error => {
-      this.snackBar.open(error.error.error.message, "", {
+      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
         duration: 2000,
       });
     });
@@ -502,4 +507,3 @@ export class AddUser implements OnInit {
     })
   }
 }
-

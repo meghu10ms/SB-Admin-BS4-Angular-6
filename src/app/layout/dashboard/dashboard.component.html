@@ -6,15 +6,37 @@
 <div [@routerTransition]>
     <h2 class="text-muted"> <small>Statistics Overview</small></h2>
 
-    <mat-grid-list cols="2" rowHeight="2:1">
+    <!-- <mat-grid-list cols="2" rowHeight="2:1">
         <mat-grid-tile>
             <div id="chartdiv1" [style.width.%]="100" [style.height.px]="380"></div>
         </mat-grid-tile>
         <mat-grid-tile>
             <div id="chartdiv2" [style.width.%]="100" [style.height.px]="380"></div>
         </mat-grid-tile>
+    </mat-grid-list> -->
+    <div class="row">
+        <div class="col col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Demo Chart -1
+                </div>
+                <div class="card-body">
+                    <div id="chartdiv1" [style.width.%]="100" [style.height.px]="300"></div>
+                </div>
 
-    </mat-grid-list>
+            </div>
+        </div>
+        <div class="col col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Demo Chart -2
+                </div>
+                <div class="card-body">
+                    <div id="chartdiv2" [style.width.%]="100" [style.height.px]="300"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- <hr />
     <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}</ngb-alert> -->
     <hr />

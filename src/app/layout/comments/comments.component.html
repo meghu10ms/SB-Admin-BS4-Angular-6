@@ -23,26 +23,26 @@
 
         <!-- Position Column -->
         <ng-container matColumnDef="name">
-          <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> NAME </th>
-          <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.name}} </td>
+          <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> NAME </th>
+          <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="email">
-          <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
-          <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.email}} </td>
+          <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
+          <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.email}} </td>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="ph">
-          <th style="width: 20%" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
-          <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.ph}} </td>
+          <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> PH NO. </th>
+          <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.ph}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="comment">
-          <th style="width: 20%" mat-header-cell *matHeaderCellDef> COMMENTS </th>
-          <td style="width: 20%" mat-cell *matCellDef="let element"> {{element.comment}} </td>
+          <th class="columnWidth" mat-header-cell *matHeaderCellDef> COMMENTS </th>
+          <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.comment}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

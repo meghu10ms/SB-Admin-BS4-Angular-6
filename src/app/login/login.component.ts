@@ -38,14 +38,14 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/dashboard']);
                 }, error => {
                     this.visible = false;
-                    this.snackBar.open(error.error.message, "", {
+                    this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                         duration: 2000,
                     });
                 })
 
             }, error => {
                 this.visible = false;
-                this.snackBar.open(error.error.message, "", {
+                this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                     duration: 2000,
                 });
             })
@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
             }, error => {
                 this.visible = false;
                 this.forgotPassword = true;
-                this.snackBar.open(error.error.message, "", {
+                this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
                     duration: 2000,
                 });
             })
@@ -101,11 +101,11 @@ export class LoginComponent implements OnInit {
         var finalData = [];
         for (let i = 0; i < val.length; i++) {
             formatJson = {
-                "code": val[i].areaCode,
-                "area": val[i].formattedAddress,
-                "lt": val[i].latitude,
-                "lg": val[i].longitude,
-                "id": val[i]._id
+                "code": val[i].areaCode ? val[i].areaCode : "",
+                "area": val[i].formattedAddress ? val[i].formattedAddress : "",
+                "lt": val[i].latitude ? val[i].latitude : "",
+                "lg": val[i].longitude ? val[i].longitude : "",
+                "id": val[i]._id ? val[i]._id : ""
             }
             finalData.push(formatJson);
             formatJson = {};
