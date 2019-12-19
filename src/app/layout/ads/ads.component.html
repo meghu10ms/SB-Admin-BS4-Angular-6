@@ -39,12 +39,24 @@
   <div class="row">
     <div class="col-sm-4" *ngFor="let val of AdsCollection">
       <div class="card text-white bg-info mb-3">
-        <div class="card-header">{{val.name}}</div>
+        <div class="card-header">
+          <div class="row">
+            <div> {{val.name}}</div>
+           <span class="space"></span>
+            <mat-chip-list>
+              <mat-chip color="{{val.isActive?'primary':'warn'}}" selected>{{val.isActive?"Active":"InActive"}}</mat-chip>
+            </mat-chip-list>
+          </div>
+
+        </div>
         <div class="imgDiv">
-          <img src="{{val.path}}" alt="Ads"  class="img-thumbnail img">
+          <img src="{{val.path}}" alt="Ads" class="img-thumbnail img">
         </div>
         <div class="card-body">
-          <p style="word-wrap: unset;">
+          <p style="width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis"  matTooltip="{{val.description}}">
             {{val.description}}
           </p>
           <div class="row">
@@ -64,7 +76,7 @@
         </div>
         <div class="row">
           <button mat-button color="primary" (click)="editAds(val)" class="col text-left">
-           Edit
+            Edit
           </button>
           <button mat-button color="primary" (click)="deleteAds(val)" class="col text-right">
             Delete

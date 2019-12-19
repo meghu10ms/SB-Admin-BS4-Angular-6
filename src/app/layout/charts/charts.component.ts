@@ -111,7 +111,7 @@ export class ChartsComponent implements OnInit {
                 "ifscCode": val[i].bankDetails ? val[i].bankDetails.ifscCode : "",
                 "taxNumber": val[i].bankDetails ? val[i].bankDetails.taxNumber : "",
                 "isRetailer": val[i].isRetailer ? val[i].isRetailer : "",
-                "activeAdmin": val[i].isActive ? val[i].isActive : "",
+                "activeAdmin": val[i].isActive ? true : false,
                 "isVendor": val[i].isVendor ? val[i].isVendor : "",
                 "media": val[i].medias ? val[i].medias : []
             }
@@ -642,7 +642,7 @@ export class ProductDetails implements OnInit {
                 "mediaId": (val[i].medias[0] ? val[i].medias[0]._id : ""),
                 "vendor": val[i].vendor ? val[i].vendor : "",
                 "productId": val[i]._id ? val[i]._id : "",
-                "isActive": val[i].isActive ? val[i].isActive : ""
+                "isActive": val[i].isActive ? true : false
             }
             finalData.push(formatJson);
             formatJson = {};
@@ -806,7 +806,7 @@ export class ProductDetails implements OnInit {
     }
     deleteProduct(evt) {
         this.visible1 = true;
-        this.cds2.deleteProduct(evt._id, this.cds2.tokenLogin).subscribe(response => {
+        this.cds2.deleteProduct(evt.productId, this.cds2.tokenLogin).subscribe(response => {
             this.visible1 = false;
             this.nextProcess();
         }, error => {
@@ -825,6 +825,7 @@ export class ProductDetails implements OnInit {
         } else {
             this.sliderName = "View Products";
             this.productForm.reset();
+            this.Active = false;
             this.imgProductUrl = "";
             this.profilePicId = "";
         }

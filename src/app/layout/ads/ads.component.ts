@@ -7,6 +7,7 @@ import { CommonServiceService } from '../../common-service.service';
 export interface DialogData {
   data1: any;
   ind: any;
+  data: any
 }
 
 
@@ -22,6 +23,7 @@ export class AdsComponent implements OnInit {
     private cds: CommonServiceService) { }
   visible: any;
   AdsCollection: any[];
+  OfferCollection: any[];
   ngOnInit() {
     if (this.cds.tokenLogin === undefined) {
       this.cds.tokenLogin = sessionStorage.getItem("authToken");
@@ -31,9 +33,17 @@ export class AdsComponent implements OnInit {
   nextProcess() {
     this.visible = true;
     this.cds.getAllAds(this.cds.tokenLogin).subscribe(response => {
-      this.visible = false;
 
       this.AdsCollection = this.getAds(response["ads"]);
+      this.cds.getAllOffer(this.cds.tokenLogin).subscribe(response => {
+        this.visible = false;
+        this.OfferCollection = this.getOffers(response["offers"]);
+      }, error => {
+        this.visible = false;
+        this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
+          duration: 2000,
+        });
+      })
     }, error => {
       this.visible = false;
       this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
@@ -50,7 +60,7 @@ export class AdsComponent implements OnInit {
         "description": val[i].description ? val[i].description : "",
         "interval": val[i].interval ? val[i].interval : "",
         "type": val[i].type ? val[i].type : "",
-        "isActive": val[i].isActive ? val[i].isActive : "",
+        "isActive": val[i].isActive,
         "fromDate": val[i].fromDate ? new Date(val[i].fromDate).toDateString() : "",
         "toDate": val[i].toDate ? new Date(val[i].toDate).toDateString() : "",
         "url": val[i].url ? val[i].url : "",
@@ -64,14 +74,29 @@ export class AdsComponent implements OnInit {
     }
     return finalData;
   }
+  getOffers(val) {
+    var formatJson = {};
+    var finalData = [];
+    for (let i = 0; i < val.length; i++) {
+      formatJson = {
+        "name": val[i].offername ? val[i].offername : "",
+        "couponCode": val[i].couponCode ? val[i].couponCode : "",
+        "offerId": val[i]._id ? val[i]._id : ""
+      }
+      finalData.push(formatJson);
+      formatJson = {};
+    }
+    return finalData;
+  }
   newAds() {
     const dialogRef = this.dialog.open(ViewAd, {
       width: '95%',
       height: '80%',
-      data: { ind: "create", data1: "" }
+      data: { ind: "create", data1: "", data: this.OfferCollection }
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.nextProcess();
+      if (result && result.action === "yes")
+        this.nextProcess();
     });
   }
 
@@ -79,10 +104,11 @@ export class AdsComponent implements OnInit {
     const dialogRef = this.dialog.open(ViewAd, {
       width: '95%',
       height: '80%',
-      data: { ind: "edit", data1: val }
+      data: { ind: "edit", data1: val, data: this.OfferCollection }
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.nextProcess();
+      if (result && result.action === "yes")
+        this.nextProcess();
     });
   }
   deleteAds(val) {
@@ -112,6 +138,7 @@ export class ViewAd implements OnInit {
   profilePicId1: any;
   filevalid: any;
   adsType: any[];
+  OfferCollection: any[];
 
 
 
@@ -125,10 +152,11 @@ export class ViewAd implements OnInit {
     this.Active = false;
     this.adsType = [{ "type": "BANNER" }, { "type": "TUMBLR" }];
     var data = this.dialogRef.componentInstance.data.data1;
+    this.OfferCollection = this.dialogRef.componentInstance.data.data;
     this.createForm();
     if (this.dialogRef.componentInstance.data.ind == 'edit') {
       this.bindDisplayValues(data);
-      this.Active = data.isActive;
+
     } else {
       this.Active = false;
       this.imgProductUrl = "";
@@ -150,7 +178,7 @@ export class ViewAd implements OnInit {
   }
 
   CancelPage() {
-    this.dialogRef.close();
+    this.dialogRef.close({ action: "no" });
   }
 
   toggeleActive(evt) {
@@ -203,7 +231,7 @@ export class ViewAd implements OnInit {
         "toDate": filledData.toDate,
         "interval": filledData.interval,
         "type": filledData.type,
-        "isActive": filledData.isActive,
+        "isActive": this.Active,
         "medias": medi
       };
       if (filledData.offer) {
@@ -215,7 +243,7 @@ export class ViewAd implements OnInit {
           this.snackBar.open(response["message"], "", {
             duration: 2000,
           });
-          this.dialogRef.close();
+          this.dialogRef.close({ action: "yes" });
         }, error => {
           this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
@@ -227,7 +255,7 @@ export class ViewAd implements OnInit {
           this.snackBar.open(response["message"], "", {
             duration: 2000,
           });
-          this.dialogRef.close();
+          this.dialogRef.close({ action: "yes" });
         }, error => {
           this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
             duration: 2000,
@@ -256,6 +284,7 @@ export class ViewAd implements OnInit {
   bindDisplayValues(val) {
     this.imgProductUrl = val.path;
     this.profilePicId = val.id;
+    this.Active = val.isActive;
     this.newUserForm.patchValue({
       name: val.name,
       description: val.description,
@@ -263,8 +292,8 @@ export class ViewAd implements OnInit {
       interval: val.interval,
       type: val.type,
       offer: val.offer,
-      fromDate: val.fromDate,
-      toDate: val.toDate,
+      fromDate: new Date(val.fromDate),
+      toDate: new Date(val.toDate),
       adsId: val.adsId
     });
   }

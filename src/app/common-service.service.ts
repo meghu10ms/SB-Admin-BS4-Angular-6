@@ -171,24 +171,24 @@ export class CommonServiceService implements OnInit {
   //create Delivary Partner
   postDelivaryPartner(token, body) {
 
-    return this.http.post(this.url + "develiverypartner/", body, this.getTokenAccess(token));
+    return this.http.post(this.url + "delivery-partner/", body, this.getTokenAccess(token));
   }
   //get all Delivary Partner
   getAllDelivaryPartnerDetails(token) {
 
-    return this.http.get(this.url + "develiverypartner/", this.getTokenAccess(token));
+    return this.http.get(this.url + "delivery-partner/", this.getTokenAccess(token));
   }
 
   //update Delivary Partner
   updateDelivaryPartner(vendorid, token, body) {
 
-    return this.http.patch(this.url + "develiverypartner/" + vendorid, body, this.getTokenAccess(token));
+    return this.http.patch(this.url + "delivery-partner/" + vendorid, body, this.getTokenAccess(token));
   }
 
   //delete Delivary Partner
   deleteDelivaryPartner(vendorid, token) {
 
-    return this.http.delete(this.url + "develiverypartner/" + vendorid, this.getTokenAccess(token));
+    return this.http.delete(this.url + "delivery-partner/" + vendorid, this.getTokenAccess(token));
   }
   /*######################################### Delivary Partner DETAILS ENDS ##################################### */
   /*######################################### Ads details starts ################################################ */

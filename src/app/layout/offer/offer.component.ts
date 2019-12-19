@@ -7,6 +7,7 @@ import { CommonServiceService } from '../../common-service.service';
 export interface DialogData {
   data1: any;
   ind: any;
+  data: any;
 }
 
 @Component({
@@ -22,6 +23,7 @@ export class OfferComponent implements OnInit {
     private cds: CommonServiceService) { }
   visible: any;
   OfferCollection: any[];
+  customerCollection: any[];
 
   ngOnInit() {
     if (this.cds.tokenLogin === undefined) {
@@ -32,8 +34,18 @@ export class OfferComponent implements OnInit {
   nextProcess() {
     this.visible = true;
     this.cds.getAllOffer(this.cds.tokenLogin).subscribe(response => {
-      this.visible = false;
+      //this.visible = false;
       this.OfferCollection = this.getOffers(response["offers"]);
+      this.cds.getAllCustomers(this.cds.tokenLogin).subscribe(response => {
+        this.visible = false;
+        this.customerCollection = this.getTableData(response["customers"]);
+      }, error => {
+        this.visible = false;
+        var msg = error.error.message ? error.error.message : error.message
+        this.snackBar.open(msg, "", {
+          duration: 2000,
+        });
+      })
     }, error => {
       this.visible = false;
       this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
@@ -54,7 +66,7 @@ export class OfferComponent implements OnInit {
         "validDuration": val[i].validDuration ? val[i].validDuration : "",
         "percentage": val[i].percentage ? val[i].percentage : "",
         "amount": val[i].amount ? val[i].amount : "",
-        "customers": val[i].offer ? val[i].offer : "",
+        "customers": val[i].customers ? val[i].customers : [],
         "offerId": val[i]._id ? val[i]._id : ""
       }
       finalData.push(formatJson);
@@ -62,11 +74,32 @@ export class OfferComponent implements OnInit {
     }
     return finalData;
   }
+
+  getTableData(val) {
+    var formatJson = {};
+    var finalData = [];
+    for (let i = 0; i < val.length; i++) {
+      if (val[i].isActive) {
+        formatJson = {
+          "firstname": (val[i].name ? (val[i].name.firstName !== 'undefined' ? val[i].name.firstName : "") : ""),
+          "lastname": (val[i].name ? (val[i].name.lastName !== 'undefined' ? val[i].name.lastName : "") : ""),
+          "email": val[i].email ? val[i].email : "",
+          "ph": val[i].phoneNumber ? val[i].phoneNumber : "",
+          "uid": val[i].uid ? val[i].uid : "",
+          "custId": val[i]._id ? val[i]._id : "",
+        }
+        finalData.push(formatJson);
+        formatJson = {};
+      }
+    }
+    return finalData;
+  }
+
   newOffer() {
     const dialogRef = this.dialog.open(ViewOffer, {
       width: '95%',
       height: '70%',
-      data: { ind: "create", data1: "" }
+      data: { ind: "create", data1: "", data: this.customerCollection }
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.action === "yes")
@@ -78,7 +111,7 @@ export class OfferComponent implements OnInit {
     const dialogRef = this.dialog.open(ViewOffer, {
       width: '95%',
       height: '70%',
-      data: { ind: "edit", data1: val }
+      data: { ind: "edit", data1: val, data: this.customerCollection }
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.action === "yes")
@@ -119,7 +152,7 @@ export class ViewOffer implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
-    //this.customersList = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+    this.customersList = this.dialogRef.componentInstance.data.data;
     this.offerType = [{ "type": "PRTG" }, { "type": "AMT" }];
     var data = this.dialogRef.componentInstance.data.data1;
     this.createForm();
@@ -211,11 +244,10 @@ export class ViewOffer implements OnInit {
       type: val.type,
       offer: val.offer,
       amount: val.amount,
-      customer: val.customer,
+      customer: val.customers,
       validDuration: val.amount,
-      fromDate: val.fromDate,
+      fromDate: new Date(val.fromDate),
       offerId: val.offerId
-
     });
   }
 }

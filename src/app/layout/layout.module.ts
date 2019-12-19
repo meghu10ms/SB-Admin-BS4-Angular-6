@@ -6,12 +6,14 @@ import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
-import {MatDialogModule,
+import {
+    MatDialogModule,
     MatMenuModule,
     MatCardModule,
     MatIconModule,
-    MatButtonModule,MatFormFieldModule, MatInputModule,MatSnackBarModule,
-    MatExpansionModule} from '@angular/material';
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule,
+    MatExpansionModule, MatChipsModule, MatTooltipModule
+} from '@angular/material';
 import { ViewProfile } from './components/header/header.component';
 import { ChangePassword } from './components/header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,9 +31,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         FormsModule,
         MatCardModule,
         MatIconModule,
-        MatButtonModule,MatFormFieldModule, MatInputModule,MatSnackBarModule,MatExpansionModule
+        MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, MatExpansionModule, MatChipsModule, MatTooltipModule
     ],
-    declarations: [LayoutComponent, SidebarComponent, HeaderComponent,ViewProfile,ChangePassword],
-    entryComponents: [ViewProfile,ChangePassword]
+    declarations: [LayoutComponent, SidebarComponent, HeaderComponent, ViewProfile, ChangePassword],
+    entryComponents: [ViewProfile, ChangePassword]
 })
-export class LayoutModule {}
+export class LayoutModule { }

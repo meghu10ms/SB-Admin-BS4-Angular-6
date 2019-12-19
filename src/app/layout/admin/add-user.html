@@ -80,15 +80,15 @@
             <mat-icon matSuffix>email</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <!-- <mat-form-field appearance="outline">
             <mat-label class="fontBold">City</mat-label>
             <input matInput placeholder="Enter City" formControlName="city" maxlength="20" class="fontBold">
             <mat-icon matSuffix>location_city</mat-icon>
-          </mat-form-field>
+          </mat-form-field> -->
 
           <mat-form-field appearance="outline">
             <mat-label class="fontBold">Region</mat-label>
-            <mat-select formControlName="region" placeholder="Enter Region" class="fontBold">
+            <mat-select formControlName="region" placeholder="Enter Region" class="fontBold" multiple>
               <mat-option *ngFor="let val of region" [value]="val.code">
                 {{val.area}} ({{val.code}})
               </mat-option>

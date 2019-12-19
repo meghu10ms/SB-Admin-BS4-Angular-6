@@ -47,16 +47,7 @@ export class AdminComponent implements OnInit {
       this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      // this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
 
-      //   this.cds.areaData = this.getAreaData(response["areas"]);
-
-      // }, error => {
-      //   this.visible = false;
-      //   this.snackBar.open(error.error.message, "", {
-      //     duration: 2000,
-      //   });
-      // })
     }, error => {
       this.visible = false;
       this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
@@ -69,18 +60,30 @@ export class AdminComponent implements OnInit {
     var formatJson = {};
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
-      if (val[i].areaId[0] === undefined || val[i].areaId[0].length === 0) {
-        val[i].areaId[0] = { "areaCode": "", "formattedAddress": "", "_id": "" }
+      let adminAreaData = val[i].areaId ? val[i].areaId : [];
+      let adimnAreaObj = {};
+      let adminAreaMainData = [];
+      let regionStringArray = [];
+
+      for (let j = 0; j < adminAreaData.length; j++) {
+        adimnAreaObj = {
+          "areaCode": adminAreaData[j].areaCode,
+          "areaName": adminAreaData[j].formattedAddress,
+          "areaObjId": adminAreaData[j]._id
+        }
+        regionStringArray.push(adminAreaData[j].areaCode);
+        adminAreaMainData.push(adimnAreaObj);
+        adimnAreaObj = {};
       }
+
       formatJson = {
         "title": val[i].name ? val[i].name.title : "",
         "firstname": val[i].name ? val[i].name.firstName : "",
         "lastname": val[i].name ? val[i].name.lastName : "",
         "email": val[i].email ? val[i].email : "",
         "ph": val[i].phoneNumber ? val[i].phoneNumber : "",
-        "region": val[i].areaId[0] ? val[i].areaId[0].areaCode : "",
-        "city": val[i].areaId[0] ? val[i].areaId[0].formattedAddress : "",
-        "areaId": val[i].areaId[0] ? val[i].areaId[0]._id : "",
+        "region": regionStringArray ? regionStringArray : [],
+        "areaDetails": adminAreaMainData ? adminAreaMainData : [],
         "adminId": val[i]._id ? val[i]._id : "",
         "accountNumber": val[i].bankDetails ? val[i].bankDetails.accountNumber : "",
         "accountType": val[i].bankDetails ? val[i].bankDetails.accountType : "",
@@ -90,7 +93,7 @@ export class AdminComponent implements OnInit {
         "ifscCode": val[i].bankDetails ? val[i].bankDetails.ifscCode : "",
         "taxNumber": val[i].bankDetails ? val[i].bankDetails.taxNumber : "",
         "superAdmin": val[i].isSuperAdmin ? val[i].isSuperAdmin : "",
-        "activeAdmin": val[i].isActive ? val[i].isActive : "",
+        "activeAdmin": val[i].isActive,
         "media": val[i].medias ? val[i].medias : []
       }
       finalData.push(formatJson);
@@ -98,22 +101,7 @@ export class AdminComponent implements OnInit {
     }
     return finalData;
   }
-  getAreaData(val) {
-    var formatJson = {};
-    var finalData = [];
-    for (let i = 0; i < val.length; i++) {
-      formatJson = {
-        "code": val[i].areaCode ? val[i].areaCode : "",
-        "area": val[i].formattedAddress ? val[i].formattedAddress : "",
-        "lt": val[i].latitude ? val[i].latitude : "",
-        "lg": val[i].longitude ? val[i].longitude : "",
-        "id": val[i]._id ? val[i]._id : ""
-      }
-      finalData.push(formatJson);
-      formatJson = {};
-    }
-    return finalData;
-  }
+
   add() {
 
     const dialogRef = this.dialog.open(AddUser, {
@@ -169,7 +157,6 @@ export interface PeriodicElement {
   ph: number;
   region: string;
   address: string;
-  city: string;
   dob: string;
 }
 
@@ -262,9 +249,7 @@ export class AddUser implements OnInit {
       lastname: ['', Validators.required],
       phone: ['+91', Validators.required],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-      city: ['Bangalore', Validators.required],
       region: ['', Validators.required],
-
       accountNumber: ['', Validators.required],
       accountType: ['', Validators.required],
       bankName: ['', Validators.required],
@@ -272,7 +257,7 @@ export class AddUser implements OnInit {
       holderName: ['', Validators.required],
       ifscCode: ['', Validators.required],
       taxNumber: ['', Validators.required],
-      areaId: [''],
+      areaDetails: [''],
       adminId: ['']
     })
   }
@@ -295,12 +280,15 @@ export class AddUser implements OnInit {
       medi.push(this.profilePicId);
       medi.push(this.documentId);
       var filledData = this.newUserForm.value;
-      var aId = "";
-      for (var i = 0; i < this.cds2.areaData.length; i++) {
-        if (filledData.region == this.cds2.areaData[i].code) {
-          aId = this.cds2.areaData[i].id;
-        }
-      }
+      var aId = [];
+      
+      this.cds2.areaData.forEach(function(obj) {
+        for(let x = 0;x<filledData.region.length;x++){
+          if(obj.code === filledData.region[x]){
+            aId.push(obj.id);
+          }
+        }        
+    });
 
       if (this.dialogRef.componentInstance.data.ind == 'create') {
         var createData = {
@@ -346,7 +334,7 @@ export class AddUser implements OnInit {
           "phoneNumber": filledData.phone,
           "email": filledData.email,
           //"password": filledData.email,
-          "areaId": filledData.areaId,
+          "areaId": aId,
           "medias": medi,
           "bankDetails": {
             "accountNumber": filledData.accountNumber,
@@ -493,9 +481,8 @@ export class AddUser implements OnInit {
       lastname: val.lastname,
       email: val.email,
       phone: val.ph,
-      city: val.city,
       region: val.region,
-      areaId: val.areaId,
+      areaDetails: val.areaDetails,
       adminId: val.adminId,
       accountNumber: val.accountNumber,
       accountType: val.accountType,

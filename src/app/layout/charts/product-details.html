@@ -19,7 +19,7 @@
             <form>
 
                 <div class="text-left">
-                    <mat-slide-toggle color="Primary" [checked]="this.Active" (change)="toggeleActive()"
+                    <mat-slide-toggle color="Primary" [checked]="this.Active" (change)="toggeleActive($event)"
                         labelPosition="before" matTooltip="Active" *ngIf="this.isAdmin">
                         Active
                     </mat-slide-toggle>
@@ -56,8 +56,10 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">Product Description</mat-label>
-                        <input matInput placeholder="Enter Product Description" formControlName="description"
-                            maxlength="100" class="fontBold">
+                        <!-- <input matInput placeholder="Enter Product Description" formControlName="description"
+                            maxlength="100" class="fontBold"> -->
+                        <textarea matInput placeholder="Enter Product Description" formControlName="description"
+                            maxlength="250" class="fontBold"></textarea>
                         <mat-icon matSuffix>person_pin</mat-icon>
                     </mat-form-field>
 
@@ -114,53 +116,27 @@
                 </div>
             </form>
         </div>
-        <!-- 
-        <div class="row mt-2 mb-3 ml-3 mr-3" *ngIf="!this.view">
-            <div class="col-sm-3 border" *ngFor="let val of this.productList">
 
-                <h6 class="jtext-center" > {{val.name}}({{val.code}}) </h6>
-                <div class="imgDiv" >
-                    <img src="{{val.media}}" alt="Name" class="avatar img-circle img-thumbnail img">
-                </div>
-                <p  style="word-wrap: unset;">
-                    {{val.description}}
-                </p>
-                <p style="font-size: 12px;" >
-                    Qty :{{val.capacity}}<br />
-
-                    Rate :{{val.price}}<br />
-                    Type :{{val.type}}<br />
-
-                    Cost :{{val.cost}}<br />
-                    With Can Price :{{val.withCanePrice}}<br />
-                    With Can Cost :{{val.withCaneCost}}<br />
-                </p>
-                <div >
-                    <button mat-button color="primary" class="jtext-left">
-                        <mat-icon (click)="editProduct(val)">edit</mat-icon>
-                    </button>
-                    <span class="space"></span>
-                    <button mat-button color="primary" class="jtext-right">
-                        <mat-icon (click)="deleteProduct(val)">delete</mat-icon>
-                    </button>
-                </div> -->
-        <!-- <a href="javascript:void(0)" (click)="addProduct()">
-                    <div *ngIf="val.isNew" class="addNewProduct" matRipple [matRippleCentered]="true"
-                        [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="color">
-                        Add More
-                    </div>
-                </a> -->
-        <!-- </div>
-        </div> -->
         <div class="row" *ngIf="!this.view">
             <div class="col-sm-4" *ngFor="let val of this.productList">
                 <div class="card text-white bg-info mb-3">
-                    <div class="card-header">{{val.name}}({{val.code}})</div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div>{{val.name}}({{val.code}})</div>
+                            <span class="space"></span>
+                            <mat-chip-list>
+                                <mat-chip color="{{val.isActive?'primary':'warn'}}" selected>{{val.isActive?"Active":"InActive"}}</mat-chip>
+                            </mat-chip-list>
+                        </div>
+                    </div>
                     <div class="imgDiv">
                         <img src="{{val.media}}" alt="Name" class="img-thumbnail img">
                     </div>
                     <div class="card-body">
-                        <p style="word-wrap: unset;">
+                        <p style="width: 100%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis" matTooltip="{{val.description}}">
                             {{val.description}}
                         </p>
                         <div class="row">

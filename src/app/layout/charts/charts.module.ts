@@ -10,7 +10,7 @@ import {
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
     MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
-    MatSlideToggleModule,MatCardModule,MatGridListModule,MatRippleModule
+    MatSlideToggleModule,MatCardModule,MatGridListModule,MatRippleModule,MatChipsModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -23,7 +23,7 @@ import { PaymentCalaculation } from './charts.component';
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
         FormsModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,MatRippleModule,
-        MatSlideToggleModule,MatCardModule,FlexLayoutModule,MatGridListModule],
+        MatSlideToggleModule,MatCardModule,FlexLayoutModule,MatGridListModule,MatChipsModule],
     declarations: [ChartsComponent, AddUser,ProductDetails,PaymentCalaculation],
     entryComponents: [AddUser,ProductDetails,PaymentCalaculation]
 })

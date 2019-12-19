@@ -6,23 +6,23 @@
         <div class="col-sm-4">
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Offer Name</mat-label>
-            <input matInput placeholder=" Enter Product Name" formControlName="name" maxlength="20"
-              style="font-weight: bold">
+            <mat-label class="fontBold">Offer Name</mat-label>
+            <input matInput placeholder=" Enter Product Name" formControlName="name" maxlength="20" class="fontBold">
             <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Offer Description</mat-label>
-            <input matInput placeholder="Enter Product Description" formControlName="description" maxlength="50"
-              style="font-weight: bold">
+            <mat-label class="fontBold">Offer Description</mat-label>
+            <!-- <input matInput placeholder="Enter Product Description" formControlName="description" maxlength="250"
+              class="fontBold"> -->
+            <textarea matInput placeholder="Enter Product Description" formControlName="description" maxlength="250"
+              class="fontBold"></textarea>
             <mat-icon matSuffix>person_pin</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Coupon Code</mat-label>
-            <input matInput placeholder="Enter Offer Url" formControlName="couponCode" maxlength="50"
-              style="font-weight: bold">
+            <mat-label class="fontBold">Coupon Code</mat-label>
+            <input matInput placeholder="Enter Offer Url" formControlName="couponCode" maxlength="50" class="fontBold">
             <mat-icon matSuffix>person_pin</mat-icon>
           </mat-form-field>
 
@@ -30,24 +30,24 @@
         <div class="col-sm-4">
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Percentage</mat-label>
-            <input matInput placeholder="Enter Percentage" formControlName="percentage" maxlength="6"
-              style="font-weight: bold" type="number">
-            <mat-icon matSuffix>pages</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Amount</mat-label>
-            <input matInput placeholder="Enter Amount" formControlName="amount" maxlength="6" style="font-weight: bold"
+            <mat-label class="fontBold">Percentage</mat-label>
+            <input matInput placeholder="Enter Percentage" formControlName="percentage" maxlength="6" class="fontBold"
               type="number">
             <mat-icon matSuffix>pages</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Customers</mat-label>
-            <mat-select formControlName="customer" multiple placeholder="Choose Customers" style="font-weight: bold">
-              <mat-option *ngFor="let val of customersList" [value]="val">
-                {{val}}
+            <mat-label class="fontBold">Amount</mat-label>
+            <input matInput placeholder="Enter Amount" formControlName="amount" maxlength="6" class="fontBold"
+              type="number">
+            <mat-icon matSuffix>pages</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label class="fontBold">Customers</mat-label>
+            <mat-select formControlName="customer" multiple placeholder="Choose Customers" class="fontBold">
+              <mat-option *ngFor="let val of customersList" [value]="val.custId">
+                {{val.email}}({{val.ph}})
               </mat-option>
             </mat-select>
             <mat-icon matSuffix>pages</mat-icon>
@@ -59,8 +59,8 @@
 
         <div class="col-sm-4">
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Type</mat-label>
-            <mat-select formControlName="type" placeholder="Enter type" style="font-weight: bold">
+            <mat-label class="fontBold">Type</mat-label>
+            <mat-select formControlName="type" placeholder="Enter type" class="fontBold">
               <mat-option *ngFor="let val of offerType" [value]="val.type">
                 {{val.type}}
               </mat-option>
@@ -70,15 +70,15 @@
 
           <mat-form-field color="primary" appearance="outline">
             <mat-label>Valid From</mat-label>
-            <input matInput [matDatepicker]="picker1" readonly style="font-weight: bold" formControlName="fromDate">
+            <input matInput [matDatepicker]="picker1" readonly class="fontBold" formControlName="fromDate">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1 disabled="false"></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Valid Duration</mat-label>
+            <mat-label class="fontBold">Valid Duration</mat-label>
             <input matInput placeholder="Enter Valid Duration" formControlName="validDuration" maxlength="6"
-              style="font-weight: bold" type="number">
+              class="fontBold" type="number">
             <mat-icon matSuffix>pages</mat-icon>
           </mat-form-field>
         </div>

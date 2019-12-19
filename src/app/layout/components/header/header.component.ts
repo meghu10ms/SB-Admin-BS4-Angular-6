@@ -16,6 +16,7 @@ export interface DialogData {
 export class HeaderComponent implements OnInit {
     public pushRightClass: string;
     public profileName: any;
+    public timing:any;
     constructor(public router: Router, public dialog: MatDialog, private cds: CommonServiceService, private snackBar: MatSnackBar) {
 
         this.router.events.subscribe(val => {
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        //this.timing = new Date().toLocaleString();
         if (this.cds.tokenLogin === undefined) {
             this.router.navigate(['/login']);
         } else {

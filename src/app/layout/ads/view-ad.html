@@ -15,7 +15,7 @@
           <img [src]="imgProductUrl" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgProductUrl">
           <h6 *ngIf="!imgProductUrl">Upload Ads Photo...</h6>
           <input type="file" #file class="text-left left-block file-upload" accept='image/*'
-            (change)="preview(file.files)" style="width:95%" >
+            (change)="preview(file.files)" style="width:95%">
           <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
 
           <hr />
@@ -26,7 +26,7 @@
           <h6 *ngIf="!imgProductUrl1">Upload offer Photo...</h6>
           <input type="file" #file class="text-left left-block file-upload" accept='image/*'
             (change)="preview1(file.files)" style="width:95%" > -->
-         
+
         </div>
 
       </form>
@@ -36,29 +36,27 @@
         <div class="col-sm-6">
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Ads Name</mat-label>
-            <input matInput placeholder=" Enter Product Name" formControlName="name" maxlength="20"
-              style="font-weight: bold">
+            <mat-label class="fontBold">Ads Name</mat-label>
+            <input matInput placeholder=" Enter Product Name" formControlName="name" maxlength="20" class="fontBold">
             <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
-          
+
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Product Description</mat-label>
+            <mat-label class="fontBold">Product Description</mat-label>
             <input matInput placeholder="Enter Product Description" formControlName="description" maxlength="50"
-              style="font-weight: bold">
+              class="fontBold">
             <mat-icon matSuffix>person_pin</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-              <mat-label style="font-weight: bold">Ads Url</mat-label>
-              <input matInput placeholder="Enter Ads Url" formControlName="url" maxlength="50"
-                style="font-weight: bold">
-              <mat-icon matSuffix>person_pin</mat-icon>
-            </mat-form-field>
+            <mat-label class="fontBold">Ads Url</mat-label>
+            <input matInput placeholder="Enter Ads Url" formControlName="url" maxlength="50" class="fontBold">
+            <mat-icon matSuffix>person_pin</mat-icon>
+          </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Type</mat-label>
-            <mat-select formControlName="type" placeholder="Enter type" style="font-weight: bold">
+            <mat-label class="fontBold">Type</mat-label>
+            <mat-select formControlName="type" placeholder="Enter type" class="fontBold">
               <mat-option *ngFor="let val of adsType" [value]="val.type">
                 {{val.type}}
               </mat-option>
@@ -66,37 +64,38 @@
             <mat-icon matSuffix>account_tree</mat-icon>
           </mat-form-field>
 
-
-
         </div>
         <div class="col-sm-6">
 
           <mat-form-field appearance="outline">
-            <mat-label style="font-weight: bold">Interval</mat-label>
+            <mat-label class="fontBold">Interval</mat-label>
             <input matInput placeholder="Enter Interval in secends" formControlName="interval" maxlength="6"
-              style="font-weight: bold" type="number">
+              class="fontBold" type="number">
             <mat-icon matSuffix>pages</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-              <mat-label style="font-weight: bold">Offer</mat-label>
-              <input matInput placeholder="Enter Offer" formControlName="offer" maxlength="25"
-                style="font-weight: bold">
-              <mat-icon matSuffix>pages</mat-icon>
-            </mat-form-field>
-
-          <mat-form-field color="primary" appearance="outline">
-              <mat-label>From Date</mat-label>
-              <input matInput [matDatepicker]="picker1" readonly style="font-weight: bold" formControlName="fromDate">
-              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-              <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+            <mat-label class="fontBold">Offer</mat-label>
+            <mat-select formControlName="offer" placeholder="Enter Offer" class="fontBold">
+              <mat-option *ngFor="let val of OfferCollection" [value]="val.offerId">
+                {{val.name}}({{val.couponCode}})
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>account_tree</mat-icon>
           </mat-form-field>
 
           <mat-form-field color="primary" appearance="outline">
-              <mat-label>To Date</mat-label>
-              <input matInput [matDatepicker]="picker2" readonly style="font-weight: bold" formControlName="toDate">
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2 color="primary" disabled="false"></mat-datepicker>
+            <mat-label>From Date</mat-label>
+            <input matInput [matDatepicker]="picker1" readonly class="fontBold" formControlName="fromDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field color="primary" appearance="outline">
+            <mat-label>To Date</mat-label>
+            <input matInput [matDatepicker]="picker2" readonly class="fontBold" formControlName="toDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 color="primary" disabled="false"></mat-datepicker>
           </mat-form-field>
 
         </div>

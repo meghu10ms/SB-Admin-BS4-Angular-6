@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export interface DialogData {
     data1: any;
     ind: any;
+    data:any;
 }
 
 @Component({
