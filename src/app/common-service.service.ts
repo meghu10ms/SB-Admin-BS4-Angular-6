@@ -248,5 +248,106 @@ export class CommonServiceService implements OnInit {
     return this.http.get(this.url + "customer/admin/search/", this.getTokenAccess(token));
   }
   /*######################################### Customers DETAILS Ends ######################################## */
+  /*######################################### Delivery Charges starts ################################################ */
+  //get all Delivery Charges
+  getAllDelCharges(token) {
+
+    return this.http.get(this.url + "delivery-charge/search", this.getTokenAccess(token));
+  }
+
+  //delete all Delivery Charges
+  deleteDelCharges(pId, token) {
+
+    return this.http.delete(this.url + "delivery-charge/" + pId, this.getTokenAccess(token));
+  }
+
+  //update Delivery Charges
+  updateDelCharges(adsId, token, body) {
+
+    return this.http.patch(this.url + "delivery-charge/" + adsId, body, this.getTokenAccess(token));
+  }
+
+  //update Delivery Charges
+  postDelCharges(token, body) {
+
+    return this.http.post(this.url + "delivery-charge/", body, this.getTokenAccess(token));
+  }
+  /*######################################### Delivery Cgharges DETAILS ENDS ##################################### */
+  /*######################################### Delivery Commission starts ################################################ */
+  //get all Delivery Commission
+  getAllDelCommission(token) {
+
+    return this.http.get(this.url + "delivery-commission/search", this.getTokenAccess(token));
+  }
+
+  //delete all Delivery Commission
+  deleteDelCommission(pId, token) {
+
+    return this.http.delete(this.url + "delivery-commission/" + pId, this.getTokenAccess(token));
+  }
+
+  //update Delivery Commission
+  updateDelCommission(adsId, token, body) {
+
+    return this.http.patch(this.url + "delivery-commission/" + adsId, body, this.getTokenAccess(token));
+  }
+
+  //update Delivery Commission
+  postDelCommission(token, body) {
+
+    return this.http.post(this.url + "delivery-commission/", body, this.getTokenAccess(token));
+  }
+  /*######################################### Delivery Commission DETAILS ENDS ##################################### */
+  /*######################################### Dispenser starts ################################################ */
+  //get all Dispenser
+  getAllDispenser(token) {
+
+    return this.http.get(this.url + "dispenser/", this.getTokenAccess(token));
+  }
+
+  //delete Dispenser
+  deleteDispenser(pId, token) {
+
+    return this.http.delete(this.url + "dispenser/" + pId, this.getTokenAccess(token));
+  }
+
+  //update Dispenser
+  updateDispenser(adsId, token, body) {
+
+    return this.http.patch(this.url + "dispenser/" + adsId, body, this.getTokenAccess(token));
+  }
+
+  //update Dispenser
+  postDispenser(token, body) {
+
+    return this.http.post(this.url + "dispenser/", body, this.getTokenAccess(token));
+  }
+  /*######################################### Delivery Commission DETAILS ENDS ##################################### */
+  /*######################################### Tax starts ################################################ */
+  //get all Tax
+  getAllTax(token) {
+
+    return this.http.get(this.url + "tax/", this.getTokenAccess(token));
+  }
+
+  //delete Tax
+  deleteTax(pId, token) {
+
+    return this.http.delete(this.url + "tax/" + pId, this.getTokenAccess(token));
+  }
+
+  //update Tax
+  updateTax(adsId, token, body) {
+
+    return this.http.patch(this.url + "tax/" + adsId, body, this.getTokenAccess(token));
+  }
+
+  //update Tax
+  postTax(token, body) {
+
+    return this.http.post(this.url + "tax/", body, this.getTokenAccess(token));
+  }
+  /*######################################### Delivery Commission DETAILS ENDS ##################################### */
+
 }
 

@@ -1,0 +1,46 @@
+<div class="overlay1" *ngIf="visible">
+  <span class="spinner">
+    <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+  </span>
+</div>
+
+<div [@routerTransition]>
+  <app-page-header [heading]="'MasterData/Delivery Charges'" [icon]="'fa-leaf'"></app-page-header>
+  <mat-toolbar> Delivery Charge Request
+    <span class="space"> </span>
+    <button mat-icon-button color="primary" aria-label="Add New Delivery Charge" matTooltip="Add New Delivery Charge">
+      <mat-icon (click)="newDeliveryCharge()">add_box</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="row">
+    <div class="col-sm-3" *ngFor="let val of DeliveryCharges">
+      <div class="card text-white bg-info mb-2">
+        <div class="card-header"> Created Date : {{val.createDate}} Modified Date : {{val.modifiedDate}} </div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-sm-6 jtext-small">
+              Range From : {{val.rangeFrom}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Amount : {{val.amount}} Rs
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Range To : {{val.rangeTo}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <mat-icon mat-button color="primary" (click)="editDelCharge(val)" class="col text-left">
+            edit
+          </mat-icon>
+          <mat-icon mat-button color="primary" (click)="deleteDelCharge(val)" class="col text-right">
+            delete
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

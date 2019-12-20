@@ -1,0 +1,53 @@
+<div mat-dialog-content>
+  <div class="row">
+    <form [formGroup]="newUserForm">
+      <div class="col-sm-5">
+
+        <mat-slide-toggle color="Primary" [checked]="isActive" formControlName="isActive"
+             labelPosition="before" matTooltip="Active">
+            Active
+          </mat-slide-toggle>
+          <hr />
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Name</mat-label>
+          <input matInput placeholder="Enter Name" formControlName="name" maxlength="25" class="fontBold">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Type</mat-label>
+          <input matInput placeholder="Enter Type" formControlName="type" maxlength="15" class="fontBold">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+      </div>
+      <div class="col-sm-5">
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Percentage</mat-label>
+          <input matInput placeholder="Enter Amount" formControlName="percentage" maxlength="10" class="fontBold"
+            (keypress)="numberOnlyWithDot($event)">
+          <span matSuffix class="fontBold">%</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Authority</mat-label>
+          <input matInput placeholder="Enter Authority" formControlName="authority" maxlength="20" class="fontBold">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+      </div>
+    </form>
+  </div>
+</div>
+<mat-dialog-actions>
+  <div class="navbar-nav ml-auto">
+    <span>
+      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createTax()">
+        Save</button> &nbsp; &nbsp;
+      <button class="btn btn-success" type="submit" matTooltip="Cancel" (click)="CancelPage()">
+        Cancel</button> &nbsp; &nbsp;
+    </span>
+  </div>
+</mat-dialog-actions>

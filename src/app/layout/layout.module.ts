@@ -18,7 +18,6 @@ import { ViewProfile } from './components/header/header.component';
 import { ChangePassword } from './components/header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 @NgModule({
     imports: [
         CommonModule,
@@ -31,7 +30,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         FormsModule,
         MatCardModule,
         MatIconModule,
-        MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, MatExpansionModule, MatChipsModule, MatTooltipModule
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSnackBarModule,
+        MatExpansionModule,
+        MatChipsModule,
+        MatTooltipModule
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent, ViewProfile, ChangePassword],
     entryComponents: [ViewProfile, ChangePassword]

@@ -1,0 +1,16 @@
+<div class="overlay1" *ngIf="visible">
+  <span class="spinner">
+    <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+  </span>
+</div>
+
+<div [@routerTransition]>
+  <app-page-header [heading]="'MasterData/Dispenser'" [icon]="'fa-building'"></app-page-header>
+  <mat-toolbar> Dispenser Charge Request
+    <span class="space"> </span>
+    <button mat-icon-button color="primary" aria-label="Add New Dispenser" matTooltip="Add New Dispenser">
+      <mat-icon  (click)="newDispenser()">add_box</mat-icon>
+    </button>
+  </mat-toolbar>
+
+</div>

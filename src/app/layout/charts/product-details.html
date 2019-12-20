@@ -49,8 +49,10 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">Product Code</mat-label>
-                        <input matInput placeholder="Enter Product Code" formControlName="code" maxlength="20"
+                        <input matInput #input placeholder="Enter Product Code" formControlName="code" maxlength="7"
                             class="fontBold" (keypress)="validateProductCode($event)">
+                        <!-- <mat-hint >{{input.value?.length || 0}}/7</mat-hint> -->
+                        <mat-hint>Ex: PRG0001, 3 Char and 4 Digits</mat-hint>
                         <mat-icon matSuffix>person_pin</mat-icon>
                     </mat-form-field>
 
@@ -82,35 +84,35 @@
                         <mat-label class="fontBold">Capacity</mat-label>
                         <input matInput placeholder="Enter Capacity" formControlName="capacity" maxlength="6"
                             class="fontBold" type="number">
-                        <mat-icon matSuffix>pages</mat-icon>
+                        <span matSuffix class="fontBold">Liters</span>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">Price</mat-label>
                         <input matInput placeholder="Enter Price" formControlName="price" maxlength="5" class="fontBold"
                             type="number">
-                        <mat-icon matSuffix>account_tree</mat-icon>
+                        <span matSuffix class="fontBold">Rs</span>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">With Can Price</mat-label>
                         <input matInput placeholder="Enter With Can Price" formControlName="withCanePrice" maxlength="8"
                             class="fontBold" type="number">
-                        <mat-icon matSuffix>account_tree</mat-icon>
+                        <span matSuffix class="fontBold">Rs</span>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">Cost</mat-label>
                         <input matInput placeholder="Enter Cost" formControlName="cost" maxlength="8" class="fontBold"
                             type="number">
-                        <mat-icon matSuffix>account_tree</mat-icon>
+                        <span matSuffix class="fontBold">Rs</span>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">With Can Cost</mat-label>
                         <input matInput placeholder="Enter With Can Cost" formControlName="withCaneCost" maxlength="8"
                             class="fontBold" type="number">
-                        <mat-icon matSuffix>account_tree</mat-icon>
+                        <span matSuffix class="fontBold">Rs</span>
                     </mat-form-field>
 
                 </div>
@@ -125,7 +127,8 @@
                             <div>{{val.name}}({{val.code}})</div>
                             <span class="space"></span>
                             <mat-chip-list>
-                                <mat-chip color="{{val.isActive?'primary':'warn'}}" selected>{{val.isActive?"Active":"InActive"}}</mat-chip>
+                                <mat-chip color="{{val.isActive?'primary':'warn'}}" selected>
+                                    {{val.isActive?"Active":"InActive"}}</mat-chip>
                             </mat-chip-list>
                         </div>
                     </div>

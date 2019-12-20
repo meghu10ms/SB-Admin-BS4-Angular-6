@@ -1,0 +1,44 @@
+<div mat-dialog-content>
+  <div class="row">
+    <form [formGroup]="newUserForm">
+      <div class="col-sm-5">
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Range From</mat-label>
+          <input matInput placeholder="Enter Range From" formControlName="rangeFrom" maxlength="8"
+            (keypress)="numberOnly($event)" class="fontBold">
+          <!-- <mat-icon matSuffix>person</mat-icon> -->
+          <span matSuffix class="fontBold">Cans</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Range To</mat-label>
+          <input matInput placeholder="Enter Range To" formControlName="rangeTo" maxlength="8" class="fontBold"
+            (keypress)="numberOnly($event)">
+          <span matSuffix class="fontBold">Cans</span>
+        </mat-form-field>
+
+      </div>
+      <div class="col-sm-5">
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Amount</mat-label>
+          <input matInput placeholder="Enter Amount" formControlName="amount" maxlength="10" class="fontBold"
+            (keypress)="numberOnlyWithDot($event)">
+          <span matSuffix class="fontBold">Rs</span>
+        </mat-form-field>
+
+      </div>
+    </form>
+  </div>
+</div>
+<mat-dialog-actions>
+  <div class="navbar-nav ml-auto">
+    <span>
+      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createDeliveryCharge()">
+        Save</button> &nbsp; &nbsp;
+      <button class="btn btn-success" type="submit" matTooltip="Cancel" (click)="CancelDeliveryCharge()">
+        Cancel</button> &nbsp; &nbsp;
+    </span>
+  </div>
+</mat-dialog-actions>

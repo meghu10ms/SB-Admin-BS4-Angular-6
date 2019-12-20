@@ -20,16 +20,17 @@
             <i class="fa fa-fw fa-motorcycle"></i>&nbsp;
             <span>Delivary Partner</span>
         </a>
-        <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item" matTooltip="Orders">
+        <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item"
+            matTooltip="Orders">
             <i class="fa fa-fw fa-shopping-cart"></i>&nbsp;
             <span>Orders</span>
         </a>
         <div class="nested-menu" *ngIf="this.isAdmin">
-            <a class="list-group-item" (click)="addExpandClass('pages')" matTooltip="Admin Controls">
+            <a class="list-group-item" (click)="addExpandClass('adminControl')" matTooltip="Admin Controls">
                 <i class="fa fa-th-list"></i>&nbsp;
                 <span>Admin Controls</span>
             </a>
-            <li class="nested" [class.expand]="showMenu === 'pages'">
+            <li class="nested" [class.expand]="showMenu === 'adminControl'">
                 <ul class="submenu">
                     <li>
                         <a class="list-group-item" [routerLink]="['/admin']" [routerLinkActive]="['router-link-active']"
@@ -57,6 +58,46 @@
                             matTooltip="Offers">
                             <i class="fa fa-fw fa-file-image-o"></i>&nbsp;
                             <span>Offers</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+        </div>
+
+        <div class="nested-menu" *ngIf="this.isAdmin">
+            <a class="list-group-item" (click)="addExpandClass('masterdata')" matTooltip="Master Data">
+                <i class="fa fa-database"></i>&nbsp;
+                <span>Master Data</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'masterdata'">
+                <ul class="submenu">
+                    <li>
+                        <a class="list-group-item" [routerLink]="['/delivery-charges']"
+                            [routerLinkActive]="['router-link-active']" matTooltip="Delivery Charges Request">
+                            <i class="fa fa-fw fa-leaf"></i>&nbsp;
+                            <span>Delivery Charges Request</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="list-group-item" [routerLink]="['/delivery-commission']"
+                            [routerLinkActive]="['router-link-active']" matTooltip="Delivery Commission Request">
+                            <i class="fa fa-fw fa-hand-lizard-o"></i>&nbsp;
+                            <span>Delivery Commission Request</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="list-group-item" [routerLink]="['/dispenser']"
+                            [routerLinkActive]="['router-link-active']" matTooltip="Dispenser Request">
+                            <i class="fa fa-fw fa-building"></i>&nbsp;
+                            <span>Dispenser Request</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="list-group-item" [routerLink]="['/tax']" [routerLinkActive]="['router-link-active']"
+                            matTooltip="Tax Request">
+                            <i class="fa fa-fw fa-briefcase"></i>&nbsp;
+                            <span>Tax Request</span>
                         </a>
                     </li>
 

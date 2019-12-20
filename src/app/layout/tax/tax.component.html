@@ -1,0 +1,55 @@
+<div class="overlay1" *ngIf="visible">
+  <span class="spinner">
+    <mat-progress-spinner mode="indeterminate" value=30></mat-progress-spinner>
+  </span>
+</div>
+
+<div [@routerTransition]>
+  <app-page-header [heading]="'MasterData/Tax'" [icon]="'fa-briefcase'"></app-page-header>
+  <mat-toolbar> Tax Request
+    <span class="space"> </span>
+    <button mat-icon-button color="primary" aria-label="Add New Tax" matTooltip="Add New Tax">
+      <mat-icon (click)="newTax()">add_box</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="row">
+    <div class="col-sm-3" *ngFor="let val of TaxCollections">
+      <div class="card text-white bg-info mb-2">
+        <div class="card-header">
+          <div class="row">
+            <div> {{val.name}}</div>
+            <span class="space"></span>
+            <mat-chip-list>
+              <mat-chip color="{{val.isActive?'primary':'warn'}}" selected>{{val.isActive?"Active":"InActive"}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-sm-6 jtext-small">
+              Type : {{val.type}}
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Percentage : {{val.percentage}} %
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Authority : {{val.authority}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <mat-icon mat-button color="primary" (click)="editTax(val)" class="col text-left">
+            edit
+          </mat-icon>
+          <mat-icon mat-button color="primary" (click)="deleteTax(val)" class="col text-right">
+            delete
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -65,6 +65,7 @@ export class SidebarComponent implements OnInit {
         }
     }
 
+
     toggleCollapsed() {
         this.collapsed = !this.collapsed;
         this.collapsedEvent.emit(this.collapsed);
