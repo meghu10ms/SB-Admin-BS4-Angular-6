@@ -14,6 +14,7 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewOffer } from './offer.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -24,6 +25,9 @@ import { ViewOffer } from './offer.component';
         MatSlideToggleModule
     ],
     declarations: [OfferComponent, ViewOffer],
-    entryComponents: [ViewOffer]
+    entryComponents: [ViewOffer],
+    providers: [
+        DatePipe
+    ],
 })
 export class OfferModule { }

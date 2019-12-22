@@ -4,10 +4,10 @@
     </span>
 </div>
 <div>
-    <mat-slide-toggle color="primary" [checked]="this.view" (change)="toggeleChangeView($event)" labelPosition="before"
+    <mat-checkbox color="primary" [checked]="this.view" (change)="toggeleChangeView($event)" labelPosition="before"
         matTooltip={{this.sliderName}} class="text-left">
         {{this.sliderName}}
-    </mat-slide-toggle>
+    </mat-checkbox>
     <span class="space"> </span>
     <span class="text-right"> Total Product Count : {{this.count}}</span>
 </div>
@@ -50,7 +50,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">Product Code</mat-label>
                         <input matInput #input placeholder="Enter Product Code" formControlName="code" maxlength="7"
-                            class="fontBold" (keypress)="validateProductCode($event)">
+                            class="fontBold" (keypress)="codeValidation($event)" (keyup)="upperCaseValue($event)">
                         <!-- <mat-hint >{{input.value?.length || 0}}/7</mat-hint> -->
                         <mat-hint>Ex: PRG0001, 3 Char and 4 Digits</mat-hint>
                         <mat-icon matSuffix>person_pin</mat-icon>
@@ -83,35 +83,35 @@
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">Capacity</mat-label>
                         <input matInput placeholder="Enter Capacity" formControlName="capacity" maxlength="6"
-                            class="fontBold" type="number">
+                            class="fontBold" (keypress)="numberOnlyWithDot($event)">
                         <span matSuffix class="fontBold">Liters</span>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">Price</mat-label>
                         <input matInput placeholder="Enter Price" formControlName="price" maxlength="5" class="fontBold"
-                            type="number">
+                            (keypress)="numberOnlyWithDot($event)">
                         <span matSuffix class="fontBold">Rs</span>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">With Can Price</mat-label>
                         <input matInput placeholder="Enter With Can Price" formControlName="withCanePrice" maxlength="8"
-                            class="fontBold" type="number">
+                            class="fontBold" (keypress)="numberOnlyWithDot($event)">
                         <span matSuffix class="fontBold">Rs</span>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">Cost</mat-label>
                         <input matInput placeholder="Enter Cost" formControlName="cost" maxlength="8" class="fontBold"
-                            type="number">
+                            (keypress)="numberOnlyWithDot($event)">
                         <span matSuffix class="fontBold">Rs</span>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label class="fontBold">With Can Cost</mat-label>
                         <input matInput placeholder="Enter With Can Cost" formControlName="withCaneCost" maxlength="8"
-                            class="fontBold" type="number">
+                            class="fontBold" (keypress)="numberOnlyWithDot($event)">
                         <span matSuffix class="fontBold">Rs</span>
                     </mat-form-field>
 
@@ -144,33 +144,35 @@
                         </p>
                         <div class="row">
                             <div class="col-sm-6 jtext-small">
-                                Qty :{{val.capacity}}
+                                Qty :{{val.capacity}} Liters
                             </div>
                             <div class="col-sm-6 jtext-small">
-                                Rate :{{val.price}}
+                                Rate :{{val.price}} Rs
                             </div>
                             <div class="col-sm-6 jtext-small">
                                 Type :{{val.type}}
                             </div>
                             <div class="col-sm-6 jtext-small">
-                                Cost :{{val.cost}}
+                                Cost :{{val.cost}} Rs
                             </div>
                             <div class="col-sm-6 jtext-small">
-                                With Can Price :{{val.withCanePrice}}
+                                With Can Price :{{val.withCanePrice}} Rs
                             </div>
                             <div class="col-sm-6 jtext-small">
-                                With Can Cost :{{val.withCaneCost}}
+                                With Can Cost :{{val.withCaneCost}} Rs
                             </div>
                         </div>
 
                     </div>
                     <div class="row">
-                        <button mat-button color="primary" class="col text-left" (click)="editProduct(val)">
-                            Edit
-                        </button>
+                        <mat-icon mat-button color="primary" class="col text-center curserAction"
+                            (click)="editProduct(val)">
+                            edit
+                        </mat-icon>
 
-                        <button mat-button color="primary" class="col text-right" (click)="deleteProduct(val)">Delete
-                        </button>
+                        <mat-icon mat-button color="primary" class="col text-center curserAction"
+                            (click)="deleteProduct(val)">delete
+                        </mat-icon>
                     </div>
                 </div>
             </div>

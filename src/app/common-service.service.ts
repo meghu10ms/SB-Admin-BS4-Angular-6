@@ -13,10 +13,16 @@ export class CommonServiceService implements OnInit {
   tokenLogin: any;
   currentAdminDetail: any;
   areaData: any;
+  filePath: any;
   //url = "http://139.59.82.247/";
   url = environment.apiUrl;
   ngOnInit() { }
 
+  getFilePath(id) {
+    let path = "";
+    path = this.url + "/media" + id + "/download";
+    return path;
+  }
   //get Token
   getTokenAccess(token) {
     const httpOptions = {
@@ -29,6 +35,7 @@ export class CommonServiceService implements OnInit {
   }
 
   /*######################################### EDIA DETAILS STARTS ##################################### */
+
   //post media files
   postMedia(body) {
     return this.http.post(this.url + "media/", body);

@@ -14,28 +14,28 @@
   </mat-toolbar>
 
   <div class="row">
-    <div class="col-sm-3" *ngFor="let val of DeliveryCharges">
+    <div class="col-sm-4" *ngFor="let val of DeliveryCharges">
       <div class="card text-white bg-info mb-2">
         <div class="card-header"> Created Date : {{val.createDate}} Modified Date : {{val.modifiedDate}} </div>
         <div class="card-body">
 
           <div class="row">
             <div class="col-sm-6 jtext-small">
-              Range From : {{val.rangeFrom}}
+              Range From : {{val.rangeFrom}} Meters
             </div>
             <div class="col-sm-6 jtext-small">
               Amount : {{val.amount}} Rs
             </div>
             <div class="col-sm-6 jtext-small">
-              Range To : {{val.rangeTo}}
+              Range To : {{val.rangeTo}} Meters
             </div>
           </div>
         </div>
         <div class="row">
-          <mat-icon mat-button color="primary" (click)="editDelCharge(val)" class="col text-left">
+          <mat-icon mat-button color="primary" (click)="editDelCharge(val)" class="col text-center curserAction">
             edit
           </mat-icon>
-          <mat-icon mat-button color="primary" (click)="deleteDelCharge(val)" class="col text-right">
+          <mat-icon mat-button color="primary" (click)="deleteDelCharge(val)" class="col text-center curserAction">
             delete
           </mat-icon>
         </div>

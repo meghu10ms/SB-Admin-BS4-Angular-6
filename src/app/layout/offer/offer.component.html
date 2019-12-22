@@ -13,7 +13,7 @@
       <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="newOffer()">add_box</mat-icon>
     </button>
   </mat-toolbar>
- 
+
   <div class="row">
     <div class="col-sm-4" *ngFor="let val of OfferCollection">
       <div class="card text-white bg-info mb-3">
@@ -42,15 +42,18 @@
             <div class="col-sm-6 jtext-small">
               Amount :{{val.amount}}
             </div>
+            <div class="col-sm-6 jtext-small">
+              Limit :{{val.limit}}
+            </div>
           </div>
         </div>
         <div class="row">
-          <button mat-button color="primary" (click)="editOffers(val)" class="col text-left">
-            Edit
-          </button>
-          <button mat-button color="primary" (click)="deleteOffers(val)" class="col text-right">
-            Delete
-          </button>
+          <mat-icon mat-button color="primary" (click)="editOffers(val)" class="col text-center curserAction">
+            edit
+          </mat-icon>
+          <mat-icon mat-button color="primary" (click)="deleteOffers(val)" class="col text-center curserAction">
+            delete
+          </mat-icon>
         </div>
       </div>
     </div>

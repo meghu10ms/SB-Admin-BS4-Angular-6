@@ -4,18 +4,18 @@
       <div class="col-sm-5">
 
         <mat-form-field appearance="outline">
-          <mat-label class="fontBold">Range From</mat-label>
-          <input matInput placeholder="Enter Range From" formControlName="rangeFrom" maxlength="8"
+          <mat-label class="fontBold">Range From(in Meters) </mat-label>
+          <input matInput placeholder="Enter Range From (in Meters)" formControlName="rangeFrom" maxlength="8"
             (keypress)="numberOnly($event)" class="fontBold">
           <!-- <mat-icon matSuffix>person</mat-icon> -->
-          <span matSuffix class="fontBold">Cans</span>
+          <span matSuffix class="fontBold">Meters</span>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label class="fontBold">Range To</mat-label>
-          <input matInput placeholder="Enter Range To" formControlName="rangeTo" maxlength="8" class="fontBold"
+          <mat-label class="fontBold">Range To(in Meters)</mat-label>
+          <input matInput placeholder="Enter Range To (in Meters)" formControlName="rangeTo" maxlength="8" class="fontBold"
             (keypress)="numberOnly($event)">
-          <span matSuffix class="fontBold">Cans</span>
+          <span matSuffix class="fontBold">Meters</span>
         </mat-form-field>
 
       </div>

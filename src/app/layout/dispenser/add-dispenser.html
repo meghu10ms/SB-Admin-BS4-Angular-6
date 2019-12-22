@@ -1,7 +1,69 @@
 <div mat-dialog-content>
   <div class="row">
+    <form class="form-inline" [formGroup]="newUserForm">
+      <div class="col-sm-4">
+        <div class="text-left">
+          <mat-slide-toggle color="Primary" formControlName="isActive" labelPosition="before" matTooltip="Active">
+            Active
+          </mat-slide-toggle>
+          <hr />
+          <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar"
+            *ngIf="!imgProductUrl" height="150" width="150">
+          <img [src]="imgProductUrl" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgProductUrl">
+          <h6 *ngIf="!imgProductUrl">Upload Ads Photo...</h6>
+          <input type="file" #file class="text-left left-block file-upload" accept='image/*'
+            (change)="preview(file.files)" style="width:95%">
+          <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
+          <hr />
+        </div>
+      </div>
 
-   
+      <div class="col-sm-4">
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Name</mat-label>
+          <input matInput placeholder=" Enter Name" formControlName="name" maxlength="20" class="fontBold">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Description</mat-label>
+          <input matInput placeholder="EnterDescription" formControlName="description" maxlength="250" class="fontBold">
+          <mat-icon matSuffix>person_pin</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Enter Code</mat-label>
+          <input matInput placeholder="Enter Code" formControlName="code" maxlength="8"
+           class="fontBold" (keypress)="codeValidation($event)" (keyup)="upperCaseValue($event)">
+          <mat-icon matSuffix>person_pin</mat-icon>
+        </mat-form-field>
+
+      </div>
+      <div class="col-sm-4">
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Price</mat-label>
+          <input matInput placeholder="Enter Price" formControlName="price" maxlength="6" class="fontBold"
+          (keypress)="numberOnlyWithDot($event)">
+          <span matSuffix class="fontBold">Rs</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Cost</mat-label>
+          <input matInput placeholder="Enter Cost" formControlName="cost" maxlength="6" class="fontBold"
+            (keypress)="numberOnlyWithDot($event)">
+          <span matSuffix class="fontBold">Rs</span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label class="fontBold">Capacity</mat-label>
+          <input matInput placeholder="Enter Capacity" formControlName="capacity" maxlength="6" class="fontBold"
+            type="number">
+          <span matSuffix class="fontBold">Liters</span>
+        </mat-form-field>
+
+      </div>
+    </form>
   </div>
 </div>
 <mat-dialog-actions>

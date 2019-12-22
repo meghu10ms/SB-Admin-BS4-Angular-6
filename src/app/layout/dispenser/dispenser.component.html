@@ -13,4 +13,48 @@
     </button>
   </mat-toolbar>
 
+  <div class="row">
+    <div class="col-sm-4" *ngFor="let val of DispenserCollection">
+      <div class="card text-white bg-info mb-2">
+        <div class="card-header">
+          <div class="row">
+            <div> {{val.name}}({{val.code}})</div>
+            <span class="space"></span>
+            <mat-chip-list>
+              <mat-chip color="{{val.isActive?'primary':'warn'}}" selected>{{val.isActive?"Active":"InActive"}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis" matTooltip="{{val.description}}">
+            {{val.description}}
+          </p>
+          <div class="row">
+            <div class="col-sm-6 jtext-small">
+              Price : {{val.price}} Rs
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Capacity : {{val.capacity}} liters
+            </div>
+            <div class="col-sm-6 jtext-small">
+              Cost : {{val.cost}} Rs
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <mat-icon mat-button color="primary" (click)="editDispenser(val)" class="col text-center curserAction">
+            edit
+          </mat-icon>
+          <mat-icon mat-button color="primary" (click)="deleteDispenser(val)" class="col text-center curserAction">
+            delete
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

@@ -26,6 +26,13 @@
             <mat-icon matSuffix>person_pin</mat-icon>
           </mat-form-field>
 
+          <mat-form-field appearance="outline">
+            <mat-label class="fontBold">Limit</mat-label>
+            <input matInput placeholder="Enter limit" formControlName="limit" maxlength="5"
+            type="number" class="fontBold">
+            <span matSuffix class="fontBold">Peoples</span>
+          </mat-form-field>
+
         </div>
         <div class="col-sm-4">
 
@@ -90,7 +97,7 @@
 <mat-dialog-actions>
   <div class="navbar-nav ml-auto">
     <span>
-      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createAds()">
+      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createOffer()">
         Save</button> &nbsp; &nbsp;
       <button class="btn btn-success" type="submit" matTooltip="Save" (click)="CancelPage()">
         Cancel</button> &nbsp; &nbsp;

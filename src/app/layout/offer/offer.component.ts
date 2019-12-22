@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonServiceService } from '../../common-service.service';
+import { DatePipe } from '@angular/common';
 export interface DialogData {
   data1: any;
   ind: any;
@@ -62,6 +63,7 @@ export class OfferComponent implements OnInit {
         "description": val[i].offerDescription ? val[i].offerDescription : "",
         "couponCode": val[i].couponCode ? val[i].couponCode : "",
         "type": val[i].offerType ? val[i].offerType : "",
+        "limit": val[i].limit ? val[i].limit : "",
         "fromDate": val[i].validFrom ? new Date(val[i].validFrom).toDateString() : "",
         "validDuration": val[i].validDuration ? val[i].validDuration : "",
         "percentage": val[i].percentage ? val[i].percentage : "",
@@ -97,8 +99,7 @@ export class OfferComponent implements OnInit {
 
   newOffer() {
     const dialogRef = this.dialog.open(ViewOffer, {
-      width: '95%',
-      height: '70%',
+
       data: { ind: "create", data1: "", data: this.customerCollection }
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -109,8 +110,7 @@ export class OfferComponent implements OnInit {
 
   editOffers(val) {
     const dialogRef = this.dialog.open(ViewOffer, {
-      width: '95%',
-      height: '70%',
+
       data: { ind: "edit", data1: val, data: this.customerCollection }
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -149,7 +149,7 @@ export class ViewOffer implements OnInit {
     public dialogRef: MatDialogRef<ViewOffer>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder, private snackBar: MatSnackBar,
-    private cds2: CommonServiceService) { }
+    private cds2: CommonServiceService, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.customersList = this.dialogRef.componentInstance.data.data;
@@ -169,6 +169,7 @@ export class ViewOffer implements OnInit {
       couponCode: ['', Validators.required],
       percentage: ['', Validators.required],
       type: ['', Validators.required],
+      limit: ['', Validators.required],
       amount: ['', Validators.required],
       customer: [''],
       validDuration: ['', Validators.required],
@@ -181,7 +182,7 @@ export class ViewOffer implements OnInit {
     this.dialogRef.close({ action: "no" });
   }
 
-  createAds() {
+  createOffer() {
     if (this.newUserForm.valid) {
       var filledData = this.newUserForm.value;
       var createData = {
@@ -192,7 +193,8 @@ export class ViewOffer implements OnInit {
         "amount": filledData.amount,
         "validDuration": filledData.validDuration,
         "offerType": filledData.type,
-        "validFrom": filledData.fromDate,
+        "limit": filledData.limit,
+        "validFrom": filledData.fromDate,//this.datePipe.transform(filledData.fromDate, "yyyy-MM-dd"),
         "customers": filledData.customer ? filledData.customer : []
       };
       if (this.dialogRef.componentInstance.data.ind == 'create') {
@@ -242,6 +244,7 @@ export class ViewOffer implements OnInit {
       couponCode: val.couponCode,
       percentage: val.percentage,
       type: val.type,
+      limit: val.limit,
       offer: val.offer,
       amount: val.amount,
       customer: val.customers,

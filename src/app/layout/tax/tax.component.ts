@@ -172,9 +172,16 @@ export class AddTax implements OnInit {
     }
   }
 
-  numberOnly(event): boolean {
+  numberOnlyWithDot(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    var value = event.currentTarget.value;
+    if (charCode == 46) {
+      let dupliDot = value.indexOf(".");
+      if (dupliDot == -1 && value.length !== 0)
+        return true;
+      else
+        return false;
+    } else if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
     } else
       return true;

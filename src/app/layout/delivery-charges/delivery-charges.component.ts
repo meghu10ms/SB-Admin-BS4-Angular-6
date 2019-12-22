@@ -113,7 +113,7 @@ export class DeliveryCharge implements OnInit {
     this.createForm();
     if (this.dialogRef.componentInstance.data.ind == 'edit') {
       this.bindDisplayValues(data);
-    } 
+    }
   }
   createForm() {
     this.newUserForm = this.fb.group({
@@ -180,9 +180,14 @@ export class DeliveryCharge implements OnInit {
   }
   numberOnlyWithDot(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode == 46)
-      return true;
-    else if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    var value = event.currentTarget.value;
+    if (charCode == 46) {
+      let dupliDot = value.indexOf(".");
+      if (dupliDot == -1 && value.length !== 0)
+        return true;
+      else
+        return false;
+    } else if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
     } else
       return true;

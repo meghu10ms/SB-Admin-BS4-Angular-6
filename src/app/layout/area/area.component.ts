@@ -243,6 +243,44 @@ export class AddArea implements OnInit {
     }
   }
 
+  codeValidation(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    var value = event.currentTarget.value;
+    var valLength = value.length;
+
+    if (valLength < 3) {
+      if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123)) {
+        return true;
+      } else
+        return false;
+    } else {
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+      } else
+        return true;
+    }
+  }
+
+  upperCaseValue(event) {
+    event.target.value = event.target.value.toUpperCase();
+  }
+
+  numberOnlyWithDot(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    var value = event.currentTarget.value;
+    if (charCode == 46) {
+      let dupliDot = value.indexOf(".");
+      if (dupliDot == -1 && value.length !== 0)
+        return true;
+      else
+        return false;
+    } else if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    } else
+      return true;
+  }
+
+
   bindDisplayValues(val) {
     this.newUserForm.patchValue({
       code: val.code,

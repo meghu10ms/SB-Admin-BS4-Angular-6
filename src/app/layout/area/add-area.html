@@ -7,7 +7,8 @@
 
         <mat-form-field appearance="outline">
           <mat-label style="font-weight: bold">Area Code</mat-label>
-          <input matInput placeholder=" Enter Area Code" formControlName="code" maxlength="7" style="font-weight: bold">
+          <input matInput placeholder=" Enter Area Code" formControlName="code" maxlength="7" style="font-weight: bold"
+            (keypress)="codeValidation($event)" (keyup)="upperCaseValue($event)">
           <mat-icon matSuffix>my_location</mat-icon>
           <mat-hint>Ex : BNG0001, Must Starts With BNG</mat-hint>
         </mat-form-field>
@@ -21,13 +22,15 @@
 
         <mat-form-field appearance="outline">
           <mat-label style="font-weight: bold">Langitude</mat-label>
-          <input matInput placeholder="Enter Langitude" formControlName="lt" maxlength="10" style="font-weight: bold">
+          <input matInput placeholder="Enter Langitude" formControlName="lt" maxlength="10" style="font-weight: bold"
+            (keypress)="numberOnlyWithDot($event)">
           <mat-icon matSuffix>layers</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label style="font-weight: bold">Latitude</mat-label>
-          <input matInput placeholder="Enter Latitude" formControlName="lg" maxlength="20" style="font-weight: bold">
+          <input matInput placeholder="Enter Latitude" formControlName="lg" maxlength="20" style="font-weight: bold"
+            (keypress)="numberOnlyWithDot($event)">
           <mat-icon matSuffix>layers</mat-icon>
         </mat-form-field>
 

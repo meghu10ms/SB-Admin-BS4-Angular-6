@@ -72,13 +72,17 @@
             <th class="columnWidth" mat-header-cell *matHeaderCellDef> ACTION </th>
             <td class="columnWidth" mat-cell *matCellDef="let element">
 
-              <mat-icon color="primary" aria-hidden="false" aria-label="edit" (click)="edit(element)">edit
+              <mat-icon class="curserAction" color="primary" aria-hidden="false" aria-label="edit"
+                (click)="edit(element)">edit
               </mat-icon>
-              <mat-icon color="warn" aria-hidden="false" aria-label="delete icon" (click)="remove(element)">delete
+              <mat-icon class="curserAction" color="warn" aria-hidden="false" aria-label="delete icon"
+                (click)="remove(element)">delete
               </mat-icon>
-              <mat-icon color="primary" aria-hidden="false" aria-label="display" (click)="display(element)">
+              <mat-icon class="curserAction" color="primary" aria-hidden="false" aria-label="display"
+                (click)="display(element)">
                 keyboard_arrow_right</mat-icon>
-              <mat-icon color="primary" aria-hidden="false" aria-label="Product" (click)="product(element)">
+              <mat-icon color="primary" class="curserAction" aria-hidden="false" aria-label="Product"
+                (click)="product(element)">
                 local_grocery_store</mat-icon>
 
             </td>
