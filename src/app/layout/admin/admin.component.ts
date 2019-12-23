@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonServiceService } from '../../common-service.service';
+import { ConfirmationDialogService } from '../components/confirmation-dialog/confirmation-dialog.service';
 
 export interface DialogData {
   data1: any;
@@ -29,7 +30,8 @@ export class AdminComponent implements OnInit {
   public comments = [];
   constructor(public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private cds: CommonServiceService) { }
+    private cds: CommonServiceService,
+    private cnfr: ConfirmationDialogService) { }
 
   ngOnInit() {
     if (this.cds.tokenLogin === undefined) {
@@ -137,16 +139,25 @@ export class AdminComponent implements OnInit {
   }
 
   remove(val) {
-    this.cds.deleteAreaAdmin(this.cds.tokenLogin, val.adminId).subscribe(response => {
-      this.snackBar.open(response["message"], "", {
-        duration: 2000,
+    this.cnfr.confirm('Please confirm..', 'Do you really want to ... ?')
+      .then((confirmed) => {
+        console.log('User confirmed:', confirmed);
+        if (confirmed) {
+          this.cds.deleteAreaAdmin(this.cds.tokenLogin, val.adminId).subscribe(response => {
+            this.snackBar.open(response["message"], "", {
+              duration: 2000,
+            });
+            this.getAdminDetails();
+          }, error => {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
+              duration: 2000,
+            });
+          });
+        }
+      })
+      .catch(() => {
+        console.log('User dismissed the')
       });
-      this.getAdminDetails();
-    }, error => {
-      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-        duration: 2000,
-      });
-    });
   }
 }
 
@@ -281,14 +292,14 @@ export class AddUser implements OnInit {
       medi.push(this.documentId);
       var filledData = this.newUserForm.value;
       var aId = [];
-      
-      this.cds2.areaData.forEach(function(obj) {
-        for(let x = 0;x<filledData.region.length;x++){
-          if(obj.code === filledData.region[x]){
+
+      this.cds2.areaData.forEach(function (obj) {
+        for (let x = 0; x < filledData.region.length; x++) {
+          if (obj.code === filledData.region[x]) {
             aId.push(obj.id);
           }
-        }        
-    });
+        }
+      });
 
       if (this.dialogRef.componentInstance.data.ind == 'create') {
         var createData = {

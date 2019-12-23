@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonServiceService } from '../../common-service.service';
 import { DatePipe } from '@angular/common';
+import { ConfirmationDialogService } from '../components/confirmation-dialog/confirmation-dialog.service';
 export interface DialogData {
   data1: any;
   ind: any;
@@ -21,7 +22,8 @@ export class OfferComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private cds: CommonServiceService) { }
+    private cds: CommonServiceService,
+    private cnfr: ConfirmationDialogService) { }
   visible: any;
   OfferCollection: any[];
   customerCollection: any[];
@@ -120,16 +122,25 @@ export class OfferComponent implements OnInit {
   }
 
   deleteOffers(val) {
-    this.cds.deleteOffer(val.offerId, this.cds.tokenLogin).subscribe(response => {
-      this.snackBar.open((response ? response["message"] : ""), "", {
-        duration: 2000,
+    this.cnfr.confirm('Please confirm..', 'Do you really want to ... ?')
+      .then((confirmed) => {
+        console.log('User confirmed:', confirmed);
+        if (confirmed) {
+          this.cds.deleteOffer(val.offerId, this.cds.tokenLogin).subscribe(response => {
+            this.snackBar.open((response ? response["message"] : ""), "", {
+              duration: 2000,
+            });
+            this.nextProcess();
+          }, error => {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
+              duration: 2000,
+            });
+          });
+        }
+      })
+      .catch(() => {
+        console.log('User dismissed the')
       });
-      this.nextProcess();
-    }, error => {
-      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-        duration: 2000,
-      });
-    });
   }
 
 }

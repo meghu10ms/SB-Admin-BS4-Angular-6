@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonServiceService } from '../../common-service.service';
+import { ConfirmationDialogService } from '../components/confirmation-dialog/confirmation-dialog.service';
 export interface DialogData {
   data1: any;
   ind: any;
@@ -34,7 +35,8 @@ export class SupplierComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private cds: CommonServiceService) { }
+    private cds: CommonServiceService,
+    private cnfr: ConfirmationDialogService) { }
 
   ngOnInit() {
     if (this.cds.tokenLogin === undefined) {
@@ -212,17 +214,28 @@ export class SupplierComponent implements OnInit {
     });
   }
   remove(val) {
-    this.cds.deleteDelivaryPartner(val.deliveryPartnerObjId, this.cds.tokenLogin).subscribe(response => {
-      this.snackBar.open(response["message"], "", {
-        duration: 2000,
+    this.cnfr.confirm('Please confirm..', 'Do you really want to ... ?')
+      .then((confirmed) => {
+        console.log('User confirmed:', confirmed);
+        if (confirmed) {
+          this.cds.deleteDelivaryPartner(val.deliveryPartnerObjId, this.cds.tokenLogin).subscribe(response => {
+            this.snackBar.open(response["message"], "", {
+              duration: 2000,
+            });
+            this.getSupplierDetails();
+          }, error => {
+            this.snackBar.open(error.error.error.message, "", {
+              duration: 2000,
+            });
+          });
+        }
+      })
+      .catch(() => {
+        console.log('User dismissed the')
       });
-      this.getSupplierDetails();
-    }, error => {
-      this.snackBar.open(error.error.error.message, "", {
-        duration: 2000,
-      });
-    });
   }
+
+
   onIndidualVendor(event, value) {
     const dialogRefCalculation = this.dialog.open(PaymentCalaculation, {
       data: { data: value }

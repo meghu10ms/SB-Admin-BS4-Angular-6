@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonServiceService } from '../../common-service.service';
+import { ConfirmationDialogService } from '../components/confirmation-dialog/confirmation-dialog.service';
 export interface DialogData {
     data1: any;
     ind: any;
@@ -30,7 +31,8 @@ export class ChartsComponent implements OnInit {
     constructor(
         public dialog: MatDialog,
         private snackBar: MatSnackBar,
-        private cds: CommonServiceService) { }
+        private cds: CommonServiceService,
+        private cnfr: ConfirmationDialogService) { }
 
     ngOnInit() {
         if (this.cds.tokenLogin === undefined) {
@@ -49,16 +51,6 @@ export class ChartsComponent implements OnInit {
             this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
-            // this.cds.getAllAraeDetails(this.cds.tokenLogin).subscribe(response => {
-
-            //     this.cds.areaData = this.getAreaData(response["areas"]);
-
-            // }, error => {
-            //     this.visible = false;
-            //     this.snackBar.open(error.error.message, "", {
-            //         duration: 2000,
-            //     });
-            // })
         }, error => {
             this.visible = false;
             this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
@@ -169,20 +161,29 @@ export class ChartsComponent implements OnInit {
         });
     }
     remove(val) {
-        this.cds.deleteVendor(val.vendorObjId, this.cds.tokenLogin).subscribe(response => {
-            this.snackBar.open(response["message"], "", {
-                duration: 2000,
+        this.cnfr.confirm('Please confirm..', 'Do you really want to ... ?')
+            .then((confirmed) => {
+                console.log('User confirmed:', confirmed);
+                if (confirmed) {
+                    this.cds.deleteVendor(val.vendorObjId, this.cds.tokenLogin).subscribe(response => {
+                        this.snackBar.open(response["message"], "", {
+                            duration: 2000,
+                        });
+                        this.getVendorDetails();
+                    }, error => {
+                        this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
+                            duration: 2000,
+                        });
+                    });
+                }
+            })
+            .catch(() => {
+                console.log('User dismissed the')
             });
-            this.getVendorDetails();
-        }, error => {
-            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-                duration: 2000,
-            });
-        });
     }
     product(val) {
         const dialogRefProduct = this.dialog.open(ProductDetails, {
-           
+
             data: { data1: val }
         })
         dialogRefProduct.afterClosed().subscribe(result => {
@@ -593,7 +594,8 @@ export class ProductDetails implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
         private fb: FormBuilder,
         private snackBar: MatSnackBar,
-        private cds2: CommonServiceService) { }
+        private cds2: CommonServiceService,
+        private cnfr: ConfirmationDialogService) { }
 
     ngOnInit() {
         var selectedAdmin = this.cds2.currentAdminDetail;
@@ -755,37 +757,37 @@ export class ProductDetails implements OnInit {
         const charCode = (event.which) ? event.which : event.keyCode;
         var value = event.currentTarget.value;
         if (charCode == 46) {
-          let dupliDot = value.indexOf(".");
-          if (dupliDot == -1 && value.length !== 0)
-            return true;
-          else
-            return false;
+            let dupliDot = value.indexOf(".");
+            if (dupliDot == -1 && value.length !== 0)
+                return true;
+            else
+                return false;
         } else if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-          return false;
+            return false;
         } else
-          return true;
-      }
+            return true;
+    }
     codeValidation(event): boolean {
         const charCode = (event.which) ? event.which : event.keyCode;
         var value = event.currentTarget.value;
         var valLength = value.length;
-    
+
         if (valLength < 3) {
-          if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123)) {
-            return true;
-          } else
-            return false;
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123)) {
+                return true;
+            } else
+                return false;
         } else {
-          if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-          } else
-            return true;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            } else
+                return true;
         }
-      }
-    
-      upperCaseValue(event) {
+    }
+
+    upperCaseValue(event) {
         event.target.value = event.target.value.toUpperCase();
-      }
+    }
     preview(files) {
         if (files.length === 0)
             return;
@@ -837,16 +839,25 @@ export class ProductDetails implements OnInit {
         this.dialogRefProduct.close({ action: "no" });
     }
     deleteProduct(evt) {
-        this.visible1 = true;
-        this.cds2.deleteProduct(evt.productId, this.cds2.tokenLogin).subscribe(response => {
-            this.visible1 = false;
-            this.nextProcess();
-        }, error => {
-            this.visible1 = false;
-            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-                duration: 2000,
+        this.cnfr.confirm('Please confirm..', 'Do you really want to ... ?')
+            .then((confirmed) => {
+                console.log('User confirmed:', confirmed);
+                if (confirmed) {
+                    this.visible1 = true;
+                    this.cds2.deleteProduct(evt.productId, this.cds2.tokenLogin).subscribe(response => {
+                        this.visible1 = false;
+                        this.nextProcess();
+                    }, error => {
+                        this.visible1 = false;
+                        this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
+                            duration: 2000,
+                        });
+                    });
+                }
+            })
+            .catch(() => {
+                console.log('User dismissed the')
             });
-        });
     }
     editProduct(evt) {
         this.bindDisplayValuesEdit(evt);

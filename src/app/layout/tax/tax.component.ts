@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonServiceService } from '../../common-service.service';
+import { ConfirmationDialogService } from '../components/confirmation-dialog/confirmation-dialog.service';
 export interface DialogData {
   data1: any;
   ind: any;
@@ -21,7 +22,8 @@ export class TaxComponent implements OnInit {
   public TaxCollections: any[];
   constructor(public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private cds: CommonServiceService) { }
+    private cds: CommonServiceService,
+    private cnfr: ConfirmationDialogService) { }
 
   ngOnInit() {
     if (this.cds.tokenLogin === undefined) {
@@ -79,17 +81,28 @@ export class TaxComponent implements OnInit {
     });
   }
 
+
+
   deleteTax(val) {
-    this.cds.deleteTax(val.id, this.cds.tokenLogin).subscribe(response => {
-      this.snackBar.open((response ? response["message"] : ""), "", {
-        duration: 2000,
+    this.cnfr.confirm('Please confirm..', 'Do you really want to ... ?')
+      .then((confirmed) => {
+        console.log('User confirmed:', confirmed);
+        if (confirmed) {
+          this.cds.deleteTax(val.id, this.cds.tokenLogin).subscribe(response => {
+            this.snackBar.open((response ? response["message"] : ""), "", {
+              duration: 2000,
+            });
+            this.nextProcess();
+          }, error => {
+            this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
+              duration: 2000,
+            });
+          });
+        }
+      })
+      .catch(() => {
+        console.log('User dismissed the');
       });
-      this.nextProcess();
-    }, error => {
-      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-        duration: 2000,
-      });
-    });
   }
 }
 
