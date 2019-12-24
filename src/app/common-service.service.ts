@@ -20,7 +20,7 @@ export class CommonServiceService implements OnInit {
 
   getFilePath(id) {
     let path = "";
-    path = this.url + "/media" + id + "/download";
+    path = this.url + "media/" + id + "/download";
     return path;
   }
   //get Token
@@ -41,10 +41,14 @@ export class CommonServiceService implements OnInit {
     return this.http.post(this.url + "media/", body);
   }
 
-  //get media location
+  //get media 
   getMedia(token, mediaId) {
-
     return this.http.get(this.url + "media/" + mediaId, this.getTokenAccess(token));
+  }
+
+  //delete media 
+  deleteMedia(mediaId, token) {
+    return this.http.delete(this.url + "media/" + mediaId, this.getTokenAccess(token));
   }
 
   /*######################################### MEDIA DETAILS ENDS ##################################### */

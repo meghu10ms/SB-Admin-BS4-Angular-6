@@ -3,17 +3,21 @@
     <form class="form-inline" [formGroup]="newUserForm">
       <div class="col-sm-4">
         <div class="text-left">
-          <mat-slide-toggle color="Primary" formControlName="isActive" labelPosition="before" matTooltip="Active">
+          <mat-slide-toggle color="Primary" [checked]="this.isActive" (change)="toggeleActive($event)"
+            labelPosition="before" matTooltip="Active">
             Active
           </mat-slide-toggle>
           <hr />
-          <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar"
-            *ngIf="!imgProductUrl" height="150" width="150">
-          <img [src]="imgProductUrl" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgProductUrl">
-          <h6 *ngIf="!imgProductUrl">Upload Ads Photo...</h6>
+
+          <div class="img-wrap" *ngFor='let url of imgCollection'>
+            <a (click)="deleteImg(url)">
+              <span class="close">&times;</span>
+            </a>
+            <img [src]="url.path" class="avatar img-circle img-thumbnail img" alt="name">
+          </div>
           <input type="file" #file class="text-left left-block file-upload" accept='image/*'
-            (change)="preview(file.files)" style="width:95%">
-          <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
+            (change)="onSelectFile($event)" multiple style="width:95%">
+
           <hr />
         </div>
       </div>
@@ -33,8 +37,8 @@
 
         <mat-form-field appearance="outline">
           <mat-label class="fontBold">Enter Code</mat-label>
-          <input matInput placeholder="Enter Code" formControlName="code" maxlength="8"
-           class="fontBold" (keypress)="codeValidation($event)" (keyup)="upperCaseValue($event)">
+          <input matInput placeholder="Enter Code" formControlName="code" maxlength="8" class="fontBold"
+            (keypress)="codeValidation($event)" (keyup)="upperCaseValue($event)">
           <mat-icon matSuffix>person_pin</mat-icon>
         </mat-form-field>
 
@@ -44,7 +48,7 @@
         <mat-form-field appearance="outline">
           <mat-label class="fontBold">Price</mat-label>
           <input matInput placeholder="Enter Price" formControlName="price" maxlength="6" class="fontBold"
-          (keypress)="numberOnlyWithDot($event)">
+            (keypress)="numberOnlyWithDot($event)">
           <span matSuffix class="fontBold">Rs</span>
         </mat-form-field>
 

@@ -9,7 +9,7 @@
   <mat-toolbar> Dispenser Charge Request
     <span class="space"> </span>
     <button mat-icon-button color="primary" aria-label="Add New Dispenser" matTooltip="Add New Dispenser">
-      <mat-icon  (click)="newDispenser()">add_box</mat-icon>
+      <mat-icon (click)="newDispenser()">add_box</mat-icon>
     </button>
   </mat-toolbar>
 
@@ -25,6 +25,14 @@
               </mat-chip>
             </mat-chip-list>
           </div>
+        </div>
+        <div>
+          <ngb-carousel>
+            <ng-template ngbSlide *ngFor="let url of val.medias">
+              <img class="avatar img-circle img-thumbnail imgCarosel" [src]="url.path" alt="Random first slide">
+
+            </ng-template>
+          </ngb-carousel>
         </div>
         <div class="card-body">
           <p style="width: 100%;

@@ -179,12 +179,12 @@
         </div>
     </div>
 </div>
-<mat-dialog-actions *ngIf=" this.view">
+<mat-dialog-actions >
     <div class="navbar-nav ml-auto">
         <span>
-            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createProduct()">
+            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createProduct()" *ngIf=" this.view">
                 Save</button> &nbsp; &nbsp;
-            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="CancelProduct()">
+            <button class="btn btn-success" type="submit" matTooltip="Save" (click)="CancelProduct($event)">
                 Cancel</button> &nbsp; &nbsp;
         </span>
     </div>

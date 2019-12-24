@@ -18,6 +18,7 @@ export interface DialogData {
 export class DeliveryCommissionComponent implements OnInit {
   public visible: any;
   public DeliveryCommission: any[];
+  ComNoCan = [];
   constructor(public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private cds: CommonServiceService) { }
@@ -30,7 +31,7 @@ export class DeliveryCommissionComponent implements OnInit {
   }
 
   nextProcess() {
-
+    this.ComNoCan.push("1"); 
 
   }
 

@@ -5,6 +5,7 @@ import { ChartsModule as Ng2Charts } from 'ng2-charts';
 import { DispenserRoutingModule } from './dispenser-routing.module';
 import { DispenserComponent } from './dispenser.component';
 import { PageHeaderModule } from '../../shared';
+import { NgbCarouselModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
@@ -17,7 +18,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddDispenser } from './dispenser.component'
 
 @NgModule({
-    imports: [CommonModule, Ng2Charts, DispenserRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
+    imports: [CommonModule,NgbCarouselModule,NgbAlertModule, Ng2Charts, DispenserRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
         FormsModule, MatSnackBarModule, MatProgressSpinnerModule, MatSelectModule, MatRippleModule,

@@ -9,11 +9,12 @@ import {
     MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
     MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
     MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
-    MatNativeDateModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,
-    MatSlideToggleModule,MatCardModule,MatGridListModule,MatRippleModule,MatChipsModule
+    MatNativeDateModule, MatSnackBarModule, MatProgressSpinnerModule, MatSelectModule,
+    MatSlideToggleModule, MatCardModule, MatGridListModule, MatRippleModule, MatChipsModule,
+    MatStepperModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddUser } from './charts.component';
 import { ProductDetails } from './charts.component';
 import { PaymentCalaculation } from './charts.component';
@@ -22,9 +23,9 @@ import { PaymentCalaculation } from './charts.component';
     imports: [CommonModule, Ng2Charts, ChartsRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
         MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
         MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
-        FormsModule, MatSnackBarModule,MatProgressSpinnerModule,MatSelectModule,MatRippleModule,
-        MatSlideToggleModule,MatCardModule,FlexLayoutModule,MatGridListModule,MatChipsModule],
-    declarations: [ChartsComponent, AddUser,ProductDetails,PaymentCalaculation],
-    entryComponents: [AddUser,ProductDetails,PaymentCalaculation]
+        FormsModule, MatSnackBarModule, MatProgressSpinnerModule, MatSelectModule, MatRippleModule,
+        MatSlideToggleModule, MatCardModule, FlexLayoutModule, MatGridListModule, MatChipsModule, MatStepperModule],
+    declarations: [ChartsComponent, AddUser, ProductDetails, PaymentCalaculation],
+    entryComponents: [AddUser, ProductDetails, PaymentCalaculation]
 })
 export class ChartsModule { }
