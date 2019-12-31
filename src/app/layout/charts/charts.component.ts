@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatStepper } from '@angular/material/stepper';
 import { CommonServiceService } from '../../common-service.service';
 import { ConfirmationDialogService } from '../components/confirmation-dialog/confirmation-dialog.service';
 export interface DialogData {
@@ -23,7 +24,6 @@ export class ChartsComponent implements OnInit {
     visible: any;
     dataSource: any;
     displayedColumns: string[];
-
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -47,7 +47,7 @@ export class ChartsComponent implements OnInit {
             this.visible = false;
             var data = this.getTableData(response["vendors"]);
             const ELEMENT_DATA = data;
-            this.displayedColumns = ['firstname', 'companyname', 'uid', 'ph', 'region', 'actions'];
+            this.displayedColumns = ['firstname', 'companyname', 'uid', 'ph', 'regionName', 'actions'];
             this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
@@ -63,8 +63,14 @@ export class ChartsComponent implements OnInit {
         var formatJson = {};
         var finalData = [];
         for (let i = 0; i < val.length; i++) {
-            if (val[i].areaId === undefined) {
-                val[i].areaId = { "areaCode": "", "formattedAddress": "", "_id": "" }
+            let medi = [], mediFile = val[i].medias, mediObj = {};
+            for (let k = 0; k < mediFile.length; k++) {
+                mediObj = {
+                    "_id": mediFile[k]._id,
+                    "path": this.cds.getFilePath(mediFile[k]._id)
+                }
+                medi.push(mediObj);
+                mediObj = {};
             }
             formatJson = {
                 "title": val[i].ownerName ? val[i].ownerName.title : "",
@@ -80,7 +86,7 @@ export class ChartsComponent implements OnInit {
                 "registrationNumber": val[i].registrationNumber ? val[i].registrationNumber : "",
                 "registrationYear": val[i].registrationYear ? val[i].registrationYear : "",
                 "vendorId": val[i].vendorId ? val[i].vendorId : "",
-                "areaId": val[i].areaId ? val[i].areaId : "",
+
                 "vendorObjId": val[i]._id ? val[i]._id : "",
                 "city": val[i].ownerAddress ? val[i].ownerAddress.city : "",
                 "country": val[i].ownerAddress ? val[i].ownerAddress.country : "",
@@ -92,7 +98,8 @@ export class ChartsComponent implements OnInit {
 
                 "longitude": val[i].areaId ? val[i].areaId.location["coordinates"][0] : "",
                 "latitude": val[i].areaId ? val[i].areaId.location["coordinates"][1] : "",
-                "region": val[i].areaId ? val[i].areaId.areaCode : "",
+                "region": val[i].areaId ? val[i].areaId._id : "",
+                "regionName": val[i].areaId ? val[i].areaId.areaCode : "",
 
 
                 "accountNumber": val[i].bankDetails ? val[i].bankDetails.accountNumber : "",
@@ -102,26 +109,10 @@ export class ChartsComponent implements OnInit {
                 "holderName": val[i].bankDetails ? val[i].bankDetails.holderName : "",
                 "ifscCode": val[i].bankDetails ? val[i].bankDetails.ifscCode : "",
                 "taxNumber": val[i].bankDetails ? val[i].bankDetails.taxNumber : "",
-                "isRetailer": val[i].isRetailer ? val[i].isRetailer : "",
-                "activeAdmin": val[i].isActive ? true : false,
-                "isVendor": val[i].isVendor ? val[i].isVendor : "",
-                "media": val[i].medias ? val[i].medias : []
-            }
-            finalData.push(formatJson);
-            formatJson = {};
-        }
-        return finalData;
-    }
-    getAreaData(val) {
-        var formatJson = {};
-        var finalData = [];
-        for (let i = 0; i < val.length; i++) {
-            formatJson = {
-                "code": val[i].areaCode ? val[i].areaCode : "",
-                "area": val[i].formattedAddress ? val[i].formattedAddress : "",
-                "lt": val[i].latitude ? val[i].latitude : "",
-                "lg": val[i].longitude ? val[i].longitude : "",
-                "id": val[i]._id ? val[i]._id : ""
+                "isRetailer": val[i].isRetailer ? true : false,
+                "isActive": val[i].isActive ? true : false,
+                "isVendor": val[i].isVendor ? true : false,
+                "media": medi ? medi : []
             }
             finalData.push(formatJson);
             formatJson = {};
@@ -183,7 +174,6 @@ export class ChartsComponent implements OnInit {
     }
     product(val) {
         const dialogRefProduct = this.dialog.open(ProductDetails, {
-
             data: { data1: val }
         })
         dialogRefProduct.afterClosed().subscribe(result => {
@@ -204,10 +194,9 @@ export interface PeriodicElement {
     companyname: string;
     email: string;
     ph: number;
-    region: string;
+    regionName: string;
     address: string;
     city: string;
-    dob: string;
     uid: string;
 }
 
@@ -218,9 +207,7 @@ export interface PeriodicElement {
 export class AddUser implements OnInit {
     newUserForm: FormGroup;
     val: any;
-    pftelpat = "^[6789]{1}[0-9]{9}$";
     filevalid: any;
-    filevalid1: any;
     displayInd: any;
 
     public imagePath;
@@ -229,10 +216,14 @@ export class AddUser implements OnInit {
     region: any[];
     titleCollection: any[];
     profilePicId: any;
-    Retailer: boolean;
-    Vendor: boolean;
-    activeVendor: boolean;
+    // Retailer: boolean;
+    // Vendor: boolean;
+    // activeVendor: boolean;
     visible: any;
+    firstFormGroup: FormGroup;
+    secondFormGroup: FormGroup;
+    thirdFormGroup: FormGroup;
+    fourthFormGroup: FormGroup;
 
     constructor(
         public dialogRef: MatDialogRef<AddUser>,
@@ -242,38 +233,30 @@ export class AddUser implements OnInit {
         private cds2: CommonServiceService) { }
 
     ngOnInit() {
-        this.Retailer = false;
-        this.Vendor = true;
-        this.activeVendor = true;
-        this.profilePicId = "";
 
+        // this.Retailer = false;
+        // this.Vendor = true;
+        // this.activeVendor = true;
+        this.profilePicId = "";
+        this.imgURL = "../assets/images/avtar.png";
         this.region = this.cds2.areaData;
         var data = this.dialogRef.componentInstance.data.data1;
         this.titleCollection = [{ "title": "Mr" }, { "title": "Mrs" }, { "title": "Miss" }];
         this.nextProcess();
-        if (this.dialogRef.componentInstance.data.ind !== 'create') {
-            this.visible = true;
-            this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
-                this.visible = false;
-                this.imgURL = response["path"] ? response["path"] : "";
-                this.profilePicId = response["_id"] ? response["_id"] : "";
-            }, error => {
-                this.visible = false;
-                this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-                    duration: 2000,
-                });
-            });
-        }
+        // if (this.dialogRef.componentInstance.data.ind !== 'create') {
+
+        // }
     }
     nextProcess() {
         this.displayInd = true;
         this.createForm();
         var data = this.dialogRef.componentInstance.data.data1;
-        //this.superAdmin = data.superAdmin ? data.superAdmin : false;
-        //this.activeAdmin = data.activeAdmin ? data.activeAdmin : true;
         if (this.dialogRef.componentInstance.data.ind == 'display') {
             this.displayInd = false;
-            this.newUserForm.disable();
+            this.firstFormGroup.disable();
+            this.secondFormGroup.disable();
+            this.thirdFormGroup.disable();
+            this.fourthFormGroup.disable();
 
             this.bindDisplayValues(data);
         } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
@@ -281,13 +264,29 @@ export class AddUser implements OnInit {
         } else if (this.dialogRef.componentInstance.data.ind == 'create') {
         }
     }
+    goForward(stepper: MatStepper) {
+        if (this.profilePicId !== "")
+            this.filevalid = false;
+        else
+            this.filevalid = true;
+        if (this.firstFormGroup.valid && !this.filevalid)
+            stepper.next();
+        else
+            return;
+    }
+
     createForm() {
-        this.newUserForm = this.fb.group({
+        this.firstFormGroup = this.fb.group({
             title: ['', Validators.required],
             firstname: ['', Validators.required],
             lastname: ['', Validators.required],
             phone: ['+91', Validators.required],
             email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
+
+            isVendor: [true],
+            isActive: [true]
+        });
+        this.secondFormGroup = this.fb.group({
             flatNumber: ['', Validators.required],
             street: ['', Validators.required],
             landMark: ['', Validators.required],
@@ -296,6 +295,8 @@ export class AddUser implements OnInit {
             country: ['India', Validators.required],
             postalCode: ['', Validators.required],
             region: ['', Validators.required],
+        });
+        this.thirdFormGroup = this.fb.group({
             companyName: ['', Validators.required],
             cin: ['', Validators.required],
             registrationNumber: ['', Validators.required],
@@ -303,7 +304,8 @@ export class AddUser implements OnInit {
             registratedAuthority: ['', Validators.required],
             longitude: ['', Validators.required],
             latitude: ['', Validators.required],
-
+        });
+        this.fourthFormGroup = this.fb.group({
             accountNumber: ['', Validators.required],
             accountType: ['', Validators.required],
             bankName: ['', Validators.required],
@@ -311,73 +313,62 @@ export class AddUser implements OnInit {
             holderName: ['', Validators.required],
             ifscCode: ['', Validators.required],
             taxNumber: ['', Validators.required],
-            areaId: [''],
+
             vendorId: [''],
             vendorObjId: ['']
-        })
+        });
     }
 
-    clearScreen(oEvent) {
-        this.newUserForm.reset();
-        this.filevalid = false;
-        this.filevalid1 = false;
-        this.imgURL = "";
-        this.profilePicId = "";
-    }
     createNewUser(oEvent) {
-        if (this.newUserForm.valid && this.profilePicId != "") {
+        if (this.profilePicId != "" && this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid && this.fourthFormGroup.valid) {
             var medi = [];
             medi.push(this.profilePicId);
-            var filledData = this.newUserForm.value;
-            var aId = "";
-            for (var i = 0; i < this.cds2.areaData.length; i++) {
-                if (filledData.region == this.cds2.areaData[i].code) {
-                    aId = this.cds2.areaData[i].id;
-                }
-            }
+            var filledData1 = this.firstFormGroup.value;
+            var filledData2 = this.secondFormGroup.value;
+            var filledData3 = this.thirdFormGroup.value;
+            var filledData4 = this.fourthFormGroup.value;
 
             if (this.dialogRef.componentInstance.data.ind == 'create') {
                 var createData = {
-                    "companyName": filledData.companyName,
-                    "cin": filledData.cin,
-                    "registrationNumber": filledData.registrationNumber,
-                    "registrationYear": filledData.registrationYear,
-                    "registratedAuthority": filledData.registratedAuthority,
                     "ownerName": {
-                        "title": filledData.title,
-                        "firstName": filledData.firstname,
-                        "lastName": filledData.lastname
+                        "title": filledData1.title,
+                        "firstName": filledData1.firstname,
+                        "lastName": filledData1.lastname
                     },
+                    "phoneNumber": filledData1.phone,
+                    "email": filledData1.email,
+                    //"password": filledData1.email,
+                    "isActive": filledData1.isActive,
+                    "isVendor": filledData1.isVendor,
                     "ownerAddress": {
-                        "flatNumber": filledData.flatNumber,
-                        "street": filledData.street,
-                        "landMark": filledData.landMark,
-                        "city": filledData.city,
-                        "state": filledData.state,
-                        "country": filledData.country,
-                        "postalCode": filledData.postalCode,
+                        "flatNumber": filledData2.flatNumber,
+                        "street": filledData2.street,
+                        "landMark": filledData2.landMark,
+                        "city": filledData2.city,
+                        "state": filledData2.state,
+                        "country": filledData2.country,
+                        "postalCode": filledData2.postalCode,
                         "formattedAddress": "all the Above",
                     },
-                    "phoneNumber": filledData.phone,
-                    "email": filledData.email,
-                    "password": filledData.email,
-                    "areaId": aId,
+                    "areaId": filledData2.region,
                     "formattedAddress": "all the Above",
                     "medias": medi,
-                    "longitude": filledData.longitude,
-                    "latitude": filledData.latitude,
+                    "companyName": filledData3.companyName,
+                    "cin": filledData3.cin,
+                    "registrationNumber": filledData3.registrationNumber,
+                    "registrationYear": filledData3.registrationYear,
+                    "registratedAuthority": filledData3.registratedAuthority,
+                    "longitude": filledData3.longitude,
+                    "latitude": filledData3.latitude,
                     "bankDetails": {
-                        "accountNumber": filledData.accountNumber,
-                        "accountType": filledData.accountType,
-                        "holderName": filledData.holderName,
-                        "ifscCode": filledData.ifscCode,
-                        "bankName": filledData.bankName,
-                        "branchName": filledData.branchName,
-                        "taxNumber": filledData.taxNumber
+                        "accountNumber": filledData4.accountNumber,
+                        "accountType": filledData4.accountType,
+                        "holderName": filledData4.holderName,
+                        "ifscCode": filledData4.ifscCode,
+                        "bankName": filledData4.bankName,
+                        "branchName": filledData4.branchName,
+                        "taxNumber": filledData4.taxNumber
                     },
-                    "isActive": this.activeVendor,
-                    "isVendor": this.Vendor,
-                    "isRetailer": this.Retailer,
                 };
                 this.visible = true;
                 this.cds2.postVendor(this.cds2.tokenLogin, createData).subscribe(response => {
@@ -394,49 +385,49 @@ export class AddUser implements OnInit {
                 });
             } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
                 var createData1 = {
-                    "companyName": filledData.companyName,
-                    "cin": filledData.cin,
-                    "registrationNumber": filledData.registrationNumber,
-                    "registrationYear": filledData.registrationYear,
-                    "registratedAuthority": filledData.registratedAuthority,
                     "ownerName": {
-                        "title": filledData.title,
-                        "firstName": filledData.firstname,
-                        "lastName": filledData.lastname
+                        "title": filledData1.title,
+                        "firstName": filledData1.firstname,
+                        "lastName": filledData1.lastname
                     },
+                    "phoneNumber": filledData1.phone,
+                    "email": filledData1.email,
+                    //"password": filledData1.email,
+                    "isActive": filledData1.isActive,
+                    "isVendor": filledData1.isVendor,
+                    "isDistributor": filledData1.isRetailer,
                     "ownerAddress": {
-                        "flatNumber": filledData.flatNumber,
-                        "street": filledData.street,
-                        "landMark": filledData.landMark,
-                        "city": filledData.city,
-                        "state": filledData.state,
-                        "country": filledData.country,
-                        "postalCode": filledData.postalCode,
+                        "flatNumber": filledData2.flatNumber,
+                        "street": filledData2.street,
+                        "landMark": filledData2.landMark,
+                        "city": filledData2.city,
+                        "state": filledData2.state,
+                        "country": filledData2.country,
+                        "postalCode": filledData2.postalCode,
                         "formattedAddress": "all the Above",
                     },
-                    "phoneNumber": filledData.phone,
-                    "email": filledData.email,
-                    //"password": filledData.email,
-                    "areaId": aId,
+                    "areaId": filledData2.region,
                     "formattedAddress": "all the Above",
                     "medias": medi,
-                    "longitude": filledData.longitude,
-                    "latitude": filledData.latitude,
+                    "companyName": filledData3.companyName,
+                    "cin": filledData3.cin,
+                    "registrationNumber": filledData3.registrationNumber,
+                    "registrationYear": filledData3.registrationYear,
+                    "registratedAuthority": filledData3.registratedAuthority,
+                    "longitude": filledData3.longitude,
+                    "latitude": filledData3.latitude,
                     "bankDetails": {
-                        "accountNumber": filledData.accountNumber,
-                        "accountType": filledData.accountType,
-                        "holderName": filledData.holderName,
-                        "ifscCode": filledData.ifscCode,
-                        "bankName": filledData.bankName,
-                        "branchName": filledData.branchName,
-                        "taxNumber": filledData.taxNumber
+                        "accountNumber": filledData4.accountNumber,
+                        "accountType": filledData4.accountType,
+                        "holderName": filledData4.holderName,
+                        "ifscCode": filledData4.ifscCode,
+                        "bankName": filledData4.bankName,
+                        "branchName": filledData4.branchName,
+                        "taxNumber": filledData4.taxNumber
                     },
-                    "isActive": this.activeVendor,
-                    "isVendor": this.Vendor,
-                    "isRetailer": this.Retailer,
                 };
                 this.visible = true;
-                this.cds2.updateVendor(filledData.vendorObjId, this.cds2.tokenLogin, createData1).subscribe(response => {
+                this.cds2.updateVendor(filledData4.vendorObjId, this.cds2.tokenLogin, createData1).subscribe(response => {
                     this.visible = false;
                     this.snackBar.open(response["message"], "", {
                         duration: 2000,
@@ -449,24 +440,15 @@ export class AddUser implements OnInit {
                     });
                 });
             }
-
         } else {
-            for (let name in this.newUserForm.controls) {
-                if (this.newUserForm.controls[name].value == '' || this.newUserForm.controls[name].value == null) {
-                    this.newUserForm.controls[name].markAsTouched();
-                    this.snackBar.open("Please Enter All values", "", {
-                        duration: 2000,
-                    });
-                }
-                else
-                    this.newUserForm.controls[name].setErrors(null);
-            }
             if (this.profilePicId == "") {
                 this.filevalid = true;
+                this.snackBar.open("Plese Choose Profile Photo", "", {
+                    duration: 2000,
+                });
             } else {
                 this.filevalid = false;
             }
-
         }
     }
     numberOnly(event): boolean {
@@ -513,25 +495,24 @@ export class AddUser implements OnInit {
             });
         });
     }
-    toggeleVendor(evt) {
-        this.Vendor = evt.checked;
-    }
-    toggeleActive(evt) {
-        this.activeVendor = evt.checked;
-    }
-    toggeleRetailer(evt) {
-        this.Retailer = evt.checked;
-    }
-    CloseUser() {
-        this.dialogRef.close({ action: "" });
-    }
+
+    // CloseUser() {
+    //     this.dialogRef.close({ action: "" });
+    // }
     bindDisplayValues(val) {
-        this.newUserForm.patchValue({
+        this.imgURL = val.media[0].path;
+        this.profilePicId = val.media[0]._id;
+        this.firstFormGroup.patchValue({
             title: val.title,
             firstname: val.firstname,
             lastname: val.lastname,
             phone: val.ph,
             email: val.email,
+            isRetailer: val.isRetailer,
+            isVendor: val.isVendor,
+            isActive: val.isActive
+        });
+        this.secondFormGroup.patchValue({
             flatNumber: val.flatNumber,
             street: val.street,
             landMark: val.landMark,
@@ -539,7 +520,9 @@ export class AddUser implements OnInit {
             state: val.state,
             country: val.country,
             postalCode: val.postalCode,
-            region: val.region,
+            region: val.region
+        });
+        this.thirdFormGroup.patchValue({
             companyName: val.companyname,
             cin: val.cin,
             registrationNumber: val.registrationNumber,
@@ -547,7 +530,8 @@ export class AddUser implements OnInit {
             registratedAuthority: val.registratedAuthority,
             longitude: val.longitude,
             latitude: val.latitude,
-
+        });
+        this.fourthFormGroup.patchValue({
             accountNumber: val.accountNumber,
             accountType: val.accountType,
             bankName: val.bankName,
@@ -555,7 +539,6 @@ export class AddUser implements OnInit {
             holderName: val.holderName,
             ifscCode: val.ifscCode,
             taxNumber: val.taxNumber,
-            areaId: val.areaId,
             vendorId: val.vendorId,
             vendorObjId: val.vendorObjId
         })

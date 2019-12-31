@@ -20,7 +20,7 @@
             </div>
           </div>
           <button mat-icon-button color="primary" aria-label="Add new User" matTooltip="Add new User">
-            <mat-icon aria-hidden="false" aria-label="Example home icon" (click)="add()">add_box</mat-icon>
+            <mat-icon aria-hidden="false" matTooltip="Add new User" (click)="add()">add_box</mat-icon>
           </button>
 
 
@@ -62,29 +62,29 @@
           </ng-container>
 
           <!-- Weight Column -->
-          <ng-container matColumnDef="region">
+          <ng-container matColumnDef="regionName">
             <th class="columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header> REGION </th>
-            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.region}} </td>
+            <td class="columnWidth" mat-cell *matCellDef="let element"> {{element.regionName}} </td>
           </ng-container>
 
           <!-- Symbol Column -->
           <ng-container matColumnDef="actions">
-            <th class="columnWidth" mat-header-cell *matHeaderCellDef> ACTION </th>
-            <td class="columnWidth" mat-cell *matCellDef="let element">
-
-              <mat-icon class="curserAction" color="primary" aria-hidden="false" aria-label="edit"
-                (click)="edit(element)">edit
-              </mat-icon>
-              <mat-icon class="curserAction" color="warn" aria-hidden="false" aria-label="delete icon"
-                (click)="remove(element)">delete
-              </mat-icon>
-              <mat-icon class="curserAction" color="primary" aria-hidden="false" aria-label="display"
+            <th mat-header-cell *matHeaderCellDef> ACTION </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="row">
+                <mat-icon class="curserAction" color="primary" aria-hidden="false" matTooltip="Edit"
+                  (click)="edit(element)">edit
+                </mat-icon>
+                <mat-icon class="curserAction" color="warn" aria-hidden="false" matTooltip="Delete"
+                  (click)="remove(element)">delete
+                </mat-icon>
+                <!-- <mat-icon class="curserAction" color="primary" aria-hidden="false" aria-label="display"
                 (click)="display(element)">
-                keyboard_arrow_right</mat-icon>
-              <mat-icon color="primary" class="curserAction" aria-hidden="false" aria-label="Product"
-                (click)="product(element)">
-                local_grocery_store</mat-icon>
-
+                keyboard_arrow_right</mat-icon> -->
+                <mat-icon color="primary" class="curserAction" aria-hidden="false" matTooltip="Product"
+                  (click)="product(element)">
+                  local_grocery_store</mat-icon>
+              </div>
             </td>
           </ng-container>
 

@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatStepper } from '@angular/material/stepper';
 import { CommonServiceService } from '../../common-service.service';
 import { ConfirmationDialogService } from '../components/confirmation-dialog/confirmation-dialog.service';
 export interface DialogData {
@@ -47,10 +48,9 @@ export class SupplierComponent implements OnInit {
   getSupplierDetails() {
     this.visible = true;
     this.cds.getAllDelivaryPartnerDetails(this.cds.tokenLogin).subscribe(response => {
-      //this.visible = false;
       this.data = this.getTableData(response["vendors"]);
       const ELEMENT_DATA = this.data;
-      this.displayedColumns = ['firstname', 'email', 'uid', 'ph', 'bloodGroup', 'region', 'actions'];
+      this.displayedColumns = ['firstname', 'email', 'uid', 'ph', 'bloodGroup', 'regionName', 'actions'];
       this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -71,26 +71,21 @@ export class SupplierComponent implements OnInit {
         duration: 2000,
       });
     })
+  }
 
-  }
-  insertAreaToDelivaryPartner() {
-    if (!this.cds.areaData) {
-      return;
-    }
-    this.data.forEach(element => {
-      for (var i = 0; i < this.cds.areaData.length; i++) {
-        if (element.areaId == this.cds.areaData[i].id) {
-          element.region = this.cds.areaData[i].code;
-          break;
-        }
-      }
-    });
-  }
   getTableData(val) {
     var formatJson = {};
     var finalData = [];
     for (let i = 0; i < val.length; i++) {
-
+      let medi = [], mediFile = val[i].medias, mediObj = {};
+      for (let k = 0; k < mediFile.length; k++) {
+        mediObj = {
+          "_id": mediFile[k]._id,
+          "path": this.cds.getFilePath(mediFile[k]._id)
+        }
+        medi.push(mediObj);
+        mediObj = {};
+      }
       let relVand = (val[i].relatedVendor ? val[i].relatedVendor : []),
         finalVen = [], relatedVendorObjIdArray = [];
       for (var j = 0; j < relVand.length; j++) {
@@ -116,10 +111,10 @@ export class SupplierComponent implements OnInit {
         "uid": val[i].uid,
         "deliveryPartnerId": val[i].deliveryPartnerId,
 
-        "areaId": val[i].areaId,
+
         "deliveryPartnerObjId": val[i]._id,
-        "region": val[i].areaId ? val[i].areaId.areaCode : "",
-        "regionName": val[i].areaId ? val[i].formattedAddress : "",
+        "region": val[i].areaId ? val[i].areaId._id : "",
+        "regionName": val[i].areaId ? val[i].areaId.areaCode : "",
 
 
         "Pcity": val[i].address ? val[i].address.city : "",
@@ -151,8 +146,8 @@ export class SupplierComponent implements OnInit {
         "isActive": val[i].isActive,
         "relatedVendor": val[i].relatedVendor ? finalVen : [],
         "selectedVendor": relatedVendorObjIdArray ? relatedVendorObjIdArray : [],
-        "media": val[i].medias ? val[i].medias : "",
-        "documentId": val[i].medias ? val[i].medias[0]._id : ""
+        "media": val[i].medias ? medi : [],
+        //"documentId": val[i].medias ? val[i].medias[0]._id : ""
       }
       finalData.push(formatJson);
       formatJson = {};
@@ -249,7 +244,7 @@ export interface PeriodicElement {
   lastname: string;
   email: string;
   ph: number;
-  region: string;
+  regionName: string;
   address: string;
   city: string;
   uid: string;
@@ -260,25 +255,21 @@ export interface PeriodicElement {
   templateUrl: 'add-user.html',
 })
 export class AddUser implements OnInit {
-  newUserForm: FormGroup;
   val: any;
-  pftelpat = "^[6789]{1}[0-9]{9}$";
   filevalid: any;
-  filevalid1: any;
   displayInd: any;
 
   public imagePath;
   imgURL: any;
-  imgDocument: any;
-  imgDocumentId: any;
-  public message: string;
   region: any[];
   vendorSelecton: any[];
   titleCollection: any[];
   profilePicId: any;
-  Retailer: boolean;
-  isDelivary: boolean;
-  activeDelivaryPartner: boolean;
+
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
 
   constructor(
     public dialogRef: MatDialogRef<AddUser>,
@@ -288,25 +279,22 @@ export class AddUser implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
-    this.Retailer = false;
-    this.isDelivary = true;
-    this.activeDelivaryPartner = true;
     this.profilePicId = "";
-
+    this.imgURL = "../assets/images/avtar.png";
     this.region = this.cds2.areaData;
     this.vendorSelecton = this.dialogRef.componentInstance.data.data;
     var data = this.dialogRef.componentInstance.data.data1;
     this.titleCollection = [{ "title": "Mr" }, { "title": "Mrs" }, { "title": "Miss" }];
     this.nextProcess();
     if (this.dialogRef.componentInstance.data.ind !== 'create') {
-      this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
-        this.imgURL = response["path"];
-        this.profilePicId = response["_id"];
-      }, error => {
-        this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-          duration: 2000,
-        });
-      });
+      // this.cds2.getMedia(this.cds2.tokenLogin, data.media[0]._id).subscribe(response => {
+      //   this.imgURL = response["path"];
+      //   this.profilePicId = response["_id"];
+      // }, error => {
+      //   this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
+      //     duration: 2000,
+      //   });
+      // });
     }
   }
   nextProcess() {
@@ -315,7 +303,10 @@ export class AddUser implements OnInit {
     var data = this.dialogRef.componentInstance.data.data1;
     if (this.dialogRef.componentInstance.data.ind == 'display') {
       this.displayInd = false;
-      this.newUserForm.disable();
+      this.firstFormGroup.disable();
+      this.secondFormGroup.disable();
+      this.thirdFormGroup.disable();
+      this.fourthFormGroup.disable();
 
       this.bindDisplayValues(data);
     } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
@@ -324,55 +315,51 @@ export class AddUser implements OnInit {
     }
   }
   createForm() {
-    this.newUserForm = this.fb.group({
+    this.firstFormGroup = this.fb.group({
       title: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       phone: ['+91', Validators.required],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
-      region: ['', Validators.required],
       bloodGroup: ['', Validators.required],
 
+      isDeliveryPartner: [true],
+      isRetailer: [],
+      isActive: [true]
+    });
+    this.secondFormGroup = this.fb.group({
       PflatNumber: ['', Validators.required],
-      Pstreet: ['', Validators.required],
-      PlandMark: ['', Validators.required],
+      Pstreet: [''],
+      PlandMark: [''],
       Pcity: ['Bangalore', Validators.required],
       Pstate: ['Karnataka', Validators.required],
       Pcountry: ['India', Validators.required],
-      PpostalCode: ['', Validators.required],
-
+      PpostalCode: ['', Validators.required]
+    });
+    this.thirdFormGroup = this.fb.group({
       CflatNumber: ['', Validators.required],
-      Cstreet: ['', Validators.required],
-      ClandMark: ['', Validators.required],
+      Cstreet: [''],
+      ClandMark: [''],
       Ccity: ['Bangalore', Validators.required],
       Cstate: ['Karnataka', Validators.required],
       Ccountry: ['India', Validators.required],
-      CpostalCode: ['', Validators.required],
-
+      CpostalCode: ['', Validators.required]
+    });
+    this.fourthFormGroup = this.fb.group({
       accountNumber: ['', Validators.required],
       accountType: ['', Validators.required],
       bankName: ['', Validators.required],
       branchName: ['', Validators.required],
       holderName: ['', Validators.required],
       ifscCode: ['', Validators.required],
-      panNumber: ['', Validators.required],
+      panNumber: [''],
+      region: ['', Validators.required],
       relatedVendor: [''],
       areaId: [''],
       deliveryPartnerId: [''],
       deliveryPartnerObjId: ['']
-    })
+    });
   }
-
-  clearScreen(oEvent) {
-    this.newUserForm.reset();
-    this.filevalid = false;
-    this.filevalid1 = false;
-    this.imgURL = "";
-    this.profilePicId = "";
-    this.imgDocument = "";
-    this.imgDocumentId = "";
-  }
-
 
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
@@ -413,98 +400,76 @@ export class AddUser implements OnInit {
       });
     });
   }
-  previewDocument(files) {
-    if (files.length === 0)
-      return;
 
-    var mimeType = files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
-      this.snackBar.open("File Type Not supporting upload imgage only", "", {
-        duration: 2000,
-      });
-      return;
-    }
-    if (files[0].size > 2000000) {
-      this.snackBar.open("File size excceds 2MB", "", {
-        duration: 2000,
-      });
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', files[0]);
-    formData.append('name', 'document');
-    this.cds2.postMedia(formData).subscribe(response => {
-      this.imgDocument = response["media"].path;
-      this.imgDocumentId = response["media"]._id;
+  goForward(stepper: MatStepper) {
+    if (this.profilePicId !== "")
       this.filevalid = false;
-    }, error => {
-      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-        duration: 2000,
-      });
-    });
+    else
+      this.filevalid = true;
+    if (this.firstFormGroup.valid && !this.filevalid)
+      stepper.next();
+    else
+      return;
   }
 
   createNewUser(oEvent) {
-    if (this.newUserForm.valid && this.profilePicId != "") {
+    if (this.profilePicId != "" && this.firstFormGroup.valid && this.secondFormGroup.valid && this.thirdFormGroup.valid && this.fourthFormGroup.valid) {
       var medi = [];
       medi.push(this.profilePicId);
-      var filledData = this.newUserForm.value;
-      var aId = "";
-      for (var i = 0; i < this.cds2.areaData.length; i++) {
-        if (filledData.region == this.cds2.areaData[i].code) {
-          aId = this.cds2.areaData[i].id;
-        }
-      }
+      var filledData1 = this.firstFormGroup.value;
+      var filledData2 = this.secondFormGroup.value;
+      var filledData3 = this.thirdFormGroup.value;
+      var filledData4 = this.fourthFormGroup.value;
+
 
       if (this.dialogRef.componentInstance.data.ind == 'create') {
         var createData = {
           "name": {
-            "title": filledData.title,
-            "firstName": filledData.firstname,
-            "lastName": filledData.lastname
+            "title": filledData1.title,
+            "firstName": filledData1.firstname,
+            "lastName": filledData1.lastname
           },
           "address": {
-            "flatNumber": filledData.PflatNumber,
-            "street": filledData.Pstreet,
-            "landMark": filledData.PlandMark,
-            "city": filledData.Pcity,
-            "state": filledData.Pstate,
-            "country": filledData.Pcountry,
-            "postalCode": filledData.PpostalCode,
+            "flatNumber": filledData2.PflatNumber,
+            "street": filledData2.Pstreet,
+            "landMark": filledData2.PlandMark,
+            "city": filledData2.Pcity,
+            "state": filledData2.Pstate,
+            "country": filledData2.Pcountry,
+            "postalCode": filledData2.PpostalCode,
             "formattedAddress": "all the Above",
           },
           "currentAddress": {
-            "flatNumber": filledData.CflatNumber,
-            "street": filledData.Cstreet,
-            "landMark": filledData.ClandMark,
-            "city": filledData.Ccity,
-            "state": filledData.Cstate,
-            "country": filledData.Ccountry,
-            "postalCode": filledData.CpostalCode,
+            "flatNumber": filledData3.CflatNumber,
+            "street": filledData3.Cstreet,
+            "landMark": filledData3.ClandMark,
+            "city": filledData3.Ccity,
+            "state": filledData3.Cstate,
+            "country": filledData3.Ccountry,
+            "postalCode": filledData3.CpostalCode,
             "formattedAddress": "all the Above",
           },
-          "phoneNumber": filledData.phone,
-          "email": filledData.email,
+          "phoneNumber": filledData1.phone,
+          "email": filledData1.email,
 
-          "relatedVendor": filledData.relatedVendor,
-          "areaId": aId,
-          "bloodGroup": filledData.bloodGroup,
+          "relatedVendor": filledData4.relatedVendor,
+          "areaId": filledData4.region,
+          "bloodGroup": filledData1.bloodGroup,
           "formattedAddress": "all the Above",
           "medias": medi,
 
           "bankDetails": {
-            "accountNumber": filledData.accountNumber,
-            "accountType": filledData.accountType,
-            "holderName": filledData.holderName,
-            "ifscCode": filledData.ifscCode,
-            "bankName": filledData.bankName,
-            "branchName": filledData.branchName,
-            "panNumber": filledData.taxNumber
+            "accountNumber": filledData4.accountNumber,
+            "accountType": filledData4.accountType,
+            "holderName": filledData4.holderName,
+            "ifscCode": filledData4.ifscCode,
+            "bankName": filledData4.bankName,
+            "branchName": filledData4.branchName,
+            "panNumber": filledData4.taxNumber
           },
-          "isActive": this.activeDelivaryPartner,
-          "isRetailer": this.Retailer,
-          "isDeliveryPartner": this.isDelivary
+          "isActive": filledData1.isActive ? true : false,
+          "isRetailer": filledData1.isRetailer ? true : false,
+          "isDeliveryPartner": filledData1.isDelivaryPartner ? true : false
         };
         this.cds2.postDelivaryPartner(this.cds2.tokenLogin, createData).subscribe(response => {
           this.snackBar.open(response["message"], "", {
@@ -519,52 +484,53 @@ export class AddUser implements OnInit {
       } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
         var createData1 = {
           "name": {
-            "title": filledData.title,
-            "firstName": filledData.firstname,
-            "lastName": filledData.lastname
+            "title": filledData1.title,
+            "firstName": filledData1.firstname,
+            "lastName": filledData1.lastname
           },
           "address": {
-            "flatNumber": filledData.PflatNumber,
-            "street": filledData.Pstreet,
-            "landMark": filledData.PlandMark,
-            "city": filledData.Pcity,
-            "state": filledData.Pstate,
-            "country": filledData.Pcountry,
-            "postalCode": filledData.PpostalCode,
+            "flatNumber": filledData2.PflatNumber,
+            "street": filledData2.Pstreet,
+            "landMark": filledData2.PlandMark,
+            "city": filledData2.Pcity,
+            "state": filledData2.Pstate,
+            "country": filledData2.Pcountry,
+            "postalCode": filledData2.PpostalCode,
             "formattedAddress": "all the Above",
           },
           "currentAddress": {
-            "flatNumber": filledData.CflatNumber,
-            "street": filledData.Cstreet,
-            "landMark": filledData.ClandMark,
-            "city": filledData.Ccity,
-            "state": filledData.Cstate,
-            "country": filledData.Ccountry,
-            "postalCode": filledData.CpostalCode,
+            "flatNumber": filledData3.CflatNumber,
+            "street": filledData3.Cstreet,
+            "landMark": filledData3.ClandMark,
+            "city": filledData3.Ccity,
+            "state": filledData3.Cstate,
+            "country": filledData3.Ccountry,
+            "postalCode": filledData3.CpostalCode,
             "formattedAddress": "all the Above",
           },
-          "phoneNumber": filledData.phone,
-          "email": filledData.email,
-          "relatedVendor": filledData.relatedVendor,
-          "areaId": aId,
-          "bloodGroup": filledData.bloodGroup,
+          "phoneNumber": filledData1.phone,
+          "email": filledData1.email,
+
+          "relatedVendor": filledData4.relatedVendor,
+          "areaId": filledData4.region,
+          "bloodGroup": filledData1.bloodGroup,
           "formattedAddress": "all the Above",
           "medias": medi,
 
           "bankDetails": {
-            "accountNumber": filledData.accountNumber,
-            "accountType": filledData.accountType,
-            "holderName": filledData.holderName,
-            "ifscCode": filledData.ifscCode,
-            "bankName": filledData.bankName,
-            "branchName": filledData.branchName,
-            "panNumber": filledData.taxNumber
+            "accountNumber": filledData4.accountNumber,
+            "accountType": filledData4.accountType,
+            "holderName": filledData4.holderName,
+            "ifscCode": filledData4.ifscCode,
+            "bankName": filledData4.bankName,
+            "branchName": filledData4.branchName,
+            "panNumber": filledData4.taxNumber
           },
-          "isActive": this.activeDelivaryPartner,
-          "isRetailer": this.Retailer,
-          "isDeliveryPartner": this.isDelivary
+          "isActive": filledData1.isActive ? true : false,
+          "isRetailer": filledData1.isRetailer ? true : false,
+          "isDeliveryPartner": filledData1.isDelivaryPartner ? true : false
         };
-        this.cds2.updateDelivaryPartner(filledData.deliveryPartnerObjId, this.cds2.tokenLogin, createData1).subscribe(response => {
+        this.cds2.updateDelivaryPartner(filledData4.deliveryPartnerObjId, this.cds2.tokenLogin, createData1).subscribe(response => {
           this.snackBar.open(response["message"], "", {
             duration: 2000,
           });
@@ -577,46 +543,56 @@ export class AddUser implements OnInit {
       }
 
     } else {
-      for (let name in this.newUserForm.controls) {
-        if (this.newUserForm.controls[name].value == '' || this.newUserForm.controls[name].value == null) {
-          this.newUserForm.controls[name].markAsTouched();
-          this.snackBar.open("Please Enter All values", "", {
-            duration: 2000,
-          });
-        }
-        else
-          this.newUserForm.controls[name].setErrors(null);
-      }
       if (this.profilePicId == "") {
         this.filevalid = true;
+        this.snackBar.open("Plese Choose Profile Photo", "", {
+          duration: 2000,
+        });
       } else {
         this.filevalid = false;
       }
 
     }
   }
-  toggeleActive(evt) {
-    this.activeDelivaryPartner = evt.checked;
-  }
-  toggeleRetailer(evt) {
-    this.Retailer = evt.checked;
-  }
-  toggeleDelivary(evt) {
-    this.isDelivary = evt.checked;
-  }
+
   CloseUser() {
     this.dialogRef.close({ action: "no" });
   }
+  copyPermanent(event) {
+    debugger;
+    if (event.checked) {
+      if (!this.secondFormGroup.valid)
+        return;
+      var seldata = this.secondFormGroup.value;
+      this.thirdFormGroup.patchValue({
+        CflatNumber: seldata.PflatNumber,
+        Cstreet: seldata.Pstreet,
+        ClandMark: seldata.PlandMark,
+        Ccity: seldata.Pcity,
+        Cstate: seldata.Pstate,
+        Ccountry: seldata.Pcountry,
+        CpostalCode: seldata.PpostalCode,
+      });
+    } else {
+      this.thirdFormGroup.reset();
+    }
+
+  }
   bindDisplayValues(val) {
-    this.newUserForm.patchValue({
+    this.imgURL = val.media[0].path;
+    this.profilePicId = val.media[0]._id;
+    this.firstFormGroup.patchValue({
       title: val.title,
       firstname: val.firstname,
       lastname: val.lastname,
       phone: val.ph,
       email: val.email,
       bloodGroup: val.bloodGroup,
-      region: val.region,
-
+      isRetailer: val.isRetailer,
+      isVendor: val.isVendor,
+      isActive: val.isActive
+    });
+    this.secondFormGroup.patchValue({
       PflatNumber: val.PflatNumber,
       Pstreet: val.Pstreet,
       PlandMark: val.PlandMark,
@@ -624,7 +600,8 @@ export class AddUser implements OnInit {
       Pstate: val.Pstate,
       Pcountry: val.Pcountry,
       PpostalCode: val.PpostalCode,
-
+    });
+    this.thirdFormGroup.patchValue({
       CflatNumber: val.CflatNumber,
       Cstreet: val.Cstreet,
       ClandMark: val.ClandMark,
@@ -632,7 +609,8 @@ export class AddUser implements OnInit {
       Cstate: val.Cstate,
       Ccountry: val.Ccountry,
       CpostalCode: val.CpostalCode,
-
+    });
+    this.fourthFormGroup.patchValue({
       accountNumber: val.accountNumber,
       accountType: val.accountType,
       bankName: val.bankName,
@@ -640,11 +618,12 @@ export class AddUser implements OnInit {
       holderName: val.holderName,
       ifscCode: val.ifscCode,
       panNumber: val.panNumber,
-      areaId: val.areaId,
+      region: val.region,
       deliveryPartnerId: val.deliveryPartnerId,
       deliveryPartnerObjId: val.deliveryPartnerObjId,
       relatedVendor: val.selectedVendor
     })
+
   }
 }
 
