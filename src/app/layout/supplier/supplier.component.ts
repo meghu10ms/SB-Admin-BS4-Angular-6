@@ -579,8 +579,8 @@ export class AddUser implements OnInit {
 
   }
   bindDisplayValues(val) {
-    this.imgURL = val.media[0].path;
-    this.profilePicId = val.media[0]._id;
+    this.imgURL = val.media[0] ? val.media[0].path : "";
+    this.profilePicId = val.media[0] ? val.media[0]._id : "";
     this.firstFormGroup.patchValue({
       title: val.title,
       firstname: val.firstname,

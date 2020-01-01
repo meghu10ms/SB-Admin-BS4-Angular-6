@@ -1,164 +1,140 @@
 <div mat-dialog-content>
+  <mat-horizontal-stepper [linear]="this.displayInd" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Contact Details</ng-template>
+        <div class="row">
 
-  <div class="row">
-    <div class="col-sm-3">
-      <form>
-        <div class="text-left">
-          <mat-slide-toggle color="Primary" [checked]="this.superAdmin" [disabled]="!this.displayInd"
-            (change)="toggeleSuperAdmin($event)" labelPosition="before" matTooltip="Super Admin">
-            Super Admin :
-          </mat-slide-toggle>
-          <hr />
-          <mat-slide-toggle color="Primary" [checked]="this.activeAdmin" [disabled]="!this.displayInd"
-            (change)="toggeleAdminActive($event)" labelPosition="before" matTooltip="Active Admin">
-            Active Admin :
-          </mat-slide-toggle>
-        </div>
+          <div class="col-sm-3">
+            <mat-checkbox formControlName="isSuperAdmin">Super Admin</mat-checkbox>
+            <mat-checkbox formControlName="isActive">Active</mat-checkbox>
+            <div class="text-left">
+              <img [src]="imgURL" class="avatar img-circle img-thumbnail img" alt="name">
+              <input type="file" #file class="text-left left-block file-upload" accept='image/*'
+                (change)="preview(file.files)" style="width:95%">
+              <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
+            </div>
+            <hr />
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Title</mat-label>
+              <mat-select formControlName="title" placeholder="Choose Title" class="fontBold">
+                <mat-option *ngFor="let val of titleCollection" [value]="val.title">
+                  {{val.title}}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>subtitles</mat-icon>
+            </mat-form-field>
 
-        <hr />
-        <div class="text-left">
-          <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL">
-          <img [src]="imgURL" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL" height="150"
-            width="150">
-          <h6 *ngIf="!imgURL">Upload photo...</h6>
-          <input *ngIf="this.displayInd" type="file" #file class="text-left left-block file-upload" accept='image/*'
-            (change)="preview(file.files)" style="width:95%">
-          <span style="color:red" *ngIf="filevalid"> Please Choose File</span>
-        </div>
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">First Name</mat-label>
+              <input matInput placeholder=" Enter First Name" formControlName="firstname" maxlength="20"
+                class="fontBold">
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
 
-        <hr />
-        <div class="text-left">
-          <img src="../assets/images/avtar.png" class="avatar img-circle img-thumbnail" alt="avatar" *ngIf="!imgURL1">
-          <img [src]="imgURL1" class="avatar img-circle img-thumbnail" alt="name" *ngIf="imgURL1" height="150"
-            width="150">
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Last Name</mat-label>
+              <input matInput placeholder="Enter Last Name" formControlName="lastname" maxlength="20" class="fontBold">
+              <mat-icon matSuffix>person_pin</mat-icon>
+            </mat-form-field>
 
-          <h6 *ngIf="!imgURL1">Upload Documents</h6>
-          <input *ngIf="this.displayInd" type="file" #file1 class="text-left left-block file-upload" accept='image/*'
-            (change)="previewDocument(file1.files)">
-          <span style="color:red" *ngIf="filevalid1"> Please Choose File</span>
-        </div>
-      </form>
-    </div>
+          </div>
+          <div class="col-sm-4">
 
-    <div class="col-sm-9">
-      <form class="form-inline" [formGroup]="newUserForm">
-        <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Phone Number</mat-label>
+              <input matInput placeholder="Enter Phone Number" formControlName="phone" maxlength="13"
+                (keypress)="numberOnly($event)" class="fontBold">
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Title</mat-label>
-            <mat-select formControlName="title" placeholder="Choose Title" class="fontBold">
-              <mat-option *ngFor="let val of titleCollection" [value]="val.title">
-                {{val.title}}
-              </mat-option>
-            </mat-select>
-            <mat-icon matSuffix>subtitles</mat-icon>
-          </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Email</mat-label>
+              <input matInput placeholder="Enter Email" formControlName="email" maxlength="25" class="fontBold">
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">First Name</mat-label>
-            <input matInput placeholder=" Enter First Name" formControlName="firstname" maxlength="20" class="fontBold">
-            <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Last Name</mat-label>
-            <input matInput placeholder="Enter Last Name" formControlName="lastname" maxlength="20" class="fontBold">
-            <mat-icon matSuffix>person_pin</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Phone Number</mat-label>
-            <!-- <span matPrefix>+91</span> -->
-            <input matInput placeholder="Enter Phone Number" formControlName="phone" maxlength="13"
-              (keypress)="numberOnly($event)" class="fontBold">
-            <mat-icon matSuffix>phone</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Email</mat-label>
-            <input matInput placeholder="Enter Email" formControlName="email" maxlength="25" class="fontBold">
-            <mat-icon matSuffix>email</mat-icon>
-          </mat-form-field>
-
-          <!-- <mat-form-field appearance="outline">
-            <mat-label class="fontBold">City</mat-label>
-            <input matInput placeholder="Enter City" formControlName="city" maxlength="20" class="fontBold">
-            <mat-icon matSuffix>location_city</mat-icon>
-          </mat-form-field> -->
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Region</mat-label>
-            <mat-select formControlName="region" placeholder="Enter Region" class="fontBold" multiple>
-              <mat-option *ngFor="let val of region" [value]="val.code">
-                {{val.area}} ({{val.code}})
-              </mat-option>
-            </mat-select>
-            <mat-icon matSuffix>near_me</mat-icon>
-          </mat-form-field>
-
-        </div>
-        <div class="col-sm-6">
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Account Number</mat-label>
-            <input matInput placeholder="Enter Account Number" formControlName="accountNumber" maxlength="13"
-              class="fontBold" (keypress)="numberOnly($event)">
-            <mat-icon matSuffix>account_circle</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Account Type</mat-label>
-            <input matInput placeholder="Enter Account Type" formControlName="accountType" maxlength="10"
-              class="fontBold">
-            <mat-icon matSuffix>account_tree</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Bank Name</mat-label>
-            <input matInput placeholder="Enter Bank Name" formControlName="bankName" maxlength="20" class="fontBold">
-            <mat-icon matSuffix>account_balance</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Branch Name</mat-label>
-            <input matInput placeholder="Enter Branch Name" formControlName="branchName" maxlength="20"
-              class="fontBold">
-            <mat-icon matSuffix>account_box</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Account Holder Name</mat-label>
-            <input matInput placeholder="Enter Account Holder Name" formControlName="holderName" maxlength="20"
-              class="fontBold">
-            <mat-icon matSuffix>email</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">IFSC Code</mat-label>
-            <input matInput placeholder="Enter IFSC Code" formControlName="ifscCode" maxlength="20" class="fontBold">
-            <mat-icon matSuffix>accessibility</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Tax Numbaer</mat-label>
-            <input matInput placeholder="Enter Tax Number" formControlName="taxNumber" maxlength="20" class="fontBold">
-            <mat-icon matSuffix>pages</mat-icon>
-          </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Region</mat-label>
+              <mat-select formControlName="region" placeholder="Enter Region" class="fontBold" multiple>
+                <mat-option *ngFor="let val of region" [value]="val.code">
+                  {{val.area}} ({{val.code}})
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>near_me</mat-icon>
+            </mat-form-field>
+            <div>
+              <button mat-raised-button color="accent" (click)="goForward(stepper)"
+                *ngIf="this.displayInd">Next</button>
+            </div>
+          </div>
         </div>
       </form>
-    </div>
-  </div>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Bank Details</ng-template>
+        <div class="row">
+          <div class="col-sm-4">
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Account Number</mat-label>
+              <input matInput placeholder="Enter Account Number" formControlName="accountNumber" maxlength="13"
+                class="fontBold" (keypress)="numberOnly($event)">
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Account Type</mat-label>
+              <input matInput placeholder="Enter Account Type" formControlName="accountType" maxlength="10"
+                class="fontBold">
+              <mat-icon matSuffix>account_tree</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Bank Name</mat-label>
+              <input matInput placeholder="Enter Bank Name" formControlName="bankName" maxlength="20" class="fontBold">
+              <mat-icon matSuffix>account_balance</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Branch Name</mat-label>
+              <input matInput placeholder="Enter Branch Name" formControlName="branchName" maxlength="20"
+                class="fontBold">
+              <mat-icon matSuffix>account_box</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Account Holder Name</mat-label>
+              <input matInput placeholder="Enter Account Holder Name" formControlName="holderName" maxlength="20"
+                class="fontBold">
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">IFSC Code</mat-label>
+              <input matInput placeholder="Enter IFSC Code" formControlName="ifscCode" maxlength="20" class="fontBold">
+              <mat-icon matSuffix>accessibility</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field appearance="outline">
+              <mat-label class="fontBold">Tax Numbaer</mat-label>
+              <input matInput placeholder="Enter Tax Number" formControlName="taxNumber" maxlength="20"
+                class="fontBold">
+              <mat-icon matSuffix>pages</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div>
+          <button mat-raised-button color="accent" matStepperPrevious *ngIf="this.displayInd">Back</button>
+          <button mat-raised-button type="submit" color="primary" (click)="createNewUser()"
+            *ngIf="secondFormGroup.valid && this.displayInd">Submit</button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
 </div>
-<mat-dialog-actions>
-
-  <div class="navbar-nav ml-auto">
-    <span>
-      <button class="btn btn-success" type="submit" matTooltip="Save" (click)="createNewUser()" *ngIf="displayInd">
-        Save</button> &nbsp; &nbsp;
-      <button class="btn" type="reset" matTooltip="Reset" (click)="clearScreen()" *ngIf="displayInd">
-        Reset</button>&nbsp; &nbsp;
-      <button class="btn" type="submit" matTooltip="Close" (click)="close()">
-        Close</button>
-    </span>
-  </div>
-</mat-dialog-actions>

@@ -109,7 +109,7 @@ export class ChartsComponent implements OnInit {
                 "holderName": val[i].bankDetails ? val[i].bankDetails.holderName : "",
                 "ifscCode": val[i].bankDetails ? val[i].bankDetails.ifscCode : "",
                 "taxNumber": val[i].bankDetails ? val[i].bankDetails.taxNumber : "",
-                "isRetailer": val[i].isRetailer ? true : false,
+                "isRetailer": val[i].isRetailer,
                 "isActive": val[i].isActive ? true : false,
                 "isVendor": val[i].isVendor ? true : false,
                 "media": medi ? medi : []
@@ -338,8 +338,8 @@ export class AddUser implements OnInit {
                     "phoneNumber": filledData1.phone,
                     "email": filledData1.email,
                     //"password": filledData1.email,
-                    "isActive": filledData1.isActive,
-                    "isVendor": filledData1.isVendor,
+                    "isActive": filledData1.isActive ? true : false,
+                    "isVendor": filledData1.isVendor ? true : false,
                     "ownerAddress": {
                         "flatNumber": filledData2.flatNumber,
                         "street": filledData2.street,
@@ -393,9 +393,8 @@ export class AddUser implements OnInit {
                     "phoneNumber": filledData1.phone,
                     "email": filledData1.email,
                     //"password": filledData1.email,
-                    "isActive": filledData1.isActive,
-                    "isVendor": filledData1.isVendor,
-                    "isDistributor": filledData1.isRetailer,
+                    "isActive": filledData1.isActive ? true : false,
+                    "isVendor": filledData1.isVendor ? true : false,
                     "ownerAddress": {
                         "flatNumber": filledData2.flatNumber,
                         "street": filledData2.street,
@@ -500,8 +499,8 @@ export class AddUser implements OnInit {
     //     this.dialogRef.close({ action: "" });
     // }
     bindDisplayValues(val) {
-        this.imgURL = val.media[0].path;
-        this.profilePicId = val.media[0]._id;
+        this.imgURL = val.media[0] ? val.media[0].path : "";
+        this.profilePicId = val.media[0] ? val.media[0]._id : "";
         this.firstFormGroup.patchValue({
             title: val.title,
             firstname: val.firstname,

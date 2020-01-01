@@ -5,24 +5,18 @@ import { OfferRoutingModule } from './offer-routing.module';
 import { OfferComponent } from './offer.component';
 import { PageHeaderModule } from '../../shared';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {
-    MatIconModule, MatButtonModule, MatToolbarModule, MatDialogModule,
-    MatCheckboxModule, MatTableModule, MatPaginatorModule, MatSortModule,
-    MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule,
-    MatNativeDateModule, MatSnackBarModule, MatProgressSpinnerModule, MatSelectModule,
-    MatSlideToggleModule, MatCardModule, MatGridListModule
-} from '@angular/material';
+import { AngularMaterialModule } from '../../shared/AngularMaterial/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewOffer } from './offer.component';
 import { DatePipe } from '@angular/common';
 
 
 @NgModule({
-    imports: [CommonModule, OfferRoutingModule, PageHeaderModule, MatIconModule, MatSortModule,
-        MatButtonModule, MatToolbarModule, MatDialogModule, MatCheckboxModule, MatTableModule, MatPaginatorModule,
-        MatFormFieldModule, MatInputModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule,
-        FormsModule, MatSnackBarModule, FlexLayoutModule, MatCardModule, MatGridListModule, MatProgressSpinnerModule, MatSelectModule,
-        MatSlideToggleModule
+    imports: [
+        OfferRoutingModule,
+        PageHeaderModule,
+        FlexLayoutModule,
+        AngularMaterialModule
     ],
     declarations: [OfferComponent, ViewOffer],
     entryComponents: [ViewOffer],

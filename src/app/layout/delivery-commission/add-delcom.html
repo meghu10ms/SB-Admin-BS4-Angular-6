@@ -1,43 +1,6 @@
 <div mat-dialog-content>
   <div class="row">
-    <form [formGroup]="newUserForm">
-      <div class="row">
-        <div class="col-sm-6">
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Commission Per Cane </mat-label>
-            <input matInput placeholder="Commission Per Cane" formControlName="rangeFrom" maxlength="8"
-              (keypress)="numberOnly($event)" class="fontBold">
-
-            <span matSuffix class="fontBold">Rs</span>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-6">
-          <mat-icon color="primary" class="col text-center curserAction"> add</mat-icon>
-        </div>
-      </div>
-      <div class="row" *ngFor="let data of ComNoCan">
-        <div class="col-sm-5">
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Commission </mat-label>
-            <input matInput placeholder="Commission" formControlName="rangeFrom" maxlength="8"
-              (keypress)="numberOnly($event)" class="fontBold">
-            <span matSuffix class="fontBold">Rs</span>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-5">
-          <mat-form-field appearance="outline">
-            <mat-label class="fontBold">Number Of Cane </mat-label>
-            <input matInput placeholder="Commission" formControlName="rangeFrom" maxlength="8"
-              (keypress)="numberOnly($event)" class="fontBold">
-
-            <!-- <span matSuffix class="fontBold">Nos</span> -->
-          </mat-form-field>
-        </div>
-        <div class="col-sm-2">
-          <mat-icon color="accent" class="col text-center curserAction"> delete</mat-icon>
-        </div>
-      </div>
-    </form>
+    
   </div>
 </div>
 <mat-dialog-actions>

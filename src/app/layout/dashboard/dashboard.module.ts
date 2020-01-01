@@ -12,18 +12,15 @@ import {
 
 import { StatModule } from '../../shared';
 import { AmChartsModule } from "@amcharts/amcharts3-angular";
-import { MatSnackBarModule, MatProgressSpinnerModule, MatGridListModule } from '@angular/material';
+import { AngularMaterialModule } from '../../shared/AngularMaterial/angular-material.module';
 
 @NgModule({
     imports: [
-        CommonModule,
         NgbCarouselModule,
         DashboardRoutingModule,
         StatModule,
         AmChartsModule,
-        MatSnackBarModule,
-        MatProgressSpinnerModule,
-        MatGridListModule,
+        AngularMaterialModule,
         NgbAlertModule
     ],
     declarations: [

@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatStepper } from '@angular/material/stepper';
 import { CommonServiceService } from '../../common-service.service';
 import { ConfirmationDialogService } from '../components/confirmation-dialog/confirmation-dialog.service';
 
@@ -78,6 +79,16 @@ export class AdminComponent implements OnInit {
         adimnAreaObj = {};
       }
 
+      let medi = [], mediFile = val[i].medias, mediObj = {};
+      for (let k = 0; k < mediFile.length; k++) {
+        mediObj = {
+          "_id": mediFile[k]._id,
+          "path": this.cds.getFilePath(mediFile[k]._id)
+        }
+        medi.push(mediObj);
+        mediObj = {};
+      }
+
       formatJson = {
         "title": val[i].name ? val[i].name.title : "",
         "firstname": val[i].name ? val[i].name.firstName : "",
@@ -94,9 +105,9 @@ export class AdminComponent implements OnInit {
         "holderName": val[i].bankDetails ? val[i].bankDetails.holderName : "",
         "ifscCode": val[i].bankDetails ? val[i].bankDetails.ifscCode : "",
         "taxNumber": val[i].bankDetails ? val[i].bankDetails.taxNumber : "",
-        "superAdmin": val[i].isSuperAdmin ? val[i].isSuperAdmin : "",
-        "activeAdmin": val[i].isActive,
-        "media": val[i].medias ? val[i].medias : []
+        "superAdmin": val[i].isSuperAdmin ? true : false,
+        "activeAdmin": val[i].isActive ? true : false,
+        "media": val[i].medias ? medi : []
       }
       finalData.push(formatJson);
       formatJson = {};
@@ -105,7 +116,6 @@ export class AdminComponent implements OnInit {
   }
 
   add() {
-
     const dialogRef = this.dialog.open(AddUser, {
       data: { ind: "create", data1: "" }
     })
@@ -175,24 +185,18 @@ export interface PeriodicElement {
   templateUrl: 'add-user.html',
 })
 export class AddUser implements OnInit {
-  newUserForm: FormGroup;
-  fileFor: FormGroup;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
   val: any;
   pftelpat = "^[6789]{1}[0-9]{9}$";
   filevalid: any;
-  filevalid1: any;
   displayInd: any;
 
   public imagePath;
   imgURL: any;
-  imgURL1: any;
-  public message: string;
   region: any[];
   titleCollection: any[];
   profilePicId: any;
-  documentId: any;
-  superAdmin: boolean;
-  activeAdmin: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<AddUser>,
@@ -202,35 +206,13 @@ export class AddUser implements OnInit {
     private cds2: CommonServiceService) { }
 
   ngOnInit() {
-    this.superAdmin = false;
-    this.activeAdmin = true;
     this.profilePicId = "";
-    this.documentId = "";
+    this.imgURL = "../assets/images/avtar.png";
     this.region = this.cds2.areaData;
     var data = this.dialogRef.componentInstance.data.data1;
     this.titleCollection = [{ "title": "Mr." }, { "title": "Mrs." }, { "title": "Miss." }];
     this.nextProcess();
     if (this.dialogRef.componentInstance.data.ind !== 'create') {
-      if (data.media.length !== 0) {
-        this.cds2.getMedia(this.cds2.tokenLogin, (data.media[0] ? data.media[0]._id : "")).subscribe(response => {
-          this.imgURL = response ? response["path"] : "";
-          this.profilePicId = response ? response["_id"] : "";
-          if (data.media.length !== 1) {
-            this.cds2.getMedia(this.cds2.tokenLogin, (data.media[1] ? data.media[1]._id : "")).subscribe(response => {
-              this.imgURL1 = response ? response["path"] : "";
-              this.documentId = response ? response["_id"] : "";
-            }, error => {
-              this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-                duration: 2000,
-              });
-            });
-          }
-        }, error => {
-          this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-            duration: 2000,
-          });
-        });
-      }
 
     }
 
@@ -239,12 +221,10 @@ export class AddUser implements OnInit {
     this.displayInd = true;
     this.createForm();
     var data = this.dialogRef.componentInstance.data.data1;
-    this.superAdmin = data.superAdmin ? data.superAdmin : false;
-    this.activeAdmin = data.activeAdmin ? data.activeAdmin : true;
     if (this.dialogRef.componentInstance.data.ind == 'display') {
       this.displayInd = false;
-      this.newUserForm.disable();
-
+      this.firstFormGroup.disable();
+      this.secondFormGroup.disable();
       this.bindDisplayValues(data);
     } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
       this.bindDisplayValues(data);
@@ -254,13 +234,17 @@ export class AddUser implements OnInit {
 
 
   createForm() {
-    this.newUserForm = this.fb.group({
+    this.firstFormGroup = this.fb.group({
       title: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       phone: ['+91', Validators.required],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
       region: ['', Validators.required],
+      isSuperAdmin: [],
+      isActive: [true]
+    })
+    this.secondFormGroup = this.fb.group({
       accountNumber: ['', Validators.required],
       accountType: ['', Validators.required],
       bankName: ['', Validators.required],
@@ -271,31 +255,28 @@ export class AddUser implements OnInit {
       areaDetails: [''],
       adminId: ['']
     })
+
   }
   close() {
     this.dialogRef.close({ action: "no" });
   }
 
   clearScreen(oEvent) {
-    this.newUserForm.reset();
     this.filevalid = false;
-    this.filevalid1 = false;
     this.imgURL = "";
-    this.imgURL1 = "";
-    this.documentId = "";
     this.profilePicId = "";
   }
   createNewUser(oEvent) {
-    if (this.newUserForm.valid && this.documentId != "" && this.profilePicId != "") {
+    if (this.profilePicId != "" && this.firstFormGroup.value && this.secondFormGroup.valid) {
       var medi = [];
       medi.push(this.profilePicId);
-      medi.push(this.documentId);
-      var filledData = this.newUserForm.value;
+      var filledData1 = this.firstFormGroup.value;
+      var filledData2 = this.secondFormGroup.value;
       var aId = [];
 
       this.cds2.areaData.forEach(function (obj) {
-        for (let x = 0; x < filledData.region.length; x++) {
-          if (obj.code === filledData.region[x]) {
+        for (let x = 0; x < filledData1.region.length; x++) {
+          if (obj.code === filledData1.region[x]) {
             aId.push(obj.id);
           }
         }
@@ -304,26 +285,26 @@ export class AddUser implements OnInit {
       if (this.dialogRef.componentInstance.data.ind == 'create') {
         var createData = {
           "name": {
-            "title": filledData.title,
-            "firstName": filledData.firstname,
-            "lastName": filledData.lastname
+            "title": filledData1.title,
+            "firstName": filledData1.firstname,
+            "lastName": filledData1.lastname
           },
-          "phoneNumber": filledData.phone,
-          "email": filledData.email,
-          "password": filledData.email,
+          "phoneNumber": filledData1.phone,
+          "email": filledData1.email,
+          "password": filledData1.email,
           "areaId": aId,
           "medias": medi,
           "bankDetails": {
-            "accountNumber": filledData.accountNumber,
-            "accountType": filledData.accountType,
-            "holderName": filledData.holderName,
-            "ifscCode": filledData.ifscCode,
-            "bankName": filledData.bankName,
-            "branchName": filledData.branchName,
-            "taxNumber": filledData.taxNumber
+            "accountNumber": filledData2.accountNumber,
+            "accountType": filledData2.accountType,
+            "holderName": filledData2.holderName,
+            "ifscCode": filledData2.ifscCode,
+            "bankName": filledData2.bankName,
+            "branchName": filledData2.branchName,
+            "taxNumber": filledData2.taxNumber
           },
-          "isSuperAdmin": this.superAdmin,
-          "isActive": this.activeAdmin
+          "isSuperAdmin": filledData1.isSuperAdmin ? true : false,
+          "isActive": filledData1.isActive ? true : false
         };
         this.cds2.postAreaAdmin(this.cds2.tokenLogin, createData).subscribe(response => {
           this.snackBar.open(response["message"], "", {
@@ -338,28 +319,28 @@ export class AddUser implements OnInit {
       } else if (this.dialogRef.componentInstance.data.ind == 'edit') {
         var createData1 = {
           "name": {
-            "title": filledData.title,
-            "firstName": filledData.firstname,
-            "lastName": filledData.lastname
+            "title": filledData1.title,
+            "firstName": filledData1.firstname,
+            "lastName": filledData1.lastname
           },
-          "phoneNumber": filledData.phone,
-          "email": filledData.email,
+          "phoneNumber": filledData1.phone,
+          "email": filledData1.email,
           //"password": filledData.email,
           "areaId": aId,
           "medias": medi,
           "bankDetails": {
-            "accountNumber": filledData.accountNumber,
-            "accountType": filledData.accountType,
-            "holderName": filledData.holderName,
-            "ifscCode": filledData.ifscCode,
-            "bankName": filledData.bankName,
-            "branchName": filledData.branchName,
-            "taxNumber": filledData.taxNumber
+            "accountNumber": filledData2.accountNumber,
+            "accountType": filledData2.accountType,
+            "holderName": filledData2.holderName,
+            "ifscCode": filledData2.ifscCode,
+            "bankName": filledData2.bankName,
+            "branchName": filledData2.branchName,
+            "taxNumber": filledData2.taxNumber
           },
-          "isSuperAdmin": this.superAdmin,
-          "isActive": this.activeAdmin
+          "isSuperAdmin": filledData1.isSuperAdmin ? true : false,
+          "isActive": filledData1.isActive ? true : false
         };
-        this.cds2.updateAreaAdmin(filledData.adminId, this.cds2.tokenLogin, createData1).subscribe(response => {
+        this.cds2.updateAreaAdmin(filledData1.adminId, this.cds2.tokenLogin, createData1).subscribe(response => {
           this.snackBar.open(response ? response["message"] : "", "", {
             duration: 2000,
           });
@@ -372,25 +353,10 @@ export class AddUser implements OnInit {
       }
 
     } else {
-      for (let name in this.newUserForm.controls) {
-        if (this.newUserForm.controls[name].value == '' || this.newUserForm.controls[name].value == null) {
-          this.newUserForm.controls[name].markAsTouched();
-          this.snackBar.open("Please Enter All values", "", {
-            duration: 2000,
-          });
-        }
-        else
-          this.newUserForm.controls[name].setErrors(null);
-      }
       if (this.profilePicId == "") {
         this.filevalid = true;
       } else {
         this.filevalid = false;
-      }
-      if (this.documentId == "") {
-        this.filevalid1 = true;
-      } else {
-        this.filevalid1 = false;
       }
     }
   }
@@ -402,6 +368,16 @@ export class AddUser implements OnInit {
       return false;
     } else
       return true;
+  }
+  goForward(stepper: MatStepper) {
+    if (this.profilePicId !== "")
+      this.filevalid = false;
+    else
+      this.filevalid = true;
+    if (this.firstFormGroup.valid && !this.filevalid)
+      stepper.next();
+    else
+      return;
   }
   // IfscValidation(event): boolean {
   //   if (event.key.length < 5) {
@@ -433,7 +409,6 @@ export class AddUser implements OnInit {
       return;
     }
 
-
     const formData = new FormData();
     formData.append('file', files[0]);
     formData.append('name', 'profile_pictre');
@@ -447,52 +422,22 @@ export class AddUser implements OnInit {
       });
     });
   }
-  previewDocument(files) {
-    if (files.length === 0)
-      return;
 
-    var mimeType = files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
-      this.snackBar.open("File Type Not supporting upload imgage only", "", {
-        duration: 2000,
-      });
-      return;
-    }
-    if (files[0].size > 2000000) {
-      this.snackBar.open("File size excceds 2MB", "", {
-        duration: 2000,
-      });
-      return;
-    }
 
-    const formData = new FormData();
-    formData.append('file', files[0]);
-    formData.append('name', 'document');
-    this.cds2.postMedia(formData).subscribe(response => {
-      this.imgURL1 = response ? response["media"].path : "";
-      this.documentId = response ? response["media"]._id : "";
-      this.filevalid1 = false;
-    }, error => {
-      this.snackBar.open((error.error.error ? error.error.error.message : error.error.message), "", {
-        duration: 2000,
-      });
-    });
-
-  }
-  toggeleSuperAdmin(evt) {
-    this.superAdmin = evt.checked;
-  }
-  toggeleAdminActive(evt) {
-    this.activeAdmin = evt.checked;
-  }
   bindDisplayValues(val) {
-    this.newUserForm.patchValue({
+    this.imgURL = val.media[0] ? val.media[0].path : "";
+    this.profilePicId = val.media[0] ? val.media[0]._id : "";
+    this.firstFormGroup.patchValue({
       title: val.title,
       firstname: val.firstname,
       lastname: val.lastname,
       email: val.email,
       phone: val.ph,
       region: val.region,
+      isSuperAdmin: val.superAdmin,
+      isActive: val.activeAdmin
+    })
+    this.secondFormGroup.patchValue({
       areaDetails: val.areaDetails,
       adminId: val.adminId,
       accountNumber: val.accountNumber,
